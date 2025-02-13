@@ -49,6 +49,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -152,14 +153,14 @@ fun SoundSNSApp() {
                     ) {
                         Row(
                             modifier = Modifier
-                                .padding(18.dp)
+                                .padding(15.dp) // カードの縦の長さ
                                 .fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Row(
-                                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                                horizontalArrangement = Arrangement.spacedBy(15.dp),
+                                verticalAlignment = Alignment.CenterVertically  //高さの中央
                             ) {
                                 // 音声アイコン
                                 Surface(
@@ -178,49 +179,53 @@ fun SoundSNSApp() {
                                 Column {
                                     Text(
                                         "user name",
-                                        fontWeight = FontWeight.Medium
+                                        fontWeight = FontWeight.ExtraBold,  //テキストの太さ
+                                        fontSize = 24.sp
                                     )
                                     Text(
-                                        "#",
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        "# 海",
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        fontSize = 20.sp
                                     )
                                 }
                             }
 
-                            // アクションボタン
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(0.dp)
+
+                        }
+                        // アクションボタン
+                        Row(
+                            modifier = Modifier
+                                .padding(0.dp) // カードの縦の長さ
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.End,
+//                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            IconButton(
+                                onClick = { /* いいね処理 */ },
+                                modifier = Modifier.padding(0.dp)
                             ) {
-                                IconButton(
-                                    onClick = { /* いいね処理 */ },
-                                    modifier = Modifier.padding(0.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Favorite,
-                                        contentDescription = "いいね",
-                                        modifier = Modifier.padding(0.dp)
-                                    )
-                                }
-                                IconButton(
-                                    onClick = { /* ブックマーク処理 */ },
-                                    modifier = Modifier.padding(0.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.BookmarkBorder,
-                                        contentDescription = "ブックマーク",
-                                        modifier = Modifier.padding(0.dp)
-                                    )
-                                }
-                                IconButton(
-                                    onClick = { /* シェア処理 */ },
-                                    modifier = Modifier.padding(0.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Share,
-                                        contentDescription = "シェア",
-                                        modifier = Modifier.padding(0.dp)
-                                    )
-                                }
+                                Icon(
+                                    imageVector = Icons.Filled.Favorite,
+                                    contentDescription = "いいね",
+                                )
+                            }
+                            IconButton(
+                                onClick = { /* ブックマーク処理 */ },
+                                modifier = Modifier.padding(0.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.BookmarkBorder,
+                                    contentDescription = "ブックマーク",
+                                )
+                            }
+                            IconButton(
+                                onClick = { /* シェア処理 */ },
+                                modifier = Modifier.padding(0.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Share,
+                                    contentDescription = "シェア",
+                                )
                             }
                         }
                     }
