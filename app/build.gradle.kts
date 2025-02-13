@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS"
@@ -66,4 +66,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // アイコン
+    implementation("androidx.compose.material:material-icons-extended:1.5.0")
 }
