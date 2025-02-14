@@ -74,8 +74,11 @@ fun BottomNavBar(navController: NavController) {
             // 現在のルートがHomeScreenなら選択状態にする
             selected = currentRoute == Nav.HomeScreen.name,
 
-            onClick = {selectedTab = 0
-                navController.navigate(Nav.HomeScreen.name) }
+            onClick = {
+                if (currentRoute != Nav.HomeScreen.name) {
+                    navController.navigate(Nav.HomeScreen.name)
+                }
+            }
         )
         // マイクアイコン
         NavigationBarItem(
@@ -90,8 +93,11 @@ fun BottomNavBar(navController: NavController) {
 //            label = { Text("通知") },
             // 現在のルートがNoticeScreenなら選択状態にする
             selected = currentRoute == Nav.NoticeScreen.name,
-            onClick = { selectedTab = 2
-                navController.navigate(Nav.NoticeScreen.name) }
+            onClick = {
+                if (currentRoute != Nav.NoticeScreen.name) {
+                    navController.navigate(Nav.NoticeScreen.name)
+                }
+            }
         )
     }
 }
