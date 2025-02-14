@@ -71,27 +71,29 @@ fun HomeScreen(navController: NavController) {
             )
         },
         bottomBar = {
-            NavigationBar {
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Home, "ホーム") },
-                    label = { Text("ホーム") },
-                    selected = selectedTab == 0,
-                    onClick = { selectedTab = 0 }
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Mic, "録音") },
-                    label = { Text("録音") },
-                    selected = selectedTab == 1,
-                    onClick = { selectedTab = 1 }
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Notifications, "通知") },
-                    label = { Text("通知") },
-                    selected = selectedTab == 2,
-//                    onClick = { selectedTab = 2 }
-                    onClick = { navController.navigate(Nav.NoticeScreen.name) }
-                )
-            }
+            // 下のナビゲーションバー
+            BottomNavBar(navController)
+//            NavigationBar {
+//                NavigationBarItem(
+//                    icon = { Icon(Icons.Default.Home, "ホーム") },
+//                    label = { Text("ホーム") },
+//                    selected = selectedTab == 0,
+//                    onClick = { selectedTab = 0 }
+//                )
+//                NavigationBarItem(
+//                    icon = { Icon(Icons.Default.Mic, "録音") },
+//                    label = { Text("録音") },
+//                    selected = selectedTab == 1,
+//                    onClick = { selectedTab = 1 }
+//                )
+//                NavigationBarItem(
+//                    icon = { Icon(Icons.Default.Notifications, "通知") },
+//                    label = { Text("通知") },
+//                    selected = selectedTab == 2,
+////                    onClick = { selectedTab = 2 }
+//                    onClick = { navController.navigate(Nav.NoticeScreen.name) }
+//                )
+//            }
         }
     ) { paddingValues ->
         Column(

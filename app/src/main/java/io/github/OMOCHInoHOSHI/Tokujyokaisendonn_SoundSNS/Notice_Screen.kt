@@ -15,11 +15,17 @@ import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 //@Preview(showBackground = true)
 @Composable
 fun NoticeScreen(navController: NavController){
-    Scaffold(){innerPadding ->
+    Scaffold(
+        bottomBar = {BottomNavBar(navController)}
+
+
+    ){innerPadding ->
         Box(modifier = Modifier.padding(innerPadding))
         Box(){
             Text("通知")
         }
+
+
     }
 
 
