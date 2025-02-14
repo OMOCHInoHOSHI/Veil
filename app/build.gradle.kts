@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS"
