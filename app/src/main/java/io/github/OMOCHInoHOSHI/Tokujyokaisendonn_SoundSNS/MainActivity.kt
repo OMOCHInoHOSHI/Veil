@@ -20,7 +20,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             VeilTheme {
 
-                DisplayNav()
+                // ログイン成功でHome起動
+                if (LoginScreen()){
+                    DisplayNav()
+                }
+
 //                SoundSNSApp()
 //                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
 //                    Greeting(

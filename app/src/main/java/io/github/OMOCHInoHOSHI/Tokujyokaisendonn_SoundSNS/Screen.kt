@@ -14,26 +14,29 @@ enum class Nav {
 }
 // 画面遷移先E-------------------------
 
-//画面遷移の設定　どこのページへ移動するかnavControllerに定義する
+//画面遷移の設定　どこのページへ移動するかnavControllerに定義する S--------------------------------------------------
 @Composable
 fun DisplayNav(){
     // NavControllerを定義
     val navController = rememberNavController()
 
     // NavHostを作成
-    // startDestinationは最初に表示するページ
+    // startDestinationは最初に表示するページS----------------------------------------------
     NavHost(navController = navController,
         startDestination = Nav.HomeScreen.name  //ホーム画面を最初に表示
     ) {
+        // ルート名：HomeScreen　HomeScreenに遷移
         composable(route = Nav.HomeScreen.name) {
-            HomeScreen(navController = navController
-//                onNavigateToConversation = { navController.navigate(Nav.NoticeScreen.name) },
-            )
+            HomeScreen(navController = navController)
         }
-        composable(route = Nav.NoticeScreen.name) { NoticeScreen(navController = navController) }
+        // ルート名：NoticeScreen　NoticeScreenに遷移
+        composable(route = Nav.NoticeScreen.name) {
+            NoticeScreen(navController = navController)
+        }
     }
-
+    // startDestinationは最初に表示するページE----------------------------------------------
 
 }
+//画面遷移の設定　どこのページへ移動するかnavControllerに定義する E--------------------------------------------------
 
 

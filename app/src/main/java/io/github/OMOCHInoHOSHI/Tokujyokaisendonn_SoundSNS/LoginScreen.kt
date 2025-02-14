@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun LoginScreen(): Boolean {
     // ログイン結果
-    val loginState by remember { mutableStateOf(false) }
+    var loginState by remember { mutableStateOf(false) }
     // メールアドレス
     var email: String? by remember { mutableStateOf(null) }
     // パスワード
@@ -99,7 +99,8 @@ fun LoginScreen(): Boolean {
 
                     // ログインS-----------------------------------------------------------
                     Button(
-                        onClick = { /* ログイン処理 */ },
+//                        onClick = { /* ログイン処理 */ },
+                        onClick = { loginState = true },
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text("ログイン", fontSize = 18.sp)
