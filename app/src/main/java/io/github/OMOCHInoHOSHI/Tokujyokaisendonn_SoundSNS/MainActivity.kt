@@ -27,6 +27,21 @@ class MainActivity : ComponentActivity() {
 //                        modifier = Modifier.padding(innerPadding)
 //                    )
 //                }
+
+                // ログイン成功でHome起動
+//                if (LoginScreen()){
+//                    DisplayNav()
+//                }
+
+                DisplayNav()
+
+//                SoundSNSApp()
+//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+//                    Greeting(
+//                        name = "Android",
+//                        modifier = Modifier.padding(innerPadding)
+//                    )
+//                }
             }
         }
     }
