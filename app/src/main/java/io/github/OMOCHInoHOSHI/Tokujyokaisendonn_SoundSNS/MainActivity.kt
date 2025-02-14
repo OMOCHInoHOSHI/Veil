@@ -21,9 +21,11 @@ class MainActivity : ComponentActivity() {
             VeilTheme {
 
                 // ログイン成功でHome起動
-                if (LoginScreen()){
-                    DisplayNav()
-                }
+//                if (LoginScreen()){
+//                    DisplayNav()
+//                }
+
+                DisplayNav()
 
 //                SoundSNSApp()
 //                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->

@@ -15,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 
@@ -60,14 +61,21 @@ fun BottomNavBar(navController: NavController) {
     // 選択管理
     var selectedTab by remember { mutableStateOf(0) }
 
+    // navControllerの現在の画面ルートを取得
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
     // ナビゲーションバー
     NavigationBar {
         // Home遷移アイコン
         NavigationBarItem(
             icon = { Icon(Icons.Default.Home, "ホーム") },
 //            label = { Text("ホーム") },
-            selected = selectedTab == 0,
-            onClick = { navController.navigate(Nav.HomeScreen.name) }
+            // 現在のルートがHomeScreenなら選択状態にする
+            selected = currentRoute == Nav.HomeScreen.name,
+
+            onClick = {selectedTab = 0
+                navController.navigate(Nav.HomeScreen.name) }
         )
         // マイクアイコン
         NavigationBarItem(
@@ -80,9 +88,10 @@ fun BottomNavBar(navController: NavController) {
         NavigationBarItem(
             icon = { Icon(Icons.Default.Notifications, "通知") },
 //            label = { Text("通知") },
-            selected = selectedTab == 2,
-//                    onClick = { selectedTab = 2 }
-            onClick = { navController.navigate(Nav.NoticeScreen.name) }
+            // 現在のルートがNoticeScreenなら選択状態にする
+            selected = currentRoute == Nav.NoticeScreen.name,
+            onClick = { selectedTab = 2
+                navController.navigate(Nav.NoticeScreen.name) }
         )
     }
 }
