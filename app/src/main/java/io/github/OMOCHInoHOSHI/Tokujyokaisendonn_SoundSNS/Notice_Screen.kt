@@ -7,13 +7,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 
 
 // 通知画面
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
-fun NoticeScreen(){
+fun NoticeScreen(navController: NavController){
     Scaffold(){innerPadding ->
         Box(modifier = Modifier.padding(innerPadding))
         Box(){

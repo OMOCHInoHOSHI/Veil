@@ -50,11 +50,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SoundSNSApp() {
+fun HomeScreen(navController: NavController) {
     var selectedTab by remember { mutableStateOf(0) }
 
     Scaffold(
@@ -87,7 +88,8 @@ fun SoundSNSApp() {
                     icon = { Icon(Icons.Default.Notifications, "通知") },
                     label = { Text("通知") },
                     selected = selectedTab == 2,
-                    onClick = { selectedTab = 2 }
+//                    onClick = { selectedTab = 2 }
+                    onClick = { navController.navigate(Nav.NoticeScreen.name) }
                 )
             }
         }
