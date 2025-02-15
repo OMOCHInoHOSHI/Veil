@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             VeilTheme {
 
-                Message_page()
+//                Message_page()
 //                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
 //                    Greeting(
 //                        name = "Android",

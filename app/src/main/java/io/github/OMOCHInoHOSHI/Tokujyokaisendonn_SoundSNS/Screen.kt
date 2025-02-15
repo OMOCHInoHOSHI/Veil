@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.Select_chatroom
 import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 
 // 画面遷移先S-------------------------
@@ -24,6 +25,8 @@ enum class Nav {
 //    LoginScreen,//ログイン画面
     HomeScreen, //ホーム画面
     NoticeScreen, //通知画面
+    Message_page,   // メッセージ画面
+    Select_chatroom,    // チャット選択画面
 }
 // 画面遷移先E-------------------------
 
@@ -45,6 +48,14 @@ fun DisplayNav(){
         // ルート名：NoticeScreen　NoticeScreenに遷移
         composable(route = Nav.NoticeScreen.name) {
             NoticeScreen(navController = navController)
+        }
+        // ルート名：Message_page　Message_page
+        composable(route = Nav.Message_page.name) {
+            Message_page(navController = navController)
+        }
+        // ルート名：Select_chatroom　Select_chatroom(仮のルートをn_a作成)
+        composable(route = Nav.Select_chatroom.name) {
+            Select_chatroom(navController = navController)
         }
     }
     // startDestinationは最初に表示するページE----------------------------------------------
@@ -86,6 +97,14 @@ fun BottomNavBar(navController: NavController) {
 //            label = { Text("録音") },
             selected = selectedTab == 1,
             onClick = { selectedTab = 1 }
+
+            // 画面の練習用(n_a作成)
+//            selected = currentRoute == Nav.Select_chatroom.name,
+//            onClick = {
+//                if (currentRoute != Nav.Select_chatroom.name) {
+//                    navController.navigate(Nav.Select_chatroom.name)
+//                }
+//            }
         )
         // 通知アイコン
         NavigationBarItem(

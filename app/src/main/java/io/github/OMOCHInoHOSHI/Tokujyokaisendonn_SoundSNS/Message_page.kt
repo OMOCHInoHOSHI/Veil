@@ -26,13 +26,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 // Message_page
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Message_page() {
+fun Message_page(navController: NavController) {
     // 最新メッセージの日付
     val dateFormatter = DateTimeFormatter.ofPattern("yyyy年MM月dd日")
 
@@ -41,55 +42,64 @@ fun Message_page() {
         mutableStateOf(listOf(
             Post(
                 id = 1,
-                username = "おもちの星(あおい) @OMOTInoHOSHI",
+                username = "おもちの星(あおい)",
+                userid = "@OMOTInoHOSHI",
                 date = LocalDate.parse("2022年04月05日", dateFormatter),
                 content = "メッセージが多いと...に変換されますよ～～～～～～～～～～"
             ),
             Post(
                 id = 2,
-                username = "中村 蒼 @Aoi_Nakamura",
+                username = "中村 蒼",
+                userid = "Aoi_Nakamura",
                 date = LocalDate.parse("2025年02月14日", dateFormatter),
                 content = "スクロールの実験のように適当に作ってます。"
             ),
             Post(
                 id = 3,
-                username = "レッド @BS13-X01",
+                username = "レッド",
+                userid = "@BS13-X01",
                 date = LocalDate.parse("2011年12月08日", dateFormatter),
                 content = "射手"
             ),
             Post(
                 id = 4,
-                username = "ブルー @BS10-X06",
+                username = "ブルー",
+                userid = "@BS10-X06",
                 date = LocalDate.parse("2021年11月05日", dateFormatter),
                 content = "蠍"
             ),
             Post(
                 id = 5,
-                username = "ホワイト @BS12-X04",
+                username = "ホワイト",
+                userid = "@BS12-X04",
                 date = LocalDate.parse("2022年08月08日", dateFormatter),
                 content = "獅子"
             ),
             Post(
                 id = 6,
-                username = "グリーン @BS10-X03",
+                username = "グリーン",
+                userid = "@BS10-X03",
                 date = LocalDate.parse("2021年07月06日", dateFormatter),
                 content = "蟹"
             ),
             Post(
                 id = 7,
-                username = "パープル @BS12-X02",
+                username = "パープル",
+                userid = "@BS12-X02",
                 date = LocalDate.parse("2021年01月06日", dateFormatter),
                 content = "山羊"
             ),
             Post(
                 id = 8,
-                username = "イエロー @BS11-X05",
+                username = "イエロー",
+                userid = "@BS11-X05",
                 date = LocalDate.parse("2021年06月07日", dateFormatter),
                 content = "双子"
             ),
             Post(
-                id = 10,
+                id = 9,
                 username = "疲れた",
+                userid = "@jiminiooi",
                 date = LocalDate.parse("2023年02月16日", dateFormatter),
                 content = "投稿(仮)作るの疲れた！！！！！"
             ),
@@ -244,39 +254,41 @@ fun Message_page() {
                 }
             }
         },
+        // ナビゲーションバー
         bottomBar = {
-            NavigationBar(
-                containerColor = Color(0xFF121212),
-                modifier = Modifier.background(Color(0xFF121212))
-            ) {
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
-                    selected = true,
-                    onClick = { },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color.White,
-                        unselectedIconColor = Color.Gray
-                    )
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Home, contentDescription = "Mic") },
-                    selected = false,
-                    onClick = { },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color.White,
-                        unselectedIconColor = Color.Gray
-                    )
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Notifications, contentDescription = "Notifications") },
-                    selected = false,
-                    onClick = { },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color.White,
-                        unselectedIconColor = Color.Gray
-                    )
-                )
-            }
+            BottomNavBar(navController)
+//            NavigationBar(
+//                containerColor = Color(0xFF121212),
+//                modifier = Modifier.background(Color(0xFF121212))
+//            ) {
+//                NavigationBarItem(
+//                    icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
+//                    selected = true,
+//                    onClick = { },
+//                    colors = NavigationBarItemDefaults.colors(
+//                        selectedIconColor = Color.White,
+//                        unselectedIconColor = Color.Gray
+//                    )
+//                )
+//                NavigationBarItem(
+//                    icon = { Icon(Icons.Default.Home, contentDescription = "Mic") },
+//                    selected = false,
+//                    onClick = { },
+//                    colors = NavigationBarItemDefaults.colors(
+//                        selectedIconColor = Color.White,
+//                        unselectedIconColor = Color.Gray
+//                    )
+//                )
+//                NavigationBarItem(
+//                    icon = { Icon(Icons.Default.Notifications, contentDescription = "Notifications") },
+//                    selected = false,
+//                    onClick = { },
+//                    colors = NavigationBarItemDefaults.colors(
+//                        selectedIconColor = Color.White,
+//                        unselectedIconColor = Color.Gray
+//                    )
+//                )
+//            }
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -284,7 +296,7 @@ fun Message_page() {
                 containerColor = Color(0xFF2196F3),
                 contentColor = Color.White
             ) {
-                Icon(Icons.Default.Home, contentDescription = "New Message")
+                Icon(Icons.Default.Chat, contentDescription = "New Message")
             }
         }
     )
@@ -330,7 +342,7 @@ fun PostItem(post: Post, screenWidth: androidx.compose.ui.unit.Dp, fontScale: Fl
         ) {
             // ユーザー名
             Text(
-                text = post.username,
+                text = post.username + " " + post.userid,
                 fontSize = (16 * fontScale).sp,
                 fontWeight = FontWeight.Medium,
                 color = Color.White,
@@ -365,6 +377,7 @@ fun PostItem(post: Post, screenWidth: androidx.compose.ui.unit.Dp, fontScale: Fl
 data class Post(
     val id: Int,
     val username: String,
+    val userid: String,
     val date: LocalDate, // LocalDate型に変更
     val content: String
 )
