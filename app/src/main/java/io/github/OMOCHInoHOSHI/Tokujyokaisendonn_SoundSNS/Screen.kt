@@ -1,15 +1,25 @@
 package io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Divider
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -17,8 +27,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -116,18 +128,70 @@ fun BottomNavBar(navController: NavController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar_Screen(){
+    var showMenu by remember { mutableStateOf(false) }
+
     TopAppBar(
         title = { Text("Veil ", fontWeight = FontWeight.Bold) },
+
         actions = {
             // プロフィールアイコン
-            IconButton(onClick = { }) {
+            IconButton(onClick = { showMenu = !showMenu }) {
                 Icon(Icons.Default.Person, contentDescription = "プロフィール")
             }
+
+            // ドロップダウンメニューを出す　//直接フラグ操作
+            DropDownMenu_View(showMenu, onDismiss = { showMenu = false })
         }
+
     )
+
 }
 // タイトルとアイコンE-------------------------------------------------------------------
 
+// アイコン押した時のドロップダウンメニューS-------------------------------------------------
+@Composable
+fun DropDownMenu_View(showMenu: Boolean, onDismiss: () -> Unit) {
+    DropdownMenu(
+        expanded = showMenu,
+        onDismissRequest = onDismiss
+    ) {
+        // マイページ
+        DropdownMenuItem(
+            text = { Text("プロフィール") },
+            onClick = { onDismiss() /*TODO*/ }
+        )
 
+        // メッセージ
+        DropdownMenuItem(
+            text = { Text("メッセージ") },
+            onClick = { onDismiss() /*TODO*/ }
+        )
+
+        // 下書き一覧
+        DropdownMenuItem(
+            text = { Text("下書き一覧") },
+            onClick = { onDismiss() /*TODO*/ }
+        )
+
+        // ユーザ検索
+        DropdownMenuItem(
+            text = { Text("ユーザ検索") },
+            onClick = { onDismiss() /*TODO*/ }
+        )
+
+        // 設定
+        DropdownMenuItem(
+            text = { Text("設定") },
+            onClick = { onDismiss() /*TODO*/ }
+        )
+
+        // ログアウト
+        DropdownMenuItem(
+            text = { Text("ログアウト") },
+            onClick = { onDismiss() /*TODO*/ }
+        )
+    }
+}
+// アイコン押した時のドロップダウンメニューE-------------------------------------------------
 
 //　トップバーセットE-------------------------------------------------------------------------------------------------
