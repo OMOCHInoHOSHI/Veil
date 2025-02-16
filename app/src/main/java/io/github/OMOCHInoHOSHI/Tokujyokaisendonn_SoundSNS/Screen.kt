@@ -17,7 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.Select_chatroom
+import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.MessageSelect_Screen
 import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 
 // 画面遷移先S-------------------------
@@ -25,8 +25,8 @@ enum class Nav {
 //    LoginScreen,//ログイン画面
     HomeScreen, //ホーム画面
     NoticeScreen, //通知画面
-    Message_page,   // メッセージ画面
-    Select_chatroom,    // チャット選択画面
+    ChatHistory_Screen,   // チャット履歴画面
+    MessageSelect_Screen,    // メッセージ選択画面
 }
 // 画面遷移先E-------------------------
 
@@ -49,13 +49,13 @@ fun DisplayNav(){
         composable(route = Nav.NoticeScreen.name) {
             NoticeScreen(navController = navController)
         }
-        // ルート名：Message_page　Message_page
-        composable(route = Nav.Message_page.name) {
-            Message_page(navController = navController)
+        // ルート名：ChatHistory_Screen　ChatHistory_Screen
+        composable(route = Nav.ChatHistory_Screen.name) {
+            ChatHistory_Screen(navController = navController)
         }
-        // ルート名：Select_chatroom　Select_chatroom(仮のルートをn_a作成)
-        composable(route = Nav.Select_chatroom.name) {
-            Select_chatroom(navController = navController)
+        // ルート名：MessageSelect_Screen　MessageSelect_Screen(仮のルートをn_a作成)
+        composable(route = Nav.MessageSelect_Screen.name) {
+            MessageSelect_Screen(navController = navController)
         }
     }
     // startDestinationは最初に表示するページE----------------------------------------------
@@ -67,7 +67,7 @@ fun DisplayNav(){
 @Composable
 fun BottomNavBar(navController: NavController) {
 
-    //この関数は位置の指定をしていません。呼び出し側で管理してください
+    // この関数は位置の指定をしていません。呼び出し側で管理してください
 
     // 選択管理
     var selectedTab by remember { mutableStateOf(0) }
@@ -99,10 +99,10 @@ fun BottomNavBar(navController: NavController) {
             onClick = { selectedTab = 1 }
 
             // 画面の練習用(n_a作成)
-//            selected = currentRoute == Nav.Select_chatroom.name,
+//            selected = currentRoute == Nav.ChatHistory_Screen.name,
 //            onClick = {
-//                if (currentRoute != Nav.Select_chatroom.name) {
-//                    navController.navigate(Nav.Select_chatroom.name)
+//                if (currentRoute != Nav.ChatHistory_Screen.name) {
+//                    navController.navigate(Nav.ChatHistory_Screen.name)
 //                }
 //            }
         )
