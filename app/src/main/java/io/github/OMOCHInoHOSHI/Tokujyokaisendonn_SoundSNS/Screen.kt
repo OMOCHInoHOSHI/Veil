@@ -4,14 +4,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -102,3 +109,25 @@ fun BottomNavBar(navController: NavController) {
     }
 }
 // 下のナビゲーションバーセットE----------------------------------------------------------------------------------------
+
+//　トップバーセットS-------------------------------------------------------------------------------------------------
+// タイトルとアイコンS-------------------------------------------------------------------
+@Preview
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopBar_Screen(){
+    TopAppBar(
+        title = { Text("Veil ", fontWeight = FontWeight.Bold) },
+        actions = {
+            // プロフィールアイコン
+            IconButton(onClick = { }) {
+                Icon(Icons.Default.Person, contentDescription = "プロフィール")
+            }
+        }
+    )
+}
+// タイトルとアイコンE-------------------------------------------------------------------
+
+
+
+//　トップバーセットE-------------------------------------------------------------------------------------------------

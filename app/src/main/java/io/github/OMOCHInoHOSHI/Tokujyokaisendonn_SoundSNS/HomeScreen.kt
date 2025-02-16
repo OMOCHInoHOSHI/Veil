@@ -59,15 +59,8 @@ fun HomeScreen(navController: NavController) {
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Veil ", fontWeight = FontWeight.Bold) },
-                actions = {
-                    // プロフィールアイコン
-                    IconButton(onClick = { }) {
-                        Icon(Icons.Default.Person, contentDescription = "プロフィール")
-                    }
-                }
-            )
+            // タイトルとアイコン表示
+            TopBar_Screen()
         },
         bottomBar = {
             // 下のナビゲーションバー
