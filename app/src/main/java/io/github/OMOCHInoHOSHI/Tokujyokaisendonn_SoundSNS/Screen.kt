@@ -3,11 +3,18 @@ package io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.automirrored.filled.Message
+import androidx.compose.material.icons.filled.Drafts
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -155,40 +162,49 @@ fun DropDownMenu_View(showMenu: Boolean, onDismiss: () -> Unit) {
         expanded = showMenu,
         onDismissRequest = onDismiss
     ) {
-        // マイページ
-        DropdownMenuItem(
-            text = { Text("プロフィール") },
-            onClick = { onDismiss() /*TODO*/ }
-        )
-
         // メッセージ
         DropdownMenuItem(
             text = { Text("メッセージ") },
-            onClick = { onDismiss() /*TODO*/ }
+            onClick = { onDismiss() /*TODO*/ },
+            leadingIcon = {
+                Icon(Icons.AutoMirrored.Filled.Message, contentDescription = "メッセージ")
+            }
         )
 
         // 下書き一覧
         DropdownMenuItem(
             text = { Text("下書き一覧") },
-            onClick = { onDismiss() /*TODO*/ }
+            onClick = { onDismiss() /*TODO*/ },
+            leadingIcon = {
+                Icon(Icons.Default.Drafts, contentDescription = "下書き一覧")
+            }
         )
 
         // ユーザ検索
         DropdownMenuItem(
             text = { Text("ユーザ検索") },
-            onClick = { onDismiss() /*TODO*/ }
+            onClick = { onDismiss() /*TODO*/ },
+            leadingIcon = {
+                Icon(Icons.Default.Search, contentDescription = "ユーザ検索")
+            }
         )
 
         // 設定
         DropdownMenuItem(
             text = { Text("設定") },
-            onClick = { onDismiss() /*TODO*/ }
+            onClick = { onDismiss() /*TODO*/ },
+            leadingIcon = {
+                Icon(Icons.Default.Settings, contentDescription = "設定")
+            }
         )
 
         // ログアウト
         DropdownMenuItem(
             text = { Text("ログアウト") },
-            onClick = { onDismiss() /*TODO*/ }
+            onClick = { onDismiss() /*TODO*/ },
+            leadingIcon = {
+                Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "ログアウト")
+            }
         )
     }
 }
