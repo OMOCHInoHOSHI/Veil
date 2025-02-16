@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.automirrored.filled.Message
 import androidx.compose.material.icons.filled.Drafts
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Message
@@ -176,7 +177,7 @@ fun DropDownMenu_View(showMenu: Boolean, onDismiss: () -> Unit) {
             text = { Text("下書き一覧") },
             onClick = { onDismiss() /*TODO*/ },
             leadingIcon = {
-                Icon(Icons.Default.Drafts, contentDescription = "下書き一覧")
+                Icon(Icons.Default.Edit, contentDescription = "下書き一覧")
             }
         )
 
