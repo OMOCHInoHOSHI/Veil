@@ -49,137 +49,13 @@ import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 //@Preview(showBackground = true)
 @Composable
 fun Notice_Screen(navController: NavController){
-    // Use LocalConfiguration to get the screen dimensions reliably
-    val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
 
-    Scaffold(
-        bottomBar = {}
-    ) { innerPadding ->
-
-        Box(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // マイクアイコンと再生ボタンが重ねて表示されるコンテナーS---------
-                Box(
-                    modifier = Modifier.size(400.dp)
-                ) {
-                    // マイクのアイコンを背景にしてコンテナを埋める
-                    Icon(
-                        imageVector = Icons.Filled.Mic,
-                        contentDescription = "Microphone Icon",
-                        modifier = Modifier.fillMaxSize()
-                    )
-                    // 再生ボタンを右下に重ねる
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.BottomEnd
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.PlayArrow,
-                            contentDescription = "Play Button",
-                            modifier = Modifier.size(80.dp)
-                        )
-                    }
-                }
-                // マイクアイコンと再生ボタンが重ねて表示されるコンテナーE---------
-
-                // 下部分
-                HorizontalDividerExample()
-
-            }
-
-
-        }
-
-
-    }
 }
 
 
 @Preview(showBackground = true)
 @Composable
 fun Notice_Screen() {
-    // Use LocalConfiguration to get the screen dimensions reliably
-    val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
 
-    Scaffold(
-        bottomBar = {}
-    ) { innerPadding ->
-
-        Box(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // マイクアイコンと再生ボタンが重ねて表示されるコンテナーS---------
-                Box(
-                    modifier = Modifier.size(400.dp)
-                ) {
-                    // マイクのアイコンを背景にしてコンテナを埋める
-                    Icon(
-                        imageVector = Icons.Filled.Mic,
-                        contentDescription = "Microphone Icon",
-                        modifier = Modifier.fillMaxSize()
-                    )
-                    // 再生ボタンを右下に重ねる
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.BottomEnd
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.PlayArrow,
-                            contentDescription = "Play Button",
-                            modifier = Modifier.size(80.dp)
-                        )
-                    }
-                }
-                // マイクアイコンと再生ボタンが重ねて表示されるコンテナーE---------
-
-                // 下部分
-                HorizontalDividerExample()
-
-            }
-
-
-        }
-
-
-    }
-}
-
-// 直線を描画S--------------------------------------------------------
-@Composable
-fun HorizontalDividerExample() {
-
-    // スマホの横幅を取得
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
-
-    // ダークテーマの場合は白、それ以外の場合は黒
-    val dividerColor = ColerSelect()
-
-    Column(
-        modifier = Modifier.width(screenWidth * 0.9f),
-        verticalArrangement = Arrangement.spacedBy(0.dp),
-    ) {
-        // Uncomment additional content if needed
-        // Text("First item in list")
-
-        HorizontalDivider(thickness = 5.dp, color = dividerColor)
-
-        // Text("Second item in list")
-    }
 }
 
