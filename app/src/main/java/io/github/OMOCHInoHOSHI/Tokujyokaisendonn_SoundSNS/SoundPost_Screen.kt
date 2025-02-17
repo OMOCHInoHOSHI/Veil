@@ -6,6 +6,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.PlayArrow
@@ -104,6 +106,8 @@ fun SoundPost_Screen() {
     // Use LocalConfiguration to get the screen dimensions reliably
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
+    // スマホの横幅を取得
+    val screenWidth = configuration.screenWidthDp.dp
 
     Scaffold(
         bottomBar = {}
@@ -142,8 +146,54 @@ fun SoundPost_Screen() {
                 }
                 // マイクアイコンと再生ボタンが重ねて表示されるコンテナーE---------
 
-                // 下部分
+                // 直線部分
                 HorizontalDividerExample()
+
+                // 投稿データS---------------------------------------------
+
+                Box(
+                    modifier = Modifier
+                        .width(screenWidth * 0.9f)  // 開始位置を線の下に
+                        .fillMaxWidth()
+                ) {
+
+                    Text(
+                        text = "イメージカラー",
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)  // 左寄せ
+                            .padding(top = 16.dp)  // 仕切りから少し間隔をあける
+                    )
+
+                    Row(
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(top = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically, // テキストと円を垂直方向の中央で揃える
+                        horizontalArrangement = Arrangement.spacedBy(8.dp) // テキストと円の間隔を設定
+                    ) {
+                        // 円を描画
+                        Box(
+                            modifier = Modifier
+                                .size(24.dp) // 円のサイズを設定
+                                .background(
+                                    color = Color.Red, // ここで円の色を設定
+                                    shape = CircleShape // 形状を円形に
+                                )
+                        )
+
+                        Box(
+                            modifier = Modifier
+                                .size(24.dp) // 円のサイズを設定
+                                .background(
+                                    color = Color.Yellow, // ここで円の色を設定
+                                    shape = CircleShape // 形状を円形に
+                                )
+                        )
+                    }
+
+                }
+
+
 
             }
 
