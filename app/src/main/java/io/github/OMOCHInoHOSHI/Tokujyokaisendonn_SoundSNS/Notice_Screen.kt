@@ -2,6 +2,8 @@ package io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS
 
 import android.app.Activity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,9 +12,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -106,7 +110,8 @@ fun NoticeScreen() {
                 }
                 // マイクアイコンと再生ボタンが重ねて表示されるコンテナーE---------
 
-
+                // 下部分
+                HorizontalDividerExample()
 
             }
 
@@ -116,3 +121,30 @@ fun NoticeScreen() {
 
     }
 }
+
+// 直線を描画S--------------------------------------------------------
+@Composable
+fun HorizontalDividerExample() {
+
+    // スマホの横幅を取得
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
+
+    // Determine if the system is in dark theme.
+    val isDarkTheme = isSystemInDarkTheme()
+    // Set divider color: white if dark theme, black otherwise.
+    val dividerColor = if (isDarkTheme) Color.White else Color.Black
+
+    Column(
+        modifier = Modifier.width(screenWidth * 0.9f),
+        verticalArrangement = Arrangement.spacedBy(0.dp),
+    ) {
+        // Uncomment additional content if needed
+        // Text("First item in list")
+
+        HorizontalDivider(thickness = 5.dp, color = dividerColor)
+
+        // Text("Second item in list")
+    }
+}
+
