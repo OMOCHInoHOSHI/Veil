@@ -1,6 +1,7 @@
 package io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS
 
 import android.app.Activity
+import android.graphics.Color.rgb
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -157,38 +158,31 @@ fun SoundPost_Screen() {
                         .fillMaxWidth()
                 ) {
 
+                    // イメージカラーのテキストS----------------------------------------
                     Text(
                         text = "イメージカラー",
                         modifier = Modifier
                             .align(Alignment.CenterStart)  // 左寄せ
                             .padding(top = 16.dp)  // 仕切りから少し間隔をあける
                     )
+                    // イメージカラーのテキストE----------------------------------------
 
                     Row(
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
                             .padding(top = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically, // テキストと円を垂直方向の中央で揃える
-                        horizontalArrangement = Arrangement.spacedBy(8.dp) // テキストと円の間隔を設定
+//                        verticalAlignment = Alignment.CenterVertically, // テキストと円を垂直方向の中央で揃える
+                        horizontalArrangement = Arrangement.spacedBy(15.dp) // テキストと円の間隔を設定
                     ) {
                         // 円を描画
-                        Box(
-                            modifier = Modifier
-                                .size(24.dp) // 円のサイズを設定
-                                .background(
-                                    color = Color.Red, // ここで円の色を設定
-                                    shape = CircleShape // 形状を円形に
-                                )
-                        )
+                        Circle_Draw(Color.Red)
 
-                        Box(
-                            modifier = Modifier
-                                .size(24.dp) // 円のサイズを設定
-                                .background(
-                                    color = Color.Yellow, // ここで円の色を設定
-                                    shape = CircleShape // 形状を円形に
-                                )
-                        )
+                        Circle_Draw(Color.Blue)
+
+                        Circle_Draw(Color.Green)
+
+                        Circle_Draw(Color(0xFFFF47D3))
+
                     }
 
                 }
@@ -226,3 +220,18 @@ fun HorizontalDividerExample() {
     }
 }
 // 直線を描画E--------------------------------------------------------
+
+// 円を描画S---------------------------------------------------------
+@Composable
+fun Circle_Draw(color: Color){
+
+    Box(
+        modifier = Modifier
+            .size(24.dp) // 円のサイズを設定
+            .background(
+                color = color, // ここで円の色を設定
+                shape = CircleShape // 形状を円形に
+            )
+    )
+}
+// 円を描画E---------------------------------------------------------
