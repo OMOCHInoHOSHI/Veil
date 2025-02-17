@@ -55,7 +55,7 @@ import androidx.navigation.NavController
 //@Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun Home_Screen(navController: NavController) {
 
     Scaffold(
         topBar = {

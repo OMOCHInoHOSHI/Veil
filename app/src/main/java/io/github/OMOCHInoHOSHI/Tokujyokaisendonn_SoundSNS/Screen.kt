@@ -49,8 +49,8 @@ import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 // 画面遷移先S-------------------------
 enum class Nav {
 //    LoginScreen,//ログイン画面
-    HomeScreen, //ホーム画面
-    NoticeScreen, //通知画面
+    Home_Screen, //ホーム画面
+    Notice_Screen, //通知画面
 }
 // 画面遷移先E-------------------------
 
@@ -63,15 +63,15 @@ fun DisplayNav(){
     // NavHostを作成
     // startDestinationは最初に表示するページS----------------------------------------------
     NavHost(navController = navController,
-        startDestination = Nav.HomeScreen.name  //ホーム画面を最初に表示
+        startDestination = Nav.Home_Screen.name  //ホーム画面を最初に表示
     ) {
-        // ルート名：HomeScreen　HomeScreenに遷移
-        composable(route = Nav.HomeScreen.name) {
-            HomeScreen(navController = navController)
+        // ルート名：Home_Screen　Home_Screenに遷移
+        composable(route = Nav.Home_Screen.name) {
+            Home_Screen(navController = navController)
         }
-        // ルート名：NoticeScreen　NoticeScreenに遷移
-        composable(route = Nav.NoticeScreen.name) {
-            NoticeScreen(navController = navController)
+        // ルート名：Notice_Screen　Notice_Screenに遷移
+        composable(route = Nav.Notice_Screen.name) {
+            Notice_Screen(navController = navController)
         }
     }
     // startDestinationは最初に表示するページE----------------------------------------------
@@ -98,12 +98,12 @@ fun BottomNavBar(navController: NavController) {
         NavigationBarItem(
             icon = { Icon(Icons.Default.Home, "ホーム") },
 //            label = { Text("ホーム") },
-            // 現在のルートがHomeScreenなら選択状態にする
-            selected = currentRoute == Nav.HomeScreen.name,
+            // 現在のルートがHome_Screenなら選択状態にする
+            selected = currentRoute == Nav.Home_Screen.name,
 
             onClick = {
-                if (currentRoute != Nav.HomeScreen.name) {
-                    navController.navigate(Nav.HomeScreen.name)
+                if (currentRoute != Nav.Home_Screen.name) {
+                    navController.navigate(Nav.Home_Screen.name)
                 }
             }
         )
@@ -118,11 +118,11 @@ fun BottomNavBar(navController: NavController) {
         NavigationBarItem(
             icon = { Icon(Icons.Default.Notifications, "通知") },
 //            label = { Text("通知") },
-            // 現在のルートがNoticeScreenなら選択状態にする
-            selected = currentRoute == Nav.NoticeScreen.name,
+            // 現在のルートがNotice_Screenなら選択状態にする
+            selected = currentRoute == Nav.Notice_Screen.name,
             onClick = {
-                if (currentRoute != Nav.NoticeScreen.name) {
-                    navController.navigate(Nav.NoticeScreen.name)
+                if (currentRoute != Nav.Notice_Screen.name) {
+                    navController.navigate(Nav.Notice_Screen.name)
                 }
             }
         )
