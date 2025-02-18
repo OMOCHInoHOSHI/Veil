@@ -575,10 +575,9 @@ fun DynamicHashtagTextField():String {
 }
 
 
-
 @Composable
 fun DynamicHashtagTextFields() {
-    val hashtags = remember { mutableStateListOf("") }  // 最初は空のフィールド1つ
+    val hashtags = remember { mutableStateListOf("#") }  // 最初は#を含むフィールド1つ
 
     Column {
         // テキストフィールドを表示
@@ -593,14 +592,14 @@ fun DynamicHashtagTextFields() {
                         if (hashtags.size > 1) {
                             hashtags.removeAt(index) // 1つ以上あるなら削除
                         } else {
-                            hashtags[index] = "" // 1つだけなら空にする
+                            hashtags[index] = "#" // 1つだけなら#に戻す
                         }
                     }
                 )
 
                 // 追加ボタン（隣に配置）
                 if (index == hashtags.lastIndex) {
-                    IconButton(onClick = { hashtags.add("") }) {
+                    IconButton(onClick = { hashtags.add("#") }) {
                         Icon(imageVector = Icons.Default.Add, contentDescription = "Add Hashtag")
                     }
                 }
@@ -615,25 +614,33 @@ fun DynamicHashtagTextField(
     onTextChanged: (String) -> Unit,
     onDelete: () -> Unit
 ) {
+    // 初期テキストに#を加えてから保存
     var textFieldValue by remember { mutableStateOf(TextFieldValue(text, TextRange(text.length))) }
 
     OutlinedTextField(
         value = textFieldValue,
         onValueChange = { newValue ->
-            val filteredText = newValue.text.replace("\n", "") // 改行を削除
-            textFieldValue = newValue.copy(text = filteredText)
-            onTextChanged(filteredText)
+            val filteredText = newValue.text
+                .removePrefix("#") // #を削除してから更新
+                .replace("\n", "") // 改行を削除
+            // カーソル位置を#の後ろに移動
+            textFieldValue = newValue.copy(
+                text = "#$filteredText",  // 常に#を先頭に
+                selection = TextRange(filteredText.length + 1) // カーソルを#の後ろに設定
+            )
+            onTextChanged("#$filteredText") // #を含んだテキストを送信
         },
         label = { Text("# ハッシュタグ") },
         singleLine = true,
         modifier = Modifier.fillMaxWidth(0.8f), // フィールドの幅を少し狭くする
         trailingIcon = {
             IconButton(onClick = {
-                if (textFieldValue.text.isEmpty()) {
+                if (textFieldValue.text.isEmpty() || textFieldValue.text == "#") {
                     onDelete() // 空なら削除
                 } else {
-                    textFieldValue = TextFieldValue("") // テキストリセット
-                    onTextChanged("")
+                    // #だけ残してカーソル位置を調整
+                    textFieldValue = TextFieldValue("#", TextRange(1, 1)) // #の後にカーソルを置く
+                    onTextChanged("#")
                 }
             }) {
                 Icon(imageVector = Icons.Default.Close, contentDescription = "Clear Text")
@@ -641,6 +648,7 @@ fun DynamicHashtagTextField(
         }
     )
 }
+
 
 
 
