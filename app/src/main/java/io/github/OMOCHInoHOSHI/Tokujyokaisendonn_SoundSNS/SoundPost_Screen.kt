@@ -664,47 +664,52 @@ fun DynamicHashtagTextField():String {
                         return@OutlinedTextField
                     }
 
+
 // ハッシュタグリストのUIを実装S-----------------------------------------------------------------------
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun DynamicHashtagTextFields():List<String> {
-    // ハッシュタグリストを保存する
+fun DynamicHashtagTextFields(): List<String> {
+    // 親側でタグリストの状態を管理
     val hashtags = remember { mutableStateListOf("") }
 
     FlowRow(
         modifier = Modifier.padding(5.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp),
+        verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)
     ) {
         hashtags.forEachIndexed { index, text ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                DynamicHashtagTextField(
-                    text = text,
-                    onTextChanged = { newText ->
-                        hashtags[index] = newText
-                    },
-                    onDelete = {
-                        if (hashtags.size > 1) {
-                            hashtags.removeAt(index)
-                            // Print after deletion
-                        } else {
-                            hashtags[index] = "#"
+            // 安定したキーを指定して再利用時の状態ずれを回避
+            androidx.compose.runtime.key(index) {
+                androidx.compose.foundation.layout.Row(
+                    verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+                ) {
+                    DynamicHashtagTextField(
+                        text = text,
+                        onTextChanged = { newText ->
+                            hashtags[index] = newText
+                        },
+                        onDelete = {
+                            if (hashtags.size > 1) {
+                                hashtags.removeAt(index)
+                            } else {
+                                hashtags[index] = "#"
+                            }
                         }
-                    }
-                )
-
-                // ハッシュタグを追加
-                if (index == hashtags.lastIndex) {
-                    IconButton(onClick = {
-                        hashtags.add("")
-                    }) {
-                        Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Hashtag")
+                    )
+                    if (index == hashtags.lastIndex) {
+                        IconButton(onClick = {
+                            hashtags.add("")
+                        }) {
+                            Icon(
+                                imageVector = Icons.Filled.Add,
+                                contentDescription = "Add Hashtag"
+                            )
+                        }
                     }
                 }
             }
         }
     }
-
     return hashtags.toList()
 }
 // ハッシュタグリストのUIを実装E-----------------------------------------------------------------------
@@ -716,18 +721,25 @@ fun DynamicHashtagTextField(
     onTextChanged: (String) -> Unit,
     onDelete: () -> Unit
 ) {
-    // テキストフィールドの状態。初期状態は引数で指定された text（通常は空）になります。
+    // 外部から渡された text が更新された場合に備えて内部状態も更新する
     var textFieldValue by remember { mutableStateOf(TextFieldValue(text, TextRange(text.length))) }
 
-    // フォーカス状態の管理（今回は自動挿入は行わないため、更新のみ）
+    // 親から渡された text が変更されたら内部状態を更新
+    LaunchedEffect(text) {
+        if (text != textFieldValue.text) {
+            textFieldValue = TextFieldValue(text, TextRange(text.length))
+        }
+    }
+
+    // フォーカス状態の管理
     var isFocused by remember { mutableStateOf(false) }
 
     val labelText = "タグ"
-    val maxChars = 21  // '#' を除いた最大文字数
+    val maxChars = 20  // '#' を除いた最大文字数
 
     // '#' を除いた文字数をカウントするヘルパー関数
-    fun getTextLengthWithoutHash(text: String): Int {
-        return if (text.startsWith("#")) text.length - 1 else text.length
+    fun getTextLengthWithoutHash(currentText: String): Int {
+        return if (currentText.startsWith("#")) currentText.length - 1 else currentText.length
     }
 
     // テキストのサイズ計測用インスタンス
@@ -736,7 +748,8 @@ fun DynamicHashtagTextField(
 
     // フィールドが空の場合は labelText を基準とする
     val textToMeasure = if (textFieldValue.text.isEmpty()) labelText else textFieldValue.text
-    // ラベルの幅を計測し、余白60.dpを追加
+
+    // ラベルの幅を計測し、余白90.dpを追加
     val labelWidth = with(density) {
         textMeasurer.measure(
             text = labelText,
@@ -750,7 +763,7 @@ fun DynamicHashtagTextField(
             text = textToMeasure,
             style = TextStyle(fontSize = 16.sp)
         ).size.width.toDp()
-        max(measuredTextWidth + 70.dp , labelWidth)
+        max(measuredTextWidth + 70.dp, labelWidth)
     }
     // テキストフィールドの幅は最大 300.dp に制限
     val fieldWidth = dynamicWidth.coerceAtMost(300.dp)
@@ -764,7 +777,6 @@ fun DynamicHashtagTextField(
 
                 val cursorPosition = newValue.selection.start
 
-
                 // #が削除されようとしている場合は#を維持
                 if (!filteredText.startsWith("#") && textFieldValue.text.startsWith("#")) {
                     val restoredText = "#" + filteredText
@@ -775,17 +787,14 @@ fun DynamicHashtagTextField(
                     return@OutlinedTextField
                 }
 
-
                 // 入力が空の場合はそのまま空文字をセット
                 if (filteredText.isEmpty()) {
                     textFieldValue = newValue.copy(text = "", selection = TextRange(0))
                     onTextChanged("")
                 } else {
-                    // 入力値の先頭に "#" が付いていなければ自動付与
                     val updatedText = if (!filteredText.startsWith("#")) "#$filteredText" else filteredText
                     val contentText = updatedText.removePrefix("#")
                     if (contentText.length <= maxChars) {
-                        // カーソル位置はテキストの終端に設定
                         textFieldValue = newValue.copy(
                             text = updatedText,
                             selection = TextRange(updatedText.length)
@@ -801,7 +810,6 @@ fun DynamicHashtagTextField(
                 .width(fieldWidth)
                 .onFocusChanged { focusState ->
                     isFocused = focusState.isFocused
-                    // 初回フォーカス時に自動挿入を行う処理は削除し、初期状態は空のままとする
                 },
             // 後ろにつくアイコン
             // テキストをリセット
