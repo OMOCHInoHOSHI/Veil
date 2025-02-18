@@ -3,6 +3,8 @@ package io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS
 import android.app.Activity
 import android.graphics.Color.rgb
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,10 +28,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +44,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource.Companion.SideE
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
@@ -110,6 +116,9 @@ fun SoundPost_Screen() {
     // スマホの横幅を取得
     val screenWidth = configuration.screenWidthDp.dp
 
+    // どの円が選択されたか
+    var selectedCircle by remember { mutableStateOf("") }
+
     Scaffold(
         bottomBar = {}
     ) { innerPadding ->
@@ -156,40 +165,62 @@ fun SoundPost_Screen() {
 
                 Box(
                     modifier = Modifier
-                        .width(screenWidth * 0.9f)  // 開始位置を線の下に
+                        .width(screenWidth * 0.9f)
                         .fillMaxWidth()
                 ) {
-
-                    // イメージカラーのテキストS------------------------------------
                     Text(
                         text = "イメージカラー",
                         modifier = Modifier
-                            .align(Alignment.CenterStart)  // 左寄せ
-                            .padding(top = 16.dp)  // 仕切りから少し間隔をあける
+                            .align(Alignment.CenterStart)
+                            .padding(top = 16.dp)
                     )
-                    // イメージカラーのテキストE------------------------------------
-
-                    // カラー丸S-------------------------------------------------
                     Row(
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
                             .padding(top = 16.dp),
-//                        verticalAlignment = Alignment.CenterVertically, // テキストと円を垂直方向の中央で揃える
-                        horizontalArrangement = Arrangement.spacedBy(15.dp) // テキストと円の間隔を設定
+                        horizontalArrangement = Arrangement.spacedBy(15.dp)
                     ) {
-                        // 円を描画
-                        Circle_Draw(Color.Red)
 
-                        Circle_Draw(Color.Blue)
+                        // すでに選択なら空白、それ以外なら対応した色文字列
+                        ToggleCircle(
+                            fillColor = Color.Red,
+                            borderColor = ColerSelect(),
+                            selected = selectedCircle == "Red",
+                            onClick = {
+                                selectedCircle = if (selectedCircle == "Red") "" else "Red"
+                            }
+                        )
 
-                        Circle_Draw(Color.Green)
+                        ToggleCircle(
+                            fillColor = Color.Blue,
+                            borderColor = ColerSelect(),
+                            selected = selectedCircle == "Blue",
+                            onClick = {
+                                selectedCircle = if (selectedCircle == "Blue") "" else "Blue"
+                            }
+                        )
 
-                        Circle_Draw(Color(0xFFFF47D3))
+                        ToggleCircle(
+                            fillColor = Color.Green,
+                            borderColor = ColerSelect(),
+                            selected = selectedCircle == "Green",
+                            onClick = {
+                                selectedCircle = if (selectedCircle == "Green") "" else "Green"
+                            }
+                        )
 
+                        ToggleCircle(
+                            fillColor = Color(0xFFFF47D3),
+                            borderColor = ColerSelect(),
+                            selected = selectedCircle == "Pink",
+                            onClick = {
+                                selectedCircle = if (selectedCircle == "Pink") "" else "Pink"
+                            }
+                        )
                     }
-                    // カラー丸E-------------------------------------------------
-
                 }
+
+                println("Selected circle: $selectedCircle")
                 //　イメージカラー列E----------------------------------------------------
 
 
@@ -239,3 +270,27 @@ fun Circle_Draw(color: Color){
     )
 }
 // 円を描画E---------------------------------------------------------
+
+// 選択で枠付き円を描画S---------------------------------------------------------
+@Composable
+fun ToggleCircle(
+    fillColor: Color,
+    borderColor: Color,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .size(24.dp)
+            .background(color = fillColor, shape = CircleShape)
+            .clickable(onClick = onClick)
+            // 選択で枠
+            .then(
+                if (selected) {
+                    Modifier.border(width = 4.dp, color = borderColor, shape = CircleShape)
+                } else Modifier
+            )
+    )
+}
+// 選択で枠付き円を描画S---------------------------------------------------------
+
