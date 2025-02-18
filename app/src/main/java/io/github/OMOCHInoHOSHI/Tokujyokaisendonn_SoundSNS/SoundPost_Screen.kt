@@ -648,7 +648,7 @@ fun DynamicHashtagTextField(
             text = labelText,
             style = TextStyle(fontSize = 16.sp)
         ).size.width.toDp()
-    } + 60.dp
+    } + 90.dp
 
     // 入力テキストに基づいて動的な幅を算出
     val dynamicWidth = with(density) {
@@ -656,7 +656,7 @@ fun DynamicHashtagTextField(
             text = textToMeasure,
             style = TextStyle(fontSize = 16.sp)
         ).size.width.toDp()
-        max(measuredTextWidth + 50.dp, labelWidth)
+        max(measuredTextWidth , labelWidth)
     }
     // テキストフィールドの幅は最大 300.dp に制限
     val fieldWidth = dynamicWidth.coerceAtMost(300.dp)
