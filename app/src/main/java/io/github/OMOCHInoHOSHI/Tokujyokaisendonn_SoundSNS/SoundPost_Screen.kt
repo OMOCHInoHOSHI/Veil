@@ -192,7 +192,7 @@ fun SoundPost_Screen() {
                         )
 
                         ToggleCircle(
-                            fillColor = Color.Blue,
+                            fillColor = Color(0xFF4EB0F4),
                             borderColor = ColerSelect(),
                             selected = selectedCircle == "Blue",
                             onClick = {
