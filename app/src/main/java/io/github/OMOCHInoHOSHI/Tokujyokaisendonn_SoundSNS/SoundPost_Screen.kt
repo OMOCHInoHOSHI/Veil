@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Mic
@@ -25,6 +26,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.lightColorScheme
@@ -45,10 +47,13 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource.Companion.SideE
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 
@@ -381,25 +386,70 @@ fun ToggleCircle(
 fun DynamicHashtagTextField() {
     var text by remember { mutableStateOf("") }
     val labelText = "# ハッシュタグ"
+    val maxChars = 20 // 最大文字数を20文字に設定
 
+    // Create a text measurer instance to measure text sizes
     val textMeasurer = rememberTextMeasurer()
     val density = LocalDensity.current
 
-    val labelWidth = remember {
+    // Measure the label's width using the desired text style and add extra space for padding.
+    val labelWidth = with(density) {
+        textMeasurer.measure(
+            text = labelText,
+            style = TextStyle(fontSize = 16.sp)
+        ).size.width.toDp()
+    } + 50.dp
+
+    // Compute the dynamic width based on the input text. If empty, use the label's text.
+    val dynamicWidth = remember(text) {
         with(density) {
-            textMeasurer.measure(labelText).size.width.toDp() + 60.dp
+            val measuredTextWidth = textMeasurer.measure(
+                text = if (text.isEmpty()) labelText else text,
+                style = TextStyle(fontSize = 16.sp)
+            ).size.width.toDp()
+            // Add the padding to the measured width and ensure it is at least the label's width.
+            max(measuredTextWidth + 50.dp, labelWidth)
         }
     }
 
-    OutlinedTextField(
-        value = text,
-        onValueChange = { newText ->
-            // 改行文字を削除して、単一行のテキストのみを許可
-            text = newText.replace("\n", "")
-        },
-        label = { Text(labelText) },
-        modifier = Modifier.width(labelWidth),
-        singleLine = true, // 単一行モードを有効化
-        maxLines = 1 // 最大行数を1に制限
-    )
+    // Set an upper limit for the TextField's width to prevent it from expanding excessively.
+    // When dynamicWidth would be larger than 300.dp, the field will use 300.dp and allow internal scrolling.
+    val fieldWidth = dynamicWidth.coerceAtMost(300.dp)
+
+    Column(
+        modifier = Modifier.padding(8.dp)
+    ) {
+        OutlinedTextField(
+            value = text,
+            onValueChange = { newText ->
+                // 改行文字を削除し、最大文字数を制限
+                val filteredText = newText.replace("\n", "")
+                if (filteredText.length <= maxChars) {
+                    text = filteredText
+                }
+            },
+            label = { Text(labelText) },
+            modifier = Modifier.width(fieldWidth), // Use the calculated width with an upper limit
+            textStyle = TextStyle(fontSize = 16.sp),
+            singleLine = true,
+            maxLines = 1,
+            // 文字数が制限に近づいたときの視覚的フィードバック
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = if (text.length >= maxChars)
+                    MaterialTheme.colorScheme.error
+                else MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = if (text.length >= maxChars)
+                    MaterialTheme.colorScheme.error.copy(alpha = 0.5f)
+                else MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
+            ),
+            supportingText = {
+                Text(
+                    text = "${text.length}/$maxChars",
+                    color = if (text.length >= maxChars)
+                        MaterialTheme.colorScheme.error
+                    else MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        )
+    }
 }
