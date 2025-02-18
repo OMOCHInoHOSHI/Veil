@@ -41,13 +41,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource.Companion.SideEffect
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -384,9 +387,25 @@ fun ToggleCircle(
 
 @Composable
 fun DynamicHashtagTextField() {
-    var text by remember { mutableStateOf("") }
+    var text by remember { mutableStateOf("") } // 初期値を空に設定
+    var isFocused by remember { mutableStateOf(false) }
+    var textFieldValue by remember {
+        mutableStateOf(TextFieldValue(
+            text = "",
+            selection = TextRange(0)
+        ))
+    }
     val labelText = "# ハッシュタグ"
-    val maxChars = 20 // 最大文字数を20文字に設定
+    val maxChars = 20 // 最大文字数を20文字に設定（#を除く）
+
+    // #を除いた実際の文字数を計算する関数
+    fun getTextLengthWithoutHash(text: String): Int {
+        return if (text.startsWith("#")) {
+            text.length - 1
+        } else {
+            text.length
+        }
+    }
 
     // Create a text measurer instance to measure text sizes
     val textMeasurer = rememberTextMeasurer()
@@ -400,52 +419,101 @@ fun DynamicHashtagTextField() {
         ).size.width.toDp()
     } + 50.dp
 
-    // Compute the dynamic width based on the input text. If empty, use the label's text.
-    val dynamicWidth = remember(text) {
+    // Compute the dynamic width based on the input text.
+    val dynamicWidth = remember(textFieldValue.text) {
         with(density) {
             val measuredTextWidth = textMeasurer.measure(
-                text = if (text.isEmpty()) labelText else text,
+                text = if (textFieldValue.text.isEmpty()) labelText else textFieldValue.text,
                 style = TextStyle(fontSize = 16.sp)
             ).size.width.toDp()
-            // Add the padding to the measured width and ensure it is at least the label's width.
             max(measuredTextWidth + 50.dp, labelWidth)
         }
     }
 
-    // Set an upper limit for the TextField's width to prevent it from expanding excessively.
-    // When dynamicWidth would be larger than 300.dp, the field will use 300.dp and allow internal scrolling.
+    // Set an upper limit for the TextField's width
     val fieldWidth = dynamicWidth.coerceAtMost(300.dp)
 
     Column(
         modifier = Modifier.padding(8.dp)
     ) {
         OutlinedTextField(
-            value = text,
-            onValueChange = { newText ->
-                // 改行文字を削除し、最大文字数を制限
-                val filteredText = newText.replace("\n", "")
-                if (filteredText.length <= maxChars) {
-                    text = filteredText
+            value = textFieldValue,
+            onValueChange = { newValue ->
+                // 改行文字を削除
+                val filteredText = newValue.text.replace("\n", "")
+
+                // #を除いた新しいテキストの長さをチェック
+                val newTextLengthWithoutHash = getTextLengthWithoutHash(filteredText)
+
+                if (newTextLengthWithoutHash <= maxChars) {
+                    val cursorPosition = newValue.selection.start
+
+                    // テキストが空になる場合は#を維持
+                    if (filteredText.isEmpty() && textFieldValue.text.isNotEmpty()) {
+                        textFieldValue = TextFieldValue(
+                            text = "#",
+                            selection = TextRange(1)
+                        )
+                        return@OutlinedTextField
+                    }
+
+                    // #が削除されようとしている場合は#を維持
+                    if (!filteredText.startsWith("#") && textFieldValue.text.startsWith("#")) {
+                        val restoredText = "#" + filteredText
+                        textFieldValue = TextFieldValue(
+                            text = restoredText,
+                            selection = TextRange((cursorPosition + 1).coerceIn(1, restoredText.length))
+                        )
+                        return@OutlinedTextField
+                    }
+
+                    // 通常の入力処理
+                    val updatedText = when {
+                        filteredText.isEmpty() -> "#"
+                        !filteredText.startsWith("#") -> "#$filteredText"
+                        else -> filteredText
+                    }
+
+                    // カーソル位置の調整
+                    val newCursorPosition = when {
+                        !textFieldValue.text.startsWith("#") && updatedText.startsWith("#") ->
+                            cursorPosition + 1
+                        else -> cursorPosition
+                    }.coerceIn(1, updatedText.length)
+
+                    textFieldValue = TextFieldValue(
+                        text = updatedText,
+                        selection = TextRange(newCursorPosition)
+                    )
                 }
             },
             label = { Text(labelText) },
-            modifier = Modifier.width(fieldWidth), // Use the calculated width with an upper limit
+            modifier = Modifier
+                .width(fieldWidth)
+                .onFocusChanged { focusState ->
+                    if (focusState.isFocused && !isFocused && textFieldValue.text.isEmpty()) {
+                        textFieldValue = TextFieldValue(
+                            text = "#",
+                            selection = TextRange(1)
+                        )
+                    }
+                    isFocused = focusState.isFocused
+                },
             textStyle = TextStyle(fontSize = 16.sp),
             singleLine = true,
             maxLines = 1,
-            // 文字数が制限に近づいたときの視覚的フィードバック
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = if (text.length >= maxChars)
+                focusedBorderColor = if (getTextLengthWithoutHash(textFieldValue.text) >= maxChars)
                     MaterialTheme.colorScheme.error
                 else MaterialTheme.colorScheme.primary,
-                unfocusedBorderColor = if (text.length >= maxChars)
+                unfocusedBorderColor = if (getTextLengthWithoutHash(textFieldValue.text) >= maxChars)
                     MaterialTheme.colorScheme.error.copy(alpha = 0.5f)
                 else MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
             ),
             supportingText = {
                 Text(
-                    text = "${text.length}/$maxChars",
-                    color = if (text.length >= maxChars)
+                    text = "${getTextLengthWithoutHash(textFieldValue.text)}/$maxChars",
+                    color = if (getTextLengthWithoutHash(textFieldValue.text) >= maxChars)
                         MaterialTheme.colorScheme.error
                     else MaterialTheme.colorScheme.onSurfaceVariant
                 )
