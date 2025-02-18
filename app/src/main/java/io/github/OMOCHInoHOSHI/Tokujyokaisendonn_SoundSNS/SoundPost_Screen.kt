@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.lightColorScheme
@@ -42,7 +43,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource.Companion.SideEffect
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -165,15 +168,20 @@ fun SoundPost_Screen() {
 
                 Box(
                     modifier = Modifier
-                        .width(screenWidth * 0.9f)
+                        .width(screenWidth * 0.9f)  // 開始位置を線の下に
                         .fillMaxWidth()
                 ) {
+
+                    // イメージカラーのテキストS------------------------------------
                     Text(
                         text = "イメージカラー",
                         modifier = Modifier
-                            .align(Alignment.CenterStart)
-                            .padding(top = 16.dp)
+                            .align(Alignment.CenterStart)  // 左寄せ
+                            .padding(top = 16.dp)  // 仕切りから少し間隔をあける
                     )
+                    // イメージカラーのテキストE------------------------------------
+
+                    // カラー丸S-------------------------------------------------
                     Row(
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
@@ -310,3 +318,30 @@ fun ToggleCircle(
 }
 // 選択で枠付き円を描画E---------------------------------------------------------
 
+
+@Composable
+fun DynamicHashtagTextField() {
+    var text by remember { mutableStateOf("") }
+    val labelText = "# ハッシュタグ"
+
+    val textMeasurer = rememberTextMeasurer()
+    val density = LocalDensity.current
+
+    val labelWidth = remember {
+        with(density) {
+            textMeasurer.measure(labelText).size.width.toDp() + 60.dp
+        }
+    }
+
+    OutlinedTextField(
+        value = text,
+        onValueChange = { newText ->
+            // 改行文字を削除して、単一行のテキストのみを許可
+            text = newText.replace("\n", "")
+        },
+        label = { Text(labelText) },
+        modifier = Modifier.width(labelWidth),
+        singleLine = true, // 単一行モードを有効化
+        maxLines = 1 // 最大行数を1に制限
+    )
+}
