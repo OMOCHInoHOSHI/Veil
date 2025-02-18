@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
@@ -175,6 +176,9 @@ fun SoundPost_Screen(navController: NavController){
 //                        label = { Text("# ハッシュタグ") }
 //                    )
 
+//                    DynamicHashtagTextField()
+
+//                    DynamicHashtagTextFields()
 
                     LazyColumn {
                         item {
@@ -438,7 +442,7 @@ fun ToggleCircle(
 
 @Composable
 fun DynamicHashtagTextField():String {
-    var text by remember { mutableStateOf("#") } // 初期値を空に設定
+    var text by remember { mutableStateOf("") } // 初期値を空に設定
     var isFocused by remember { mutableStateOf(false) }
     var textFieldValue by remember {
         mutableStateOf(TextFieldValue(
@@ -446,7 +450,7 @@ fun DynamicHashtagTextField():String {
             selection = TextRange(0)
         ))
     }
-    val labelText = "# ハッシュタグ"
+    val labelText = "タグ"
     val maxChars = 20 // 最大文字数を20文字に設定（#を除く）
 
     // #を除いた実際の文字数を計算する関数
@@ -575,12 +579,17 @@ fun DynamicHashtagTextField():String {
 }
 
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun DynamicHashtagTextFields() {
-    val hashtags = remember { mutableStateListOf("#") }  // 最初は#を含むフィールド1つ
+    // 初期状態として、ハッシュタグリストに1つのフィールド("#")を持たせる
+    val hashtags = remember { mutableStateListOf("") }
 
-    Column {
-        // テキストフィールドを表示
+    FlowRow(
+        modifier = Modifier.padding(5.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         hashtags.forEachIndexed { index, text ->
             Row(verticalAlignment = Alignment.CenterVertically) {
                 DynamicHashtagTextField(
@@ -590,17 +599,16 @@ fun DynamicHashtagTextFields() {
                     },
                     onDelete = {
                         if (hashtags.size > 1) {
-                            hashtags.removeAt(index) // 1つ以上あるなら削除
+                            hashtags.removeAt(index)
                         } else {
-                            hashtags[index] = "#" // 1つだけなら#に戻す
+                            hashtags[index] = "#"
                         }
                     }
                 )
-
-                // 追加ボタン（隣に配置）
+                // 追加ボタンは、最後のテキストフィールドの横に配置する
                 if (index == hashtags.lastIndex) {
-                    IconButton(onClick = { hashtags.add("#") }) {
-                        Icon(imageVector = Icons.Default.Add, contentDescription = "Add Hashtag")
+                    IconButton(onClick = { hashtags.add("") }) {
+                        Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Hashtag")
                     }
                 }
             }
@@ -614,43 +622,124 @@ fun DynamicHashtagTextField(
     onTextChanged: (String) -> Unit,
     onDelete: () -> Unit
 ) {
-    // 初期テキストに#を加えてから保存
+    // テキストフィールドの状態。初期状態は引数で指定された text（通常は空）になります。
     var textFieldValue by remember { mutableStateOf(TextFieldValue(text, TextRange(text.length))) }
 
-    OutlinedTextField(
-        value = textFieldValue,
-        onValueChange = { newValue ->
-            val filteredText = newValue.text
-                .removePrefix("#") // #を削除してから更新
-                .replace("\n", "") // 改行を削除
-            // カーソル位置を#の後ろに移動
-            textFieldValue = newValue.copy(
-                text = "#$filteredText",  // 常に#を先頭に
-                selection = TextRange(filteredText.length + 1) // カーソルを#の後ろに設定
-            )
-            onTextChanged("#$filteredText") // #を含んだテキストを送信
-        },
-        label = { Text("# ハッシュタグ") },
-        singleLine = true,
-        modifier = Modifier.fillMaxWidth(0.8f), // フィールドの幅を少し狭くする
-        trailingIcon = {
-            IconButton(onClick = {
-                if (textFieldValue.text.isEmpty() || textFieldValue.text == "#") {
-                    onDelete() // 空なら削除
-                } else {
-                    // #だけ残してカーソル位置を調整
-                    textFieldValue = TextFieldValue("#", TextRange(1, 1)) // #の後にカーソルを置く
-                    onTextChanged("#")
+    // フォーカス状態の管理（今回は自動挿入は行わないため、更新のみ）
+    var isFocused by remember { mutableStateOf(false) }
+
+    val labelText = "タグ"
+    val maxChars = 21  // '#' を除いた最大文字数
+
+    // '#' を除いた文字数をカウントするヘルパー関数
+    fun getTextLengthWithoutHash(text: String): Int {
+        return if (text.startsWith("#")) text.length - 1 else text.length
+    }
+
+    // テキストのサイズ計測用インスタンス
+    val textMeasurer = rememberTextMeasurer()
+    val density = LocalDensity.current
+
+    // フィールドが空の場合は labelText を基準とする
+    val textToMeasure = if (textFieldValue.text.isEmpty()) labelText else textFieldValue.text
+    // ラベルの幅を計測し、余白60.dpを追加
+    val labelWidth = with(density) {
+        textMeasurer.measure(
+            text = labelText,
+            style = TextStyle(fontSize = 16.sp)
+        ).size.width.toDp()
+    } + 60.dp
+
+    // 入力テキストに基づいて動的な幅を算出
+    val dynamicWidth = with(density) {
+        val measuredTextWidth = textMeasurer.measure(
+            text = textToMeasure,
+            style = TextStyle(fontSize = 16.sp)
+        ).size.width.toDp()
+        max(measuredTextWidth + 50.dp, labelWidth)
+    }
+    // テキストフィールドの幅は最大 300.dp に制限
+    val fieldWidth = dynamicWidth.coerceAtMost(300.dp)
+
+    Column(modifier = Modifier.padding(8.dp)) {
+        OutlinedTextField(
+            value = textFieldValue,
+            onValueChange = { newValue ->
+                // 改行文字を除去
+                val filteredText = newValue.text.replace("\n", "")
+
+                val cursorPosition = newValue.selection.start
+                // テキストが空になる場合は#を維持
+//                if (filteredText.isEmpty() && textFieldValue.text.isNotEmpty()) {
+//                    textFieldValue = TextFieldValue(
+//                        text = "#",
+//                        selection = TextRange(1)
+//                    )
+//                    return@OutlinedTextField
+//                }
+
+                // #が削除されようとしている場合は#を維持
+                if (!filteredText.startsWith("#") && textFieldValue.text.startsWith("#")) {
+                    val restoredText = "#" + filteredText
+                    textFieldValue = TextFieldValue(
+                        text = restoredText,
+                        selection = TextRange((cursorPosition + 1).coerceIn(1, restoredText.length))
+                    )
+                    return@OutlinedTextField
                 }
-            }) {
-                Icon(imageVector = Icons.Default.Close, contentDescription = "Clear Text")
-            }
-        }
-    )
+
+
+                // 入力が空の場合はそのまま空文字をセット
+                if (filteredText.isEmpty()) {
+                    textFieldValue = newValue.copy(text = "", selection = TextRange(0))
+                    onTextChanged("")
+                } else {
+                    // 入力値の先頭に "#" が付いていなければ自動付与
+                    val updatedText = if (!filteredText.startsWith("#")) "#$filteredText" else filteredText
+                    val contentText = updatedText.removePrefix("#")
+                    if (contentText.length <= maxChars) {
+                        // カーソル位置はテキストの終端に設定
+                        textFieldValue = newValue.copy(
+                            text = updatedText,
+                            selection = TextRange(updatedText.length)
+                        )
+                        onTextChanged(updatedText)
+                    }
+                }
+            },
+            label = { Text(labelText) },
+            singleLine = true,
+            textStyle = TextStyle(fontSize = 16.sp),
+            modifier = Modifier
+                .width(fieldWidth)
+                .onFocusChanged { focusState ->
+                    isFocused = focusState.isFocused
+                    // 初回フォーカス時に自動挿入を行う処理は削除し、初期状態は空のままとする
+                },
+            trailingIcon = {
+                IconButton(onClick = {
+                    if (textFieldValue.text.isEmpty()) {
+                        onDelete()
+                    } else {
+                        textFieldValue = TextFieldValue("", TextRange(0))
+                        onTextChanged("")
+                    }
+                }) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = "テキストをクリア"
+                    )
+                }
+            },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = if (getTextLengthWithoutHash(textFieldValue.text) >= maxChars)
+                    MaterialTheme.colorScheme.error
+                else MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = if (getTextLengthWithoutHash(textFieldValue.text) >= maxChars)
+                    MaterialTheme.colorScheme.error.copy(alpha = 0.5f)
+                else MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
+            ),
+            keyboardOptions = KeyboardOptions(autoCorrect = false)
+        )
+    }
 }
-
-
-
-
-
-
