@@ -9,6 +9,8 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Mic
@@ -34,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -61,6 +65,7 @@ import androidx.navigation.NavController
 
 
 // 通知画面
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SoundPost_Screen(navController: NavController){
     // Use LocalConfiguration to get the screen dimensions reliably
@@ -164,7 +169,23 @@ fun SoundPost_Screen(navController: NavController){
 //                        label = { Text("# ハッシュタグ") }
 //                    )
 
-                    DynamicHashtagTextField()
+
+                    FlowRow()  {
+                        val entrees: MutableList<String> = mutableListOf()  // ハッシュタグリスト文字列リスト
+                        val textFieldString = DynamicHashtagTextField()
+                        println("textFieldValue: " + textFieldString)
+//
+                        entrees.add(textFieldString)
+                        println("entrees: " + entrees)
+
+                        if (entrees.isNotEmpty() && entrees.last().isNotBlank() && entrees.last() != "#") {
+                            println("最後の値は空ではありません: ${entrees.last()}")
+                        } else {
+                            println("最後の値が空です")
+                        }
+
+
+                    }
                 }
 
             }
@@ -297,6 +318,21 @@ fun SoundPost_Screen() {
                 println("Selected circle: $selectedCircle")
                 //　イメージカラー列E----------------------------------------------------
 
+                Box(
+                    modifier = Modifier
+                        .width(screenWidth * 0.9f)  // 開始位置を線の下に
+                        .fillMaxWidth()
+                ){
+                    var text by remember { mutableStateOf("") }
+
+//                    OutlinedTextField(
+//                        value = text,
+//                        onValueChange = { text = it },
+//                        label = { Text("# ハッシュタグ") }
+//                    )
+
+                    DynamicHashtagTextField()
+                }
 
             }
 
@@ -386,7 +422,7 @@ fun ToggleCircle(
 
 
 @Composable
-fun DynamicHashtagTextField() {
+fun DynamicHashtagTextField():String {
     var text by remember { mutableStateOf("") } // 初期値を空に設定
     var isFocused by remember { mutableStateOf(false) }
     var textFieldValue by remember {
@@ -520,4 +556,52 @@ fun DynamicHashtagTextField() {
             }
         )
     }
+
+    return textFieldValue.text
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun DynamicHashtagFields() {
+    val entrees = remember { mutableStateListOf("") }
+
+    FlowRow {
+        entrees.forEachIndexed { index, text ->
+            DynamicHashtagTextField(
+                initialValue = text,
+                onValueChange = { newText ->
+                    entrees[index] = newText
+                    if (newText.isNotBlank() && index == entrees.lastIndex) {
+                        entrees.add("")
+                    }
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun DynamicHashtagTextField(
+    initialValue: String = "",
+    onValueChange: (String) -> Unit
+) {
+    var textFieldValue by remember {
+        mutableStateOf(TextFieldValue(
+            text = if (initialValue.isEmpty()) "#" else initialValue,
+            selection = TextRange(initialValue.length + 1)
+        ))
+    }
+
+    OutlinedTextField(
+        value = textFieldValue,
+        onValueChange = { newValue ->
+            val filteredText = newValue.text.replace("\n", "")
+            if (filteredText.length <= 20) {
+                textFieldValue = newValue
+                onValueChange(filteredText)
+            }
+        },
+        label = { Text("# ハッシュタグ") },
+        singleLine = true
+    )
 }
