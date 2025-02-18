@@ -2,6 +2,7 @@ package io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS
 
 import android.app.Activity
 import android.graphics.Color.rgb
+import android.graphics.Insets.add
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -20,18 +21,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -170,22 +176,31 @@ fun SoundPost_Screen(navController: NavController){
 //                    )
 
 
-                    FlowRow()  {
-                        val entrees: MutableList<String> = mutableListOf()  // ハッシュタグリスト文字列リスト
-                        val textFieldString = DynamicHashtagTextField()
-                        println("textFieldValue: " + textFieldString)
-//
-                        entrees.add(textFieldString)
-                        println("entrees: " + entrees)
-
-                        if (entrees.isNotEmpty() && entrees.last().isNotBlank() && entrees.last() != "#") {
-                            println("最後の値は空ではありません: ${entrees.last()}")
-                        } else {
-                            println("最後の値が空です")
+                    LazyColumn {
+                        item {
+                            FlowRow() {
+                                DynamicHashtagTextFields()
+                            }
                         }
-
-
                     }
+//                    FlowRow()  {
+//                        DynamicHashtagFields()
+//                        // ハッシュタグリスト
+//                        val textFieldStringval: MutableList<String> = mutableListOf(DynamicHashtagTextField())
+//                        println("textFieldValue: " + textFieldStringval)
+////
+//
+//                        if (textFieldStringval.isNotEmpty() && textFieldStringval.last().isNotBlank() && textFieldStringval.last() != "#") {
+//                            println("最後の値は空ではありません: ${textFieldStringval.last()}")
+////                            DynamicHashtagTextField()
+//                            textFieldStringval.add(DynamicHashtagTextField())
+//                            println("textFieldValue2: " + textFieldStringval)
+//                        } else {
+//                            println("最後の値が空です")
+//                        }
+
+
+//                    }
                 }
 
             }
@@ -423,7 +438,7 @@ fun ToggleCircle(
 
 @Composable
 fun DynamicHashtagTextField():String {
-    var text by remember { mutableStateOf("") } // 初期値を空に設定
+    var text by remember { mutableStateOf("#") } // 初期値を空に設定
     var isFocused by remember { mutableStateOf(false) }
     var textFieldValue by remember {
         mutableStateOf(TextFieldValue(
@@ -556,52 +571,78 @@ fun DynamicHashtagTextField():String {
             }
         )
     }
-
     return textFieldValue.text
 }
 
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun DynamicHashtagFields() {
-    val entrees = remember { mutableStateListOf("") }
 
-    FlowRow {
-        entrees.forEachIndexed { index, text ->
-            DynamicHashtagTextField(
-                initialValue = text,
-                onValueChange = { newText ->
-                    entrees[index] = newText
-                    if (newText.isNotBlank() && index == entrees.lastIndex) {
-                        entrees.add("")
+
+@Composable
+fun DynamicHashtagTextFields() {
+    val hashtags = remember { mutableStateListOf("") }  // 最初は空のフィールド1つ
+
+    Column {
+        // テキストフィールドを表示
+        hashtags.forEachIndexed { index, text ->
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                DynamicHashtagTextField(
+                    text = text,
+                    onTextChanged = { newText ->
+                        hashtags[index] = newText
+                    },
+                    onDelete = {
+                        if (hashtags.size > 1) {
+                            hashtags.removeAt(index) // 1つ以上あるなら削除
+                        } else {
+                            hashtags[index] = "" // 1つだけなら空にする
+                        }
+                    }
+                )
+
+                // 追加ボタン（隣に配置）
+                if (index == hashtags.lastIndex) {
+                    IconButton(onClick = { hashtags.add("") }) {
+                        Icon(imageVector = Icons.Default.Add, contentDescription = "Add Hashtag")
                     }
                 }
-            )
+            }
         }
     }
 }
 
 @Composable
 fun DynamicHashtagTextField(
-    initialValue: String = "",
-    onValueChange: (String) -> Unit
+    text: String,
+    onTextChanged: (String) -> Unit,
+    onDelete: () -> Unit
 ) {
-    var textFieldValue by remember {
-        mutableStateOf(TextFieldValue(
-            text = if (initialValue.isEmpty()) "#" else initialValue,
-            selection = TextRange(initialValue.length + 1)
-        ))
-    }
+    var textFieldValue by remember { mutableStateOf(TextFieldValue(text, TextRange(text.length))) }
 
     OutlinedTextField(
         value = textFieldValue,
         onValueChange = { newValue ->
-            val filteredText = newValue.text.replace("\n", "")
-            if (filteredText.length <= 20) {
-                textFieldValue = newValue
-                onValueChange(filteredText)
-            }
+            val filteredText = newValue.text.replace("\n", "") // 改行を削除
+            textFieldValue = newValue.copy(text = filteredText)
+            onTextChanged(filteredText)
         },
         label = { Text("# ハッシュタグ") },
-        singleLine = true
+        singleLine = true,
+        modifier = Modifier.fillMaxWidth(0.8f), // フィールドの幅を少し狭くする
+        trailingIcon = {
+            IconButton(onClick = {
+                if (textFieldValue.text.isEmpty()) {
+                    onDelete() // 空なら削除
+                } else {
+                    textFieldValue = TextFieldValue("") // テキストリセット
+                    onTextChanged("")
+                }
+            }) {
+                Icon(imageVector = Icons.Default.Close, contentDescription = "Clear Text")
+            }
+        }
     )
 }
+
+
+
+
+
