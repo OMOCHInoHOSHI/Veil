@@ -81,6 +81,9 @@ fun SoundPost_Screen(navController: NavController){
     // スマホの横幅を取得
     val screenWidth = configuration.screenWidthDp.dp
 
+    // 保存用ハッシュタグリスト
+    var tags:List<String> = remember { mutableStateListOf("") }
+
     Scaffold(
         bottomBar = {BottomNavBar(navController)}
     ) { innerPadding ->
@@ -163,6 +166,7 @@ fun SoundPost_Screen(navController: NavController){
                 }
                 //　イメージカラー列E----------------------------------------------------
 
+                // ハッシュタグS--------------------------------------------------------------
                 Box(
                     modifier = Modifier
                         .width(screenWidth * 0.9f)  // 開始位置を線の下に
@@ -182,30 +186,12 @@ fun SoundPost_Screen(navController: NavController){
 
                     LazyColumn {
                         item {
-                            FlowRow() {
-                                DynamicHashtagTextFields()
-                            }
+                            tags = DynamicHashtagTextFields()
+                            println("tags: " + tags)
                         }
                     }
-//                    FlowRow()  {
-//                        DynamicHashtagFields()
-//                        // ハッシュタグリスト
-//                        val textFieldStringval: MutableList<String> = mutableListOf(DynamicHashtagTextField())
-//                        println("textFieldValue: " + textFieldStringval)
-////
-//
-//                        if (textFieldStringval.isNotEmpty() && textFieldStringval.last().isNotBlank() && textFieldStringval.last() != "#") {
-//                            println("最後の値は空ではありません: ${textFieldStringval.last()}")
-////                            DynamicHashtagTextField()
-//                            textFieldStringval.add(DynamicHashtagTextField())
-//                            println("textFieldValue2: " + textFieldStringval)
-//                        } else {
-//                            println("最後の値が空です")
-//                        }
-
-
-//                    }
                 }
+                // ハッシュタグE--------------------------------------------------------------
 
             }
 
@@ -213,8 +199,6 @@ fun SoundPost_Screen(navController: NavController){
         }
     }
 }
-
-
 
 @Preview(showBackground = true)
 @Composable
@@ -337,17 +321,38 @@ fun SoundPost_Screen() {
                 println("Selected circle: $selectedCircle")
                 //　イメージカラー列E----------------------------------------------------
 
-                Box(
-                    modifier = Modifier
-                        .width(screenWidth * 0.9f)  // 開始位置を線の下に
-                        .fillMaxWidth()
-                ){
-                    var text by remember { mutableStateOf("") }
 
-//                    OutlinedTextField(
-//                        value = text,
-//                        onValueChange = { text = it },
-//                        label = { Text("# ハッシュタグ") }
+//@Preview(showBackground = true)
+//@Composable
+//fun SoundPost_Screen() {
+//    // Use LocalConfiguration to get the screen dimensions reliably
+//    val configuration = LocalConfiguration.current
+//    val screenHeight = configuration.screenHeightDp.dp
+//    // スマホの横幅を取得
+//    val screenWidth = configuration.screenWidthDp.dp
+//
+//    Scaffold(
+//        bottomBar = {}
+//    ) { innerPadding ->
+//
+//        Box(
+//            modifier = Modifier
+//                .padding(innerPadding)
+//                .fillMaxSize()
+//        ) {
+//            Column(
+//                modifier = Modifier.fillMaxSize(),
+//                horizontalAlignment = Alignment.CenterHorizontally
+//            ) {
+//                // マイクアイコンと再生ボタンが重ねて表示されるコンテナーS---------
+//                Box(
+//                    modifier = Modifier.size(400.dp)
+//                ) {
+//                    // マイクのアイコンを背景にしてコンテナを埋める
+//                    Icon(
+//                        imageVector = Icons.Filled.Mic,
+//                        contentDescription = "Microphone Icon",
+//                        modifier = Modifier.fillMaxSize()
 //                    )
 
                     DynamicHashtagTextField()
@@ -400,6 +405,143 @@ fun Circle_Draw(color: Color){
 }
 // 円を描画E---------------------------------------------------------
 
+//@Composable
+//fun DynamicHashtagTextField():String {
+//    var text by remember { mutableStateOf("") } // 初期値を空に設定
+//    var isFocused by remember { mutableStateOf(false) }
+//    var textFieldValue by remember {
+//        mutableStateOf(TextFieldValue(
+//            text = "",
+//            selection = TextRange(0)
+//        ))
+//    }
+//    val labelText = "タグ"
+//    val maxChars = 20 // 最大文字数を20文字に設定（#を除く）
+//
+//    // #を除いた実際の文字数を計算する関数
+//    fun getTextLengthWithoutHash(text: String): Int {
+//        return if (text.startsWith("#")) {
+//            text.length - 1
+//        } else {
+//            text.length
+//        }
+//    }
+//
+//    // Create a text measurer instance to measure text sizes
+//    val textMeasurer = rememberTextMeasurer()
+//    val density = LocalDensity.current
+//
+//    // Measure the label's width using the desired text style and add extra space for padding.
+//    val labelWidth = with(density) {
+//        textMeasurer.measure(
+//            text = labelText,
+//            style = TextStyle(fontSize = 16.sp)
+//        ).size.width.toDp()
+//    } + 50.dp
+//
+//    // Compute the dynamic width based on the input text.
+//    val dynamicWidth = remember(textFieldValue.text) {
+//        with(density) {
+//            val measuredTextWidth = textMeasurer.measure(
+//                text = if (textFieldValue.text.isEmpty()) labelText else textFieldValue.text,
+//                style = TextStyle(fontSize = 16.sp)
+//            ).size.width.toDp()
+//            max(measuredTextWidth + 50.dp, labelWidth)
+//        }
+//    }
+//
+//    // Set an upper limit for the TextField's width
+//    val fieldWidth = dynamicWidth.coerceAtMost(300.dp)
+//
+//    Column(
+//        modifier = Modifier.padding(8.dp)
+//    ) {
+//        OutlinedTextField(
+//            value = textFieldValue,
+//            onValueChange = { newValue ->
+//                // 改行文字を削除
+//                val filteredText = newValue.text.replace("\n", "")
+//
+//                // #を除いた新しいテキストの長さをチェック
+//                val newTextLengthWithoutHash = getTextLengthWithoutHash(filteredText)
+//
+//                if (newTextLengthWithoutHash <= maxChars) {
+//                    val cursorPosition = newValue.selection.start
+//
+//                    // テキストが空になる場合は#を維持
+//                    if (filteredText.isEmpty() && textFieldValue.text.isNotEmpty()) {
+//                        textFieldValue = TextFieldValue(
+//                            text = "#",
+//                            selection = TextRange(1)
+//                        )
+//                        return@OutlinedTextField
+//                    }
+//
+//                    // #が削除されようとしている場合は#を維持
+//                    if (!filteredText.startsWith("#") && textFieldValue.text.startsWith("#")) {
+//                        val restoredText = "#" + filteredText
+//                        textFieldValue = TextFieldValue(
+//                            text = restoredText,
+//                            selection = TextRange((cursorPosition + 1).coerceIn(1, restoredText.length))
+//                        )
+//                        return@OutlinedTextField
+//                    }
+//
+//                    // 通常の入力処理
+//                    val updatedText = when {
+//                        filteredText.isEmpty() -> "#"
+//                        !filteredText.startsWith("#") -> "#$filteredText"
+//                        else -> filteredText
+//                    }
+//
+//                    // カーソル位置の調整
+//                    val newCursorPosition = when {
+//                        !textFieldValue.text.startsWith("#") && updatedText.startsWith("#") ->
+//                            cursorPosition + 1
+//                        else -> cursorPosition
+//                    }.coerceIn(1, updatedText.length)
+//
+//                    textFieldValue = TextFieldValue(
+//                        text = updatedText,
+//                        selection = TextRange(newCursorPosition)
+//                    )
+//                }
+//            },
+//            label = { Text(labelText) },
+//            modifier = Modifier
+//                .width(fieldWidth)
+//                .onFocusChanged { focusState ->
+//                    if (focusState.isFocused && !isFocused && textFieldValue.text.isEmpty()) {
+//                        textFieldValue = TextFieldValue(
+//                            text = "#",
+//                            selection = TextRange(1)
+//                        )
+//                    }
+//                    isFocused = focusState.isFocused
+//                },
+//            textStyle = TextStyle(fontSize = 16.sp),
+//            singleLine = true,
+//            maxLines = 1,
+//            colors = OutlinedTextFieldDefaults.colors(
+//                focusedBorderColor = if (getTextLengthWithoutHash(textFieldValue.text) >= maxChars)
+//                    MaterialTheme.colorScheme.error
+//                else MaterialTheme.colorScheme.primary,
+//                unfocusedBorderColor = if (getTextLengthWithoutHash(textFieldValue.text) >= maxChars)
+//                    MaterialTheme.colorScheme.error.copy(alpha = 0.5f)
+//                else MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
+//            ),
+//            supportingText = {
+//                Text(
+//                    text = "${getTextLengthWithoutHash(textFieldValue.text)}/$maxChars",
+//                    color = if (getTextLengthWithoutHash(textFieldValue.text) >= maxChars)
+//                        MaterialTheme.colorScheme.error
+//                    else MaterialTheme.colorScheme.onSurfaceVariant
+//                )
+//            }
+//        )
+//    }
+//    return textFieldValue.text
+//}
 // 選択で枠付き円を描画S---------------------------------------------------------
 @Composable
 fun ToggleCircle(
@@ -522,67 +664,11 @@ fun DynamicHashtagTextField():String {
                         return@OutlinedTextField
                     }
 
-                    // 通常の入力処理
-                    val updatedText = when {
-                        filteredText.isEmpty() -> "#"
-                        !filteredText.startsWith("#") -> "#$filteredText"
-                        else -> filteredText
-                    }
-
-                    // カーソル位置の調整
-                    val newCursorPosition = when {
-                        !textFieldValue.text.startsWith("#") && updatedText.startsWith("#") ->
-                            cursorPosition + 1
-                        else -> cursorPosition
-                    }.coerceIn(1, updatedText.length)
-
-                    textFieldValue = TextFieldValue(
-                        text = updatedText,
-                        selection = TextRange(newCursorPosition)
-                    )
-                }
-            },
-            label = { Text(labelText) },
-            modifier = Modifier
-                .width(fieldWidth)
-                .onFocusChanged { focusState ->
-                    if (focusState.isFocused && !isFocused && textFieldValue.text.isEmpty()) {
-                        textFieldValue = TextFieldValue(
-                            text = "#",
-                            selection = TextRange(1)
-                        )
-                    }
-                    isFocused = focusState.isFocused
-                },
-            textStyle = TextStyle(fontSize = 16.sp),
-            singleLine = true,
-            maxLines = 1,
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = if (getTextLengthWithoutHash(textFieldValue.text) >= maxChars)
-                    MaterialTheme.colorScheme.error
-                else MaterialTheme.colorScheme.primary,
-                unfocusedBorderColor = if (getTextLengthWithoutHash(textFieldValue.text) >= maxChars)
-                    MaterialTheme.colorScheme.error.copy(alpha = 0.5f)
-                else MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
-            ),
-            supportingText = {
-                Text(
-                    text = "${getTextLengthWithoutHash(textFieldValue.text)}/$maxChars",
-                    color = if (getTextLengthWithoutHash(textFieldValue.text) >= maxChars)
-                        MaterialTheme.colorScheme.error
-                    else MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        )
-    }
-    return textFieldValue.text
-}
-
-
+// ハッシュタグリストのUIを実装S-----------------------------------------------------------------------
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun DynamicHashtagTextFields() {
-    // 初期状態として、ハッシュタグリストに1つのフィールド("#")を持たせる
+fun DynamicHashtagTextFields():List<String> {
+    // ハッシュタグリストを保存する
     val hashtags = remember { mutableStateListOf("") }
 
     FlowRow(
@@ -600,22 +686,30 @@ fun DynamicHashtagTextFields() {
                     onDelete = {
                         if (hashtags.size > 1) {
                             hashtags.removeAt(index)
+                            // Print after deletion
                         } else {
                             hashtags[index] = "#"
                         }
                     }
                 )
-                // 追加ボタンは、最後のテキストフィールドの横に配置する
+
+                // ハッシュタグを追加
                 if (index == hashtags.lastIndex) {
-                    IconButton(onClick = { hashtags.add("") }) {
+                    IconButton(onClick = {
+                        hashtags.add("")
+                    }) {
                         Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Hashtag")
                     }
                 }
             }
         }
     }
-}
 
+    return hashtags.toList()
+}
+// ハッシュタグリストのUIを実装E-----------------------------------------------------------------------
+
+// 個々のハッシュタグを入力するテキストフィールドのUIを実装S-------------------------------------------------
 @Composable
 fun DynamicHashtagTextField(
     text: String,
@@ -709,6 +803,8 @@ fun DynamicHashtagTextField(
                     isFocused = focusState.isFocused
                     // 初回フォーカス時に自動挿入を行う処理は削除し、初期状態は空のままとする
                 },
+            // 後ろにつくアイコン
+            // テキストをリセット
             trailingIcon = {
                 IconButton(onClick = {
                     if (textFieldValue.text.isEmpty()) {
@@ -724,6 +820,7 @@ fun DynamicHashtagTextField(
                     )
                 }
             },
+            // 文字数制限を超えたらエラー色
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = if (getTextLengthWithoutHash(textFieldValue.text) >= maxChars)
                     MaterialTheme.colorScheme.error
@@ -732,7 +829,9 @@ fun DynamicHashtagTextField(
                     MaterialTheme.colorScheme.error.copy(alpha = 0.5f)
                 else MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
             ),
-            keyboardOptions = KeyboardOptions(autoCorrect = false)
+            // ユーザーが入力したテキストに対して自動補正（オートコレクト）が無効になり、入力内容がそのまま反映される
+            keyboardOptions = KeyboardOptions(autoCorrectEnabled = false)
         )
     }
 }
+// 個々のハッシュタグを入力するテキストフィールドのUIを実装E-------------------------------------------------
