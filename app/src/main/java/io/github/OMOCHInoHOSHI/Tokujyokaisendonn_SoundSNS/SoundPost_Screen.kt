@@ -656,7 +656,7 @@ fun DynamicHashtagTextField(
             text = textToMeasure,
             style = TextStyle(fontSize = 16.sp)
         ).size.width.toDp()
-        max(measuredTextWidth , labelWidth)
+        max(measuredTextWidth + 70.dp , labelWidth)
     }
     // テキストフィールドの幅は最大 300.dp に制限
     val fieldWidth = dynamicWidth.coerceAtMost(300.dp)
@@ -669,14 +669,7 @@ fun DynamicHashtagTextField(
                 val filteredText = newValue.text.replace("\n", "")
 
                 val cursorPosition = newValue.selection.start
-                // テキストが空になる場合は#を維持
-//                if (filteredText.isEmpty() && textFieldValue.text.isNotEmpty()) {
-//                    textFieldValue = TextFieldValue(
-//                        text = "#",
-//                        selection = TextRange(1)
-//                    )
-//                    return@OutlinedTextField
-//                }
+
 
                 // #が削除されようとしている場合は#を維持
                 if (!filteredText.startsWith("#") && textFieldValue.text.startsWith("#")) {
