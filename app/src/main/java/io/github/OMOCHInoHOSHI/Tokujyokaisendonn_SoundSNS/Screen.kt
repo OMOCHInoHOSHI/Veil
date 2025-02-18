@@ -51,6 +51,7 @@ enum class Nav {
 //    LoginScreen,//ログイン画面
     Home_Screen, //ホーム画面
     Notice_Screen, //通知画面
+    SoundPost_Screen, //音投稿準備画面
 }
 // 画面遷移先E-------------------------
 
@@ -69,6 +70,12 @@ fun DisplayNav(){
         composable(route = Nav.Home_Screen.name) {
             Home_Screen(navController = navController)
         }
+
+        // ルート名：SoundPost_Screen　SoundPost_Screenに遷移
+        composable(route = Nav.SoundPost_Screen.name) {
+            SoundPost_Screen(navController = navController)
+        }
+
         // ルート名：Notice_Screen　Notice_Screenに遷移
         composable(route = Nav.Notice_Screen.name) {
             Notice_Screen(navController = navController)
@@ -111,8 +118,13 @@ fun BottomNavBar(navController: NavController) {
         NavigationBarItem(
             icon = { Icon(Icons.Default.Mic, "録音") },
 //            label = { Text("録音") },
-            selected = selectedTab == 1,
-            onClick = { selectedTab = 1 }
+            // 現在のルートがSoundPost_Screenなら選択状態にする
+            selected = currentRoute == Nav.SoundPost_Screen.name,
+            onClick = {
+                if (currentRoute != Nav.SoundPost_Screen.name) {
+                    navController.navigate(Nav.SoundPost_Screen.name)
+                }
+            }
         )
         // 通知アイコン
         NavigationBarItem(

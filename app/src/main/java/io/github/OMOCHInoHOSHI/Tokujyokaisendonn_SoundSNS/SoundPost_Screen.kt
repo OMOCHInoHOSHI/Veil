@@ -53,15 +53,16 @@ import androidx.navigation.NavController
 
 
 // 通知画面
-//@Preview(showBackground = true)
 @Composable
 fun SoundPost_Screen(navController: NavController){
     // Use LocalConfiguration to get the screen dimensions reliably
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
+    // スマホの横幅を取得
+    val screenWidth = configuration.screenWidthDp.dp
 
     Scaffold(
-        bottomBar = {}
+        bottomBar = {BottomNavBar(navController)}
     ) { innerPadding ->
 
         Box(
@@ -97,17 +98,74 @@ fun SoundPost_Screen(navController: NavController){
                 }
                 // マイクアイコンと再生ボタンが重ねて表示されるコンテナーE---------
 
-                // 下部分
+                // 直線部分
                 HorizontalDividerExample()
+
+                // 投稿データS---------------------------------------------------------------
+
+                //　イメージカラー列S----------------------------------------------------
+
+                Box(
+                    modifier = Modifier
+                        .width(screenWidth * 0.9f)  // 開始位置を線の下に
+                        .fillMaxWidth()
+                ) {
+
+                    // イメージカラーのテキストS------------------------------------
+                    Text(
+                        text = "イメージカラー",
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)  // 左寄せ
+                            .padding(top = 16.dp)  // 仕切りから少し間隔をあける
+                    )
+                    // イメージカラーのテキストE------------------------------------
+
+                    // カラー丸S-------------------------------------------------
+                    Row(
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(top = 16.dp),
+//                        verticalAlignment = Alignment.CenterVertically, // テキストと円を垂直方向の中央で揃える
+                        horizontalArrangement = Arrangement.spacedBy(15.dp) // テキストと円の間隔を設定
+                    ) {
+                        // 円を描画
+                        Circle_Draw(Color.Red)
+
+                        Circle_Draw(Color.Blue)
+
+                        Circle_Draw(Color.Green)
+
+                        Circle_Draw(Color(0xFFFF47D3))
+
+                    }
+                    // カラー丸E-------------------------------------------------
+
+                }
+                //　イメージカラー列E----------------------------------------------------
+
+                Box(
+                    modifier = Modifier
+                        .width(screenWidth * 0.9f)  // 開始位置を線の下に
+                        .fillMaxWidth()
+                ){
+                    var text by remember { mutableStateOf("") }
+
+//                    OutlinedTextField(
+//                        value = text,
+//                        onValueChange = { text = it },
+//                        label = { Text("# ハッシュタグ") }
+//                    )
+
+                    DynamicHashtagTextField()
+                }
 
             }
 
 
         }
-
-
     }
 }
+
 
 
 @Preview(showBackground = true)
