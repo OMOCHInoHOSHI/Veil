@@ -279,18 +279,34 @@ fun ToggleCircle(
     selected: Boolean,
     onClick: () -> Unit
 ) {
+    // 内側の円のサイズと外側の枠の幅を定義
+    val innerSize: Dp = 24.dp
+    val borderWidth: Dp = 4.dp
+    // コンテナの全体サイズは、内側の円と枠分を含む
+    val totalSize = innerSize + borderWidth * 2
+
     Box(
         modifier = Modifier
-            .size(24.dp)
-            .background(color = fillColor, shape = CircleShape)
-            .clickable(onClick = onClick)
-            // 選択で枠
-            .then(
-                if (selected) {
-                    Modifier.border(width = 4.dp, color = borderColor, shape = CircleShape)
-                } else Modifier
-            )
-    )
+            .size(totalSize)
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        // 選択状態なら borderColor で枠を描画し、非選択時は背景を透明にしてスペースを確保
+        Box(
+            modifier = Modifier
+                .size(totalSize)
+                .background(
+                    color = if (selected) borderColor else Color.Transparent,
+                    shape = CircleShape
+                )
+        )
+        // 内側の円
+        Box(
+            modifier = Modifier
+                .size(innerSize)
+                .background(color = fillColor, shape = CircleShape)
+        )
+    }
 }
-// 選択で枠付き円を描画S---------------------------------------------------------
+// 選択で枠付き円を描画E---------------------------------------------------------
 
