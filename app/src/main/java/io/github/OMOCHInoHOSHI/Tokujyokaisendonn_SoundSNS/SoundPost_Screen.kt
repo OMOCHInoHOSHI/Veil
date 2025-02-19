@@ -81,6 +81,9 @@ fun SoundPost_Screen(navController: NavController){
     // スマホの横幅を取得
     val screenWidth = configuration.screenWidthDp.dp
 
+    // どの円が選択されたか
+    var selectedCircle by remember { mutableStateOf("") }
+
     // 保存用ハッシュタグリスト
     var tags:List<String> = remember { mutableStateListOf("") }
 
@@ -126,7 +129,7 @@ fun SoundPost_Screen(navController: NavController){
 
                 // 投稿データS---------------------------------------------------------------
 
-                //　イメージカラー列S----------------------------------------------------
+                //　イメージカラー行S----------------------------------------------------
 
                 Box(
                     modifier = Modifier
@@ -143,135 +146,6 @@ fun SoundPost_Screen(navController: NavController){
                     )
                     // イメージカラーのテキストE------------------------------------
 
-                    // カラー丸S-------------------------------------------------
-                    Row(
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .padding(top = 16.dp),
-//                        verticalAlignment = Alignment.CenterVertically, // テキストと円を垂直方向の中央で揃える
-                        horizontalArrangement = Arrangement.spacedBy(15.dp) // テキストと円の間隔を設定
-                    ) {
-                        // 円を描画
-                        Circle_Draw(Color.Red)
-
-                        Circle_Draw(Color.Blue)
-
-                        Circle_Draw(Color.Green)
-
-                        Circle_Draw(Color(0xFFFF47D3))
-
-                    }
-                    // カラー丸E-------------------------------------------------
-
-                }
-                //　イメージカラー列E----------------------------------------------------
-
-                // ハッシュタグS--------------------------------------------------------------
-                Box(
-                    modifier = Modifier
-                        .width(screenWidth * 0.9f)  // 開始位置を線の下に
-                        .fillMaxWidth()
-                ){
-                    var text by remember { mutableStateOf("") }
-
-//                    OutlinedTextField(
-//                        value = text,
-//                        onValueChange = { text = it },
-//                        label = { Text("# ハッシュタグ") }
-//                    )
-
-//                    DynamicHashtagTextField()
-
-//                    DynamicHashtagTextFields()
-
-                    LazyColumn {
-                        item {
-                            tags = DynamicHashtagTextFields()
-                            println("tags: " + tags)
-                        }
-                    }
-                }
-                // ハッシュタグE--------------------------------------------------------------
-
-            }
-
-
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SoundPost_Screen() {
-    // Use LocalConfiguration to get the screen dimensions reliably
-    val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
-    // スマホの横幅を取得
-    val screenWidth = configuration.screenWidthDp.dp
-
-    // どの円が選択されたか
-    var selectedCircle by remember { mutableStateOf("") }
-
-    Scaffold(
-        bottomBar = {}
-    ) { innerPadding ->
-
-        Box(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // マイクアイコンと再生ボタンが重ねて表示されるコンテナーS---------
-                Box(
-                    modifier = Modifier.size(400.dp)
-                ) {
-                    // マイクのアイコンを背景にしてコンテナを埋める
-                    Icon(
-                        imageVector = Icons.Filled.Mic,
-                        contentDescription = "Microphone Icon",
-                        modifier = Modifier.fillMaxSize()
-                    )
-                    // 再生ボタンを右下に重ねる
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.BottomEnd
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.PlayArrow,
-                            contentDescription = "Play Button",
-                            modifier = Modifier.size(80.dp)
-                        )
-                    }
-                }
-                // マイクアイコンと再生ボタンが重ねて表示されるコンテナーE---------
-
-                // 直線部分
-                HorizontalDividerExample()
-
-                // 投稿データS---------------------------------------------------------------
-
-                //　イメージカラー列S----------------------------------------------------
-
-                Box(
-                    modifier = Modifier
-                        .width(screenWidth * 0.9f)  // 開始位置を線の下に
-                        .fillMaxWidth()
-                ) {
-
-                    // イメージカラーのテキストS------------------------------------
-                    Text(
-                        text = "イメージカラー",
-                        modifier = Modifier
-                            .align(Alignment.CenterStart)  // 左寄せ
-                            .padding(top = 16.dp)  // 仕切りから少し間隔をあける
-                    )
-                    // イメージカラーのテキストE------------------------------------
-
-                    // カラー丸S-------------------------------------------------
                     Row(
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
@@ -319,8 +193,30 @@ fun SoundPost_Screen() {
                 }
 
                 println("Selected circle: $selectedCircle")
-                //　イメージカラー列E----------------------------------------------------
+                //　イメージカラー行E----------------------------------------------------
 
+                // ハッシュタグS--------------------------------------------------------------
+                Box(
+                    modifier = Modifier
+                        .width(screenWidth * 0.9f)  // 開始位置を線の下に
+                        .fillMaxWidth()
+                ){
+
+                    LazyColumn {
+                        item {
+                            tags = DynamicHashtagTextFields()
+                            println("tags: $tags")
+                        }
+                    }
+                }
+                // ハッシュタグE--------------------------------------------------------------
+
+            }
+
+
+        }
+    }
+}
 
 //@Preview(showBackground = true)
 //@Composable
@@ -330,6 +226,9 @@ fun SoundPost_Screen() {
 //    val screenHeight = configuration.screenHeightDp.dp
 //    // スマホの横幅を取得
 //    val screenWidth = configuration.screenWidthDp.dp
+//
+//    // どの円が選択されたか
+//    var selectedCircle by remember { mutableStateOf("") }
 //
 //    Scaffold(
 //        bottomBar = {}
@@ -354,16 +253,135 @@ fun SoundPost_Screen() {
 //                        contentDescription = "Microphone Icon",
 //                        modifier = Modifier.fillMaxSize()
 //                    )
+//                    // 再生ボタンを右下に重ねる
+//                    Box(
+//                        modifier = Modifier.fillMaxSize(),
+//                        contentAlignment = Alignment.BottomEnd
+//                    ) {
+//                        Icon(
+//                            imageVector = Icons.Filled.PlayArrow,
+//                            contentDescription = "Play Button",
+//                            modifier = Modifier.size(80.dp)
+//                        )
+//                    }
+//                }
+//                // マイクアイコンと再生ボタンが重ねて表示されるコンテナーE---------
+//
+//                // 直線部分
+//                HorizontalDividerExample()
+//
+//                // 投稿データS---------------------------------------------------------------
+//
+//                //　イメージカラー列S----------------------------------------------------
+//
+//                Box(
+//                    modifier = Modifier
+//                        .width(screenWidth * 0.9f)  // 開始位置を線の下に
+//                        .fillMaxWidth()
+//                ) {
+//
+//                    // イメージカラーのテキストS------------------------------------
+//                    Text(
+//                        text = "イメージカラー",
+//                        modifier = Modifier
+//                            .align(Alignment.CenterStart)  // 左寄せ
+//                            .padding(top = 16.dp)  // 仕切りから少し間隔をあける
+//                    )
+//                    // イメージカラーのテキストE------------------------------------
+//
+//                    // カラー丸S-------------------------------------------------
+//                    Row(
+//                        modifier = Modifier
+//                            .align(Alignment.BottomEnd)
+//                            .padding(top = 16.dp),
+//                        horizontalArrangement = Arrangement.spacedBy(15.dp)
+//                    ) {
+//
+//                        // すでに選択なら空白、それ以外なら対応した色文字列
+//                        ToggleCircle(
+//                            fillColor = Color.Red,
+//                            borderColor = ColerSelect(),
+//                            selected = selectedCircle == "Red",
+//                            onClick = {
+//                                selectedCircle = if (selectedCircle == "Red") "" else "Red"
+//                            }
+//                        )
+//
+//                        ToggleCircle(
+//                            fillColor = Color(0xFF4EB0F4),
+//                            borderColor = ColerSelect(),
+//                            selected = selectedCircle == "Blue",
+//                            onClick = {
+//                                selectedCircle = if (selectedCircle == "Blue") "" else "Blue"
+//                            }
+//                        )
+//
+//                        ToggleCircle(
+//                            fillColor = Color.Green,
+//                            borderColor = ColerSelect(),
+//                            selected = selectedCircle == "Green",
+//                            onClick = {
+//                                selectedCircle = if (selectedCircle == "Green") "" else "Green"
+//                            }
+//                        )
+//
+//                        ToggleCircle(
+//                            fillColor = Color(0xFFFF47D3),
+//                            borderColor = ColerSelect(),
+//                            selected = selectedCircle == "Pink",
+//                            onClick = {
+//                                selectedCircle = if (selectedCircle == "Pink") "" else "Pink"
+//                            }
+//                        )
+//                    }
+//                }
+//
+//                println("Selected circle: $selectedCircle")
+//                //　イメージカラー列E----------------------------------------------------
+//
+//
+////@Preview(showBackground = true)
+////@Composable
+////fun SoundPost_Screen() {
+////    // Use LocalConfiguration to get the screen dimensions reliably
+////    val configuration = LocalConfiguration.current
+////    val screenHeight = configuration.screenHeightDp.dp
+////    // スマホの横幅を取得
+////    val screenWidth = configuration.screenWidthDp.dp
+////
+////    Scaffold(
+////        bottomBar = {}
+////    ) { innerPadding ->
+////
+////        Box(
+////            modifier = Modifier
+////                .padding(innerPadding)
+////                .fillMaxSize()
+////        ) {
+////            Column(
+////                modifier = Modifier.fillMaxSize(),
+////                horizontalAlignment = Alignment.CenterHorizontally
+////            ) {
+////                // マイクアイコンと再生ボタンが重ねて表示されるコンテナーS---------
+////                Box(
+////                    modifier = Modifier.size(400.dp)
+////                ) {
+////                    // マイクのアイコンを背景にしてコンテナを埋める
+////                    Icon(
+////                        imageVector = Icons.Filled.Mic,
+////                        contentDescription = "Microphone Icon",
+////                        modifier = Modifier.fillMaxSize()
+////                    )
+//
+//                    DynamicHashtagTextField()
+//                }
+//
+//            }
+//
+//
+//        }
+//    }
 
-                    DynamicHashtagTextField()
-                }
-
-            }
-
-
-        }
-    }
-}
 
 // 直線を描画S--------------------------------------------------------
 @Composable
@@ -582,88 +600,98 @@ fun ToggleCircle(
 // 選択で枠付き円を描画E---------------------------------------------------------
 
 
-@Composable
-fun DynamicHashtagTextField():String {
-    var text by remember { mutableStateOf("") } // 初期値を空に設定
-    var isFocused by remember { mutableStateOf(false) }
-    var textFieldValue by remember {
-        mutableStateOf(TextFieldValue(
-            text = "",
-            selection = TextRange(0)
-        ))
-    }
-    val labelText = "タグ"
-    val maxChars = 20 // 最大文字数を20文字に設定（#を除く）
-
-    // #を除いた実際の文字数を計算する関数
-    fun getTextLengthWithoutHash(text: String): Int {
-        return if (text.startsWith("#")) {
-            text.length - 1
-        } else {
-            text.length
-        }
-    }
-
-    // Create a text measurer instance to measure text sizes
-    val textMeasurer = rememberTextMeasurer()
-    val density = LocalDensity.current
-
-    // Measure the label's width using the desired text style and add extra space for padding.
-    val labelWidth = with(density) {
-        textMeasurer.measure(
-            text = labelText,
-            style = TextStyle(fontSize = 16.sp)
-        ).size.width.toDp()
-    } + 50.dp
-
-    // Compute the dynamic width based on the input text.
-    val dynamicWidth = remember(textFieldValue.text) {
-        with(density) {
-            val measuredTextWidth = textMeasurer.measure(
-                text = if (textFieldValue.text.isEmpty()) labelText else textFieldValue.text,
-                style = TextStyle(fontSize = 16.sp)
-            ).size.width.toDp()
-            max(measuredTextWidth + 50.dp, labelWidth)
-        }
-    }
-
-    // Set an upper limit for the TextField's width
-    val fieldWidth = dynamicWidth.coerceAtMost(300.dp)
-
-    Column(
-        modifier = Modifier.padding(8.dp)
-    ) {
-        OutlinedTextField(
-            value = textFieldValue,
-            onValueChange = { newValue ->
-                // 改行文字を削除
-                val filteredText = newValue.text.replace("\n", "")
-
-                // #を除いた新しいテキストの長さをチェック
-                val newTextLengthWithoutHash = getTextLengthWithoutHash(filteredText)
-
-                if (newTextLengthWithoutHash <= maxChars) {
-                    val cursorPosition = newValue.selection.start
-
-                    // テキストが空になる場合は#を維持
-                    if (filteredText.isEmpty() && textFieldValue.text.isNotEmpty()) {
-                        textFieldValue = TextFieldValue(
-                            text = "#",
-                            selection = TextRange(1)
-                        )
-                        return@OutlinedTextField
-                    }
-
-                    // #が削除されようとしている場合は#を維持
-                    if (!filteredText.startsWith("#") && textFieldValue.text.startsWith("#")) {
-                        val restoredText = "#" + filteredText
-                        textFieldValue = TextFieldValue(
-                            text = restoredText,
-                            selection = TextRange((cursorPosition + 1).coerceIn(1, restoredText.length))
-                        )
-                        return@OutlinedTextField
-                    }
-
+//@Composable
+//fun DynamicHashtagTextField():String {
+//    var text by remember { mutableStateOf("") } // 初期値を空に設定
+//    var isFocused by remember { mutableStateOf(false) }
+//    var textFieldValue by remember {
+//        mutableStateOf(TextFieldValue(
+//            text = "",
+//            selection = TextRange(0)
+//        ))
+//    }
+//    val labelText = "タグ"
+//    val maxChars = 20 // 最大文字数を20文字に設定（#を除く）
+//
+//    // #を除いた実際の文字数を計算する関数
+//    fun getTextLengthWithoutHash(text: String): Int {
+//        return if (text.startsWith("#")) {
+//            text.length - 1
+//        } else {
+//            text.length
+//        }
+//    }
+//
+//    // Create a text measurer instance to measure text sizes
+//    val textMeasurer = rememberTextMeasurer()
+//    val density = LocalDensity.current
+//
+//    // Measure the label's width using the desired text style and add extra space for padding.
+//    val labelWidth = with(density) {
+//        textMeasurer.measure(
+//            text = labelText,
+//            style = TextStyle(fontSize = 16.sp)
+//        ).size.width.toDp()
+//    } + 50.dp
+//
+//    // Compute the dynamic width based on the input text.
+//    val dynamicWidth = remember(textFieldValue.text) {
+//        with(density) {
+//            val measuredTextWidth = textMeasurer.measure(
+//                text = if (textFieldValue.text.isEmpty()) labelText else textFieldValue.text,
+//                style = TextStyle(fontSize = 16.sp)
+//            ).size.width.toDp()
+//            max(measuredTextWidth + 50.dp, labelWidth)
+//        }
+//    }
+//
+//    // Set an upper limit for the TextField's width
+//    val fieldWidth = dynamicWidth.coerceAtMost(300.dp)
+//
+//    Column(
+//        modifier = Modifier.padding(8.dp)
+//    ) {
+//        OutlinedTextField(
+//            value = textFieldValue,
+//            onValueChange = { newValue ->
+//                // 改行文字を削除
+//                val filteredText = newValue.text.replace("\n", "")
+//
+//                // #を除いた新しいテキストの長さをチェック
+//                val newTextLengthWithoutHash = getTextLengthWithoutHash(filteredText)
+//
+//                if (newTextLengthWithoutHash <= maxChars) {
+//                    val cursorPosition = newValue.selection.start
+//
+//                    // テキストが空になる場合は#を維持
+//                    if (filteredText.isEmpty() && textFieldValue.text.isNotEmpty()) {
+//                        textFieldValue = TextFieldValue(
+//                            text = "#",
+//                            selection = TextRange(1)
+//                        )
+//                        return@OutlinedTextField
+//                    }
+//
+//                    // #が削除されようとしている場合は#を維持
+//                    if (!filteredText.startsWith("#") && textFieldValue.text.startsWith("#")) {
+//                        val restoredText = "#" + filteredText
+//                        textFieldValue = TextFieldValue(
+//                            text = restoredText,
+//                            selection = TextRange(
+//                                (cursorPosition + 1).coerceIn(
+//                                    1,
+//                                    restoredText.length
+//                                )
+//                            )
+//                        )
+//                        return@OutlinedTextField
+//                    }
+//
+//                }
+//            }
+//            }
+//    }
+//}
 
 // ハッシュタグリストのUIを実装S-----------------------------------------------------------------------
 @OptIn(ExperimentalLayoutApi::class)

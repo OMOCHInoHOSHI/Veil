@@ -27,8 +27,8 @@ class MainActivity : ComponentActivity() {
 //                    DisplayNav()
 //                }
 
-//                DisplayNav()
-                SoundPost_Screen()
+                DisplayNav()
+//                SoundPost_Screen()
 //                SoundSNSApp()
 //                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
 //                    Greeting(
