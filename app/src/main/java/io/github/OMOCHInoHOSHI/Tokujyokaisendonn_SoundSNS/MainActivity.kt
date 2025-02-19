@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
 //                    DisplayNav()
 //                }
 
-                DisplayNav()
+                MessageChat_Screen()
 
 //                SoundSNSApp()
 //                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
