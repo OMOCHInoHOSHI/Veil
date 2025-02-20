@@ -192,7 +192,7 @@ fun MessageSelect_Screen(navController: NavController) {
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.clickable { ShowFlag = true }
                     ) {
-                        IconButton(onClick = { ShowFlag = true }) {
+                        IconButton(onClick = { /* 戻る */ ShowFlag = true }) {
                             Icon(
                                 Icons.Default.ArrowBack,
                                 contentDescription = "Back",

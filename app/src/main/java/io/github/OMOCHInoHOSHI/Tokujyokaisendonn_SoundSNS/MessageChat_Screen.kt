@@ -22,6 +22,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.back
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,6 +41,9 @@ fun MessageChat_Screen() {
     val fontScale = screenWidth / 360.dp
 
     var messageText by remember { mutableStateOf("") }
+
+    // メッセージ作成ボタンのフラグ
+    var ShowFlag by remember { mutableStateOf(false) }
 
     val messages = remember {
         mutableStateListOf(
@@ -76,7 +80,7 @@ fun MessageChat_Screen() {
                     }
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /* 戻る */ }) {
+                    IconButton(onClick = { /* 戻る */ ShowFlag = true }) {
                         Icon(
                             Icons.Default.ArrowBack,
                             contentDescription = "Back",
@@ -174,6 +178,11 @@ fun MessageChat_Screen() {
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }
+    }
+
+    // 戻るボタンの判定
+    if (ShowFlag == true) {
+        back(onDismiss = { ShowFlag = false })
     }
 }
 
