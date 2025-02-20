@@ -22,6 +22,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             VeilTheme {
 
+//                Message_page()
+//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+//                    Greeting(
+//                        name = "Android",
+//                        modifier = Modifier.padding(innerPadding)
+//                    )
+//                }
+
                 // ログイン成功でHome起動
 //                if (LoginScreen()){
 //                    DisplayNav()
