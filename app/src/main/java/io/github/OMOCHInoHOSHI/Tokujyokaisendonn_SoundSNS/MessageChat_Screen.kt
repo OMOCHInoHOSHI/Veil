@@ -36,7 +36,7 @@ data class ChatMessage(
 // メッセージチャット画面
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MessageChat_Screen(navController: NavController) {
+fun MessageChat_Screen(navController: NavController, username: String) {
     // 大きさを画面サイズに合わせて調整
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
@@ -80,7 +80,7 @@ fun MessageChat_Screen(navController: NavController) {
 
                         // 相手のアカウント名
                         Text(
-                            text = "tjop0044",
+                            text = username,
                             color = Color.White,
                             fontSize = (16 * fontScale).sp,
                             fontWeight = FontWeight.Medium

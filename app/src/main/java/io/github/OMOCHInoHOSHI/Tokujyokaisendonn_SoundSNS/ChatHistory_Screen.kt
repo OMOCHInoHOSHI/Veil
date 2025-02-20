@@ -357,7 +357,7 @@ fun PostItem(post: Post, screenWidth: androidx.compose.ui.unit.Dp, fontScale: Fl
             .padding(horizontal = 16.dp, vertical = 4.dp) // 上下のパディングを狭くする
             .clickable {
                 // 投稿をタッチしたときの処理
-                navController.navigate("MessageChat_Screen")
+                navController.navigate("MessageChat_Screen/${post.username}")
             },
     ) {
         // アイコン

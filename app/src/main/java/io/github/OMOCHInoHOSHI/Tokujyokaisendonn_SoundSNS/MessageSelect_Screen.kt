@@ -306,7 +306,7 @@ fun MessageRow(post: Post, fontScale: Float, navController: NavController) {
             .padding(horizontal = 16.dp, vertical = 12.dp)
             .clickable {
                 // 投稿をタッチしたときの処理
-                navController.navigate("MessageChat_Screen")
+                navController.navigate("MessageChat_Screen/${post.username}")
             },
         verticalAlignment = Alignment.CenterVertically
     ) {
