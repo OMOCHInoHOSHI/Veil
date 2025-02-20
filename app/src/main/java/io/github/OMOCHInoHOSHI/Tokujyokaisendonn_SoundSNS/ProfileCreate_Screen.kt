@@ -23,12 +23,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileCreate_Screen(modifier: Modifier = Modifier) {
+fun ProfileCreate_Screen(modifier: Modifier = Modifier, navController: NavController) {
     var userName by remember { mutableStateOf("ユーザー名") }
     var userBio by remember { mutableStateOf("一言プロフィール") }
     var profileImageUri by remember { mutableStateOf<Uri?>(null) }
@@ -122,6 +123,6 @@ fun ProfileCreate_Screen(modifier: Modifier = Modifier) {
 @Composable
 fun ProfilePreview() {
     VeilTheme {
-        ProfileCreate_Screen()
+        ProfileCreate_Screen(navController = NavController(LocalContext.current))
     }
 }

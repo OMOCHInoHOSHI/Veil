@@ -19,11 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 
@@ -33,7 +35,8 @@ fun Profile_Screen(
     userName: String,
     userBio: String,
     profileImageUrl: String?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController
 ) {
 
     Scaffold(
@@ -191,7 +194,8 @@ fun ProfileScreenPreview() {
         Profile_Screen(
             userName = "特上海鮮どんぶり",
             userBio = "歌手目指してます",
-            profileImageUrl = "https://example.com/profile.jpg"
+            profileImageUrl = "https://example.com/profile.jpg",
+            navController = NavController(LocalContext.current)
         )
     }
 }

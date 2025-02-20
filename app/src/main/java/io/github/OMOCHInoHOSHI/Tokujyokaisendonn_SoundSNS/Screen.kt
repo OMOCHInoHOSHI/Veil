@@ -55,6 +55,10 @@ enum class Nav {
     MessageChat_Screen, //メッセージチャット画面
     MessageSelect_Screen, // チャット選択画面
     ChatHistory_Screen, // チャット履歴画面
+    Profile_Screen,     // マイページ画面
+    ProfileCreate_Screen, // マイページ作成画面
+    Playlist_Screen, // プレイリスト画面
+    PlaylistCreate_Screen, // プレイリスト作成画面
 }
 // 画面遷移先E-------------------------
 
