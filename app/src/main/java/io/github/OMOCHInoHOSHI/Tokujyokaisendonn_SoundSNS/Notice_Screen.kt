@@ -1,61 +1,72 @@
 package io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS
 
-import android.app.Activity
-import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource.Companion.SideEffect
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
-import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.Pink40
-import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.Purple40
-import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.PurpleGrey40
-import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 
-
-// 通知画面
-//@Preview(showBackground = true)
 @Composable
-fun Notice_Screen(navController: NavController){
+fun Notice_Screen(navController: NavController) {
+    // Compose 内では LocalContext.current を使って Context を取得
+    val context = LocalContext.current
+    // AudioRecordTest のインスタンスを生成（Activity のライフサイクル外でも利用可能なようにコンストラクタで Context を渡しています）
+    val audioRecordTest = AudioRecordTest(context)
 
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(100.dp),
+        contentAlignment = Alignment.Center
+
+    ) {
+
+
+        Column {
+            // 録音開始ボタン
+            IconButton(
+                onClick = { audioRecordTest.onRecord(true) },
+                modifier = Modifier.padding(0.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Mic,
+                    contentDescription = "録音開始"
+                )
+            }
+            // 再生開始ボタン
+            IconButton(
+                onClick = { audioRecordTest.onPlay(true) },
+                modifier = Modifier.padding(0.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.PlayArrow,
+                    contentDescription = "再生開始"
+                )
+            }
+            // 停止ボタン（録音・再生の両方を停止）
+            IconButton(
+                onClick = {
+                    audioRecordTest.onRecord(false)
+                    audioRecordTest.onPlay(false)
+                },
+                modifier = Modifier.padding(0.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Stop,
+                    contentDescription = "停止"
+                )
+            }
+        }
+    }
 }
-
-
-@Preview(showBackground = true)
-@Composable
-fun Notice_Screen() {
-
-}
-
