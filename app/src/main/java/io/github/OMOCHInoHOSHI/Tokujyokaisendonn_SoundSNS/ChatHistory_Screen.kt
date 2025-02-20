@@ -312,7 +312,10 @@ fun ChatHistory_Screen(navController: NavController) {
         // メッセージ作成ボタン
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /* メッセージ作成 */ ShowFlag = true },
+                onClick = { /* メッセージ作成 */
+//                    ShowFlag = true
+                    navController.navigate("MessageSelect_Screen")
+                          },
                 containerColor = Color(0xFF2196F3),
                 contentColor = Color.White
             ) {
