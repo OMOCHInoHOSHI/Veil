@@ -94,7 +94,6 @@ fun DisplayNav(){
             MessageSelect_Screen(navController = navController)
         }
 
-
         // ルート名：ChatHistory_Screen　ChatHistory_Screenに遷移
         composable(route = Nav.ChatHistory_Screen.name) {
             ChatHistory_Screen(navController = navController)
@@ -163,10 +162,10 @@ fun BottomNavBar(navController: NavController) {
 
 //　トップバーセットS-------------------------------------------------------------------------------------------------
 // タイトルとアイコンS-------------------------------------------------------------------
-@Preview
+//@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar_Screen(){
+fun TopBar_Screen(navController: NavController){
     var showMenu by remember { mutableStateOf(false) }
 
     TopAppBar(
@@ -179,7 +178,7 @@ fun TopBar_Screen(){
             }
 
             // ドロップダウンメニューを出す　//直接フラグ操作
-            DropDownMenu_View(showMenu, onDismiss = { showMenu = false })
+            DropDownMenu_View(showMenu, onDismiss = { showMenu = false }, navController)
         }
 
     )
@@ -189,7 +188,7 @@ fun TopBar_Screen(){
 
 // アイコン押した時のドロップダウンメニューS-------------------------------------------------
 @Composable
-fun DropDownMenu_View(showMenu: Boolean, onDismiss: () -> Unit) {
+fun DropDownMenu_View(showMenu: Boolean, onDismiss: () -> Unit, navController: NavController) {
     DropdownMenu(
         expanded = showMenu,
         onDismissRequest = onDismiss
@@ -197,7 +196,9 @@ fun DropDownMenu_View(showMenu: Boolean, onDismiss: () -> Unit) {
         // メッセージ
         DropdownMenuItem(
             text = { Text("メッセージ") },
-            onClick = { onDismiss() /*TODO*/ },
+            onClick = {
+                onDismiss()
+                navController.navigate(Nav.ChatHistory_Screen) },
             leadingIcon = {
                 Icon(Icons.AutoMirrored.Filled.Message, contentDescription = "メッセージ")
             }
