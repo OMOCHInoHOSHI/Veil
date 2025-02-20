@@ -193,7 +193,10 @@ fun MessageSelect_Screen(navController: NavController) {
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.clickable { ShowFlag = true }
                     ) {
-                        IconButton(onClick = { /* 戻る */ ShowFlag = true }) {
+                        IconButton(onClick = { /* 戻る */
+//                            ShowFlag = true
+                            navController.navigate("ChatHistory_Screen")
+                        }) {
                             Icon(
                                 Icons.Default.ArrowBack,
                                 contentDescription = "Back",
@@ -282,7 +285,7 @@ fun MessageSelect_Screen(navController: NavController) {
             // メッセージリスト
             LazyColumn {
                 items(posts.value) { post ->
-                    MessageRow(post, fontScale)
+                    MessageRow(post, fontScale, navController)
                 }
             }
         }
@@ -296,11 +299,15 @@ fun MessageSelect_Screen(navController: NavController) {
 
 // ユーザー一覧の表示
 @Composable
-fun MessageRow(post: Post, fontScale: Float) {
+fun MessageRow(post: Post, fontScale: Float, navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .clickable {
+                // 投稿をタッチしたときの処理
+                navController.navigate("MessageChat_Screen")
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
         // アイコン
