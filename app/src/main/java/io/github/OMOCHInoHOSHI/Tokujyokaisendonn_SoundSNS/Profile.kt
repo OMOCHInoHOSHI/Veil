@@ -28,7 +28,7 @@ import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Profile(modifier: Modifier = Modifier) {
+fun ProfileCreate_Screen(modifier: Modifier = Modifier) {
     var userName by remember { mutableStateOf("ユーザー名") }
     var userBio by remember { mutableStateOf("一言プロフィール") }
     var profileImageUri by remember { mutableStateOf<Uri?>(null) }
@@ -122,6 +122,6 @@ fun Profile(modifier: Modifier = Modifier) {
 @Composable
 fun ProfilePreview() {
     VeilTheme {
-        Profile()
+        ProfileCreate_Screen()
     }
 }

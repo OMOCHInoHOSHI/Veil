@@ -29,7 +29,7 @@ import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(
+fun Profile_Screen(
     userName: String,
     userBio: String,
     profileImageUrl: String?,
@@ -188,7 +188,7 @@ fun ProfileScreen(
 @Composable
 fun ProfileScreenPreview() {
     VeilTheme {
-        ProfileScreen(
+        Profile_Screen(
             userName = "特上海鮮どんぶり",
             userBio = "歌手目指してます",
             profileImageUrl = "https://example.com/profile.jpg"
