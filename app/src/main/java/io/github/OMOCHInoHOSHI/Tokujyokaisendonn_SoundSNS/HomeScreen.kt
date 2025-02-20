@@ -46,11 +46,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 
 //@Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -211,27 +213,37 @@ fun Home_Screen(navController: NavController) {
     }
 }
 
-private val LightColors = lightColorScheme(
-    primary = Color(0xFF6750A4),
-    secondary = Color(0xFF625B71),
-    tertiary = Color(0xFF7D5260),
-)
+//private val LightColors = lightColorScheme(
+//    primary = Color(0xFF6750A4),
+//    secondary = Color(0xFF625B71),
+//    tertiary = Color(0xFF7D5260),
+//)
+//
+//private val DarkColors = darkColorScheme(
+//    primary = Color(0xFFD0BCFF),
+//    secondary = Color(0xFFCCC2DC),
+//    tertiary = Color(0xFFEFB8C8),
+//)
+//
+//@Composable
+//fun SoundSNSTheme(
+//    darkTheme: Boolean = false,
+//    content: @Composable () -> Unit
+//) {
+//    val colorScheme = if (darkTheme) DarkColors else LightColors
+//
+//    MaterialTheme(
+//        colorScheme = colorScheme,
+//        content = content
+//    )
+//}
 
-private val DarkColors = darkColorScheme(
-    primary = Color(0xFFD0BCFF),
-    secondary = Color(0xFFCCC2DC),
-    tertiary = Color(0xFFEFB8C8),
-)
 
+@Preview(showBackground = true)
 @Composable
-fun SoundSNSTheme(
-    darkTheme: Boolean = false,
-    content: @Composable () -> Unit
-) {
-    val colorScheme = if (darkTheme) DarkColors else LightColors
-
-    MaterialTheme(
-        colorScheme = colorScheme,
-        content = content
-    )
+fun HomePreview() {
+    val navController = NavController(LocalContext.current)
+    VeilTheme {
+        Home_Screen(navController)
+    }
 }
