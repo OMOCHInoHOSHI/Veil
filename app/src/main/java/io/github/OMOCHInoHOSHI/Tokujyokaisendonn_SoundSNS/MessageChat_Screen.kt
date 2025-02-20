@@ -26,6 +26,7 @@ import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.back
 import java.text.SimpleDateFormat
 import java.util.*
 
+// チャットメッセージ(仮)
 data class ChatMessage(
     val content: String,
     val timestamp: String,
@@ -33,9 +34,11 @@ data class ChatMessage(
     val isRead: Boolean = false
 )
 
+// メッセージチャット画面
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MessageChat_Screen() {
+    // 大きさを画面サイズに合わせて調整
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
     val fontScale = screenWidth / 360.dp
@@ -45,6 +48,7 @@ fun MessageChat_Screen() {
     // メッセージ作成ボタンのフラグ
     var ShowFlag by remember { mutableStateOf(false) }
 
+    // メッセージ情報(仮)
     val messages = remember {
         mutableStateListOf(
             ChatMessage("↓仮のメッセージです。", "2:56", true),
@@ -58,19 +62,24 @@ fun MessageChat_Screen() {
     }
 
     Scaffold(
+        // フッター(的な)
         topBar = {
             TopAppBar(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        // 相手のアイコン
                         Box(
                             modifier = Modifier
                                 .size(40.dp)
                                 .clip(CircleShape)
                                 .background(Color.Gray)
                         )
+
                         Spacer(modifier = Modifier.width(12.dp))
+
+                        // 相手のアカウント名
                         Text(
                             text = "tjop0044",
                             color = Color.White,
@@ -79,6 +88,7 @@ fun MessageChat_Screen() {
                         )
                     }
                 },
+                // 戻るボタン
                 navigationIcon = {
                     IconButton(onClick = { /* 戻る */ ShowFlag = true }) {
                         Icon(
@@ -88,11 +98,13 @@ fun MessageChat_Screen() {
                         )
                     }
                 },
+                // ヘッダーの背景
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFF121212)
                 )
             )
         },
+        // フッター(的な)
         bottomBar = {
             Column(
                 modifier = Modifier
@@ -114,6 +126,7 @@ fun MessageChat_Screen() {
                             .weight(1f)
                             .heightIn(min = 50.dp, max = 200.dp) // 高さの最小値と最大値を設定
                             .clip(RoundedCornerShape(12.dp)), // 四隅を丸くする
+                        // 文字が入力されていない時の表示
                         placeholder = {
                             Text(
                                 "メッセージを作成",
@@ -127,6 +140,7 @@ fun MessageChat_Screen() {
                             unfocusedIndicatorColor = Color.Transparent
                         ),
                         shape = RoundedCornerShape(24.dp),
+                        // 送信ボタン
                         trailingIcon = {
                             if (messageText.isNotEmpty()) {
                                 IconButton(
@@ -165,6 +179,7 @@ fun MessageChat_Screen() {
             }
         }
     ) { paddingValues ->
+        // メッセージの表示
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -203,28 +218,33 @@ fun ChatMessageItem(message: ChatMessage, fontScale: Float) {
                     )
                 )
                 .background(
-                    if (message.isFromMe) Color(0xFF2196F3)
-                    else Color(0xFF424242)
+                    if (message.isFromMe) Color(0xFF2196F3)     // 自分のメッセージ背景
+                    else Color(0xFF424242)      // 相手のメッセージ背景
                 )
                 .padding(horizontal = 12.dp, vertical = 8.dp)
         ) {
+            // メッセージの文字
             Text(
                 text = message.content,
                 color = Color.White,
                 fontSize = (14 * fontScale).sp
             )
         }
-        Spacer(modifier = Modifier.height(4.dp))
+        // メッセージと送信時間の空白
+        Spacer(modifier = Modifier.height(5.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = if (message.isFromMe) Arrangement.End else Arrangement.Start,
             modifier = Modifier.fillMaxWidth()
         ) {
+            // 送信時間
             Text(
                 text = message.timestamp,
                 color = Color.Gray,
                 fontSize = (12 * fontScale).sp
             )
+
+            // 既読、未読情報
             if (message.isFromMe && message.isRead) {
                 Spacer(modifier = Modifier.width(4.dp))
                 Icon(
@@ -235,5 +255,8 @@ fun ChatMessageItem(message: ChatMessage, fontScale: Float) {
                 )
             }
         }
+
+        // メッセージごとの空白
+        Spacer(modifier = Modifier.height(5.dp))
     }
 }

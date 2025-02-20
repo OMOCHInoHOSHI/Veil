@@ -26,6 +26,16 @@ import androidx.navigation.NavController
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+// 投稿情報(仮)
+data class Post(
+    val id: Int,
+    val username: String,
+    val userid: String,
+    val date: LocalDate, // LocalDate型に変更
+    val content: String,
+    val avatarColor: Color
+)
+
 // チャット履歴画面
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -115,6 +125,7 @@ fun ChatHistory_Screen(navController: NavController) {
         ).sortedByDescending { it.date }) // 日付でソート
     }
 
+    // 大きさを画面サイズに合わせて調整
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
@@ -345,7 +356,7 @@ fun PostItem(post: Post, screenWidth: androidx.compose.ui.unit.Dp, fontScale: Fl
                 // 投稿をタッチしたときの処理
             }
     ) {
-        // アバター
+        // アイコン
         Box(
             modifier = Modifier
                 .size(40.dp)
@@ -398,16 +409,19 @@ fun MessageDialog(onDismiss: () -> Unit) {
     Log.d("Create_Message", "ウィンドウの作成")
 
     Box(
+        // ウィンドウ以外の背景
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0x80000000)) // 半透明の背景
             .wrapContentSize(Alignment.Center)
     ) {
         Box(
+            // ウィンドウ
             modifier = Modifier
                 .size(300.dp, 200.dp)
                 .background(Color.White, RoundedCornerShape(12.dp))
         ) {
+            // ✕ボタン
             IconButton(
                 onClick = onDismiss,
                 modifier = Modifier
@@ -424,12 +438,3 @@ fun MessageDialog(onDismiss: () -> Unit) {
         }
     }
 }
-
-data class Post(
-    val id: Int,
-    val username: String,
-    val userid: String,
-    val date: LocalDate, // LocalDate型に変更
-    val content: String,
-    val avatarColor: Color
-)

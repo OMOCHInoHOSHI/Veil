@@ -31,6 +31,7 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MessageSelect_Screen(navController: NavController) {
+    // 大きさを画面サイズに合わせて調整
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
     val fontScale = screenWidth / 360.dp
@@ -138,6 +139,7 @@ fun MessageSelect_Screen(navController: NavController) {
                         .height(56.dp)
                         .background(Color(0xFF121212))
                 ) {
+                    // アプリ名
                     Text(
                         text = "Veil",
                         color = Color.White,
@@ -161,7 +163,7 @@ fun MessageSelect_Screen(navController: NavController) {
                     }
                     //*/
 
-                    /* 画像アイコン(データーベース内の画像を使えるようになったら使う)
+                    /* アカウントアイコン(データーベース内の画像を使えるようになったら使う)
                     IconButton(
                         onClick = { /* Picture機能 */ },
                         modifier = Modifier
@@ -188,6 +190,7 @@ fun MessageSelect_Screen(navController: NavController) {
                         .background(Color(0xFF121212)),
                     contentAlignment = Alignment.CenterStart
                 ) {
+                    // 戻るボタン
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.clickable { ShowFlag = true }
@@ -302,7 +305,7 @@ fun MessageRow(post: Post, fontScale: Float) {
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // アバター
+        // アイコン
         Box(
             modifier = Modifier
                 .size(40.dp)
@@ -312,12 +315,14 @@ fun MessageRow(post: Post, fontScale: Float) {
         Spacer(modifier = Modifier.width(12.dp))
 
         Column {
+            // ユーザー名
             Text(
                 text = post.username,
                 color = Color.White,
                 fontSize = (15 * fontScale).sp,
                 fontWeight = FontWeight.Normal
             )
+            // ユーザーID
             Text(
                 text = post.userid,
                 color = Color.Gray,
@@ -333,16 +338,19 @@ fun back(onDismiss: () -> Unit) {
     Log.d("Create_Message", "ウィンドウの作成")
 
     Box(
+        // ウィンドウ以外の背景
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0x80000000)) // 半透明の背景
             .wrapContentSize(Alignment.Center)
     ) {
         Box(
+            // ウィンドウ
             modifier = Modifier
                 .size(300.dp, 200.dp)
                 .background(Color.White, RoundedCornerShape(12.dp))
         ) {
+            // ✕ボタン
             IconButton(
                 onClick = onDismiss,
                 modifier = Modifier
