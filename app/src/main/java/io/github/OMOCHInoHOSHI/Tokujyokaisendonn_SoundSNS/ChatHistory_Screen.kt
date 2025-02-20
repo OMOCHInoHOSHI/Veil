@@ -1,6 +1,5 @@
 package io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -40,9 +39,6 @@ data class Post(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatHistory_Screen(navController: NavController) {
-    // メッセージ作成ボタンのフラグ
-    var ShowFlag by remember { mutableStateOf(false) }
-
     // 最新メッセージの日付
     val dateFormatter = DateTimeFormatter.ofPattern("yyyy年MM月dd日")
 
@@ -257,63 +253,17 @@ fun ChatHistory_Screen(navController: NavController) {
                         ),
                         singleLine = true       // 文字列を１行に収める設定
                     )
-//                    // Veilに合わせる
-//                    Button(
-//                        onClick = { /* Picture機能 */ },
-//                        colors = ButtonDefaults.buttonColors(
-//                            containerColor = Color(0xFFE91E63)
-//                        ),
-//                        modifier = Modifier
-//                            .padding(start = 8.dp)
-//                            .height(40.dp),
-//                        contentPadding = PaddingValues(horizontal = 12.dp)
-//                    ) {
-//                        Text("Picture", fontSize = (14 * fontScale).sp)
-//                    }
                 }
             }
         },
         // ナビゲーションバー
         bottomBar = {
             BottomNavBar(navController)
-//            NavigationBar(
-//                containerColor = Color(0xFF121212),
-//                modifier = Modifier.background(Color(0xFF121212))
-//            ) {
-//                NavigationBarItem(
-//                    icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
-//                    selected = true,
-//                    onClick = { },
-//                    colors = NavigationBarItemDefaults.colors(
-//                        selectedIconColor = Color.White,
-//                        unselectedIconColor = Color.Gray
-//                    )
-//                )
-//                NavigationBarItem(
-//                    icon = { Icon(Icons.Default.Home, contentDescription = "Mic") },
-//                    selected = false,
-//                    onClick = { },
-//                    colors = NavigationBarItemDefaults.colors(
-//                        selectedIconColor = Color.White,
-//                        unselectedIconColor = Color.Gray
-//                    )
-//                )
-//                NavigationBarItem(
-//                    icon = { Icon(Icons.Default.Notifications, contentDescription = "Notifications") },
-//                    selected = false,
-//                    onClick = { },
-//                    colors = NavigationBarItemDefaults.colors(
-//                        selectedIconColor = Color.White,
-//                        unselectedIconColor = Color.Gray
-//                    )
-//                )
-//            }
         },
         // メッセージ作成ボタン
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /* メッセージ作成 */
-//                    ShowFlag = true
+                onClick = {
                     navController.navigate("MessageSelect_Screen")
                           },
                 containerColor = Color(0xFF2196F3),
@@ -336,11 +286,6 @@ fun ChatHistory_Screen(navController: NavController) {
                 PostItem(post, screenWidth, fontScale, navController)
             }
         }
-    }
-
-    // メッセージ作成ボタンの判定
-    if (ShowFlag == true) {
-        MessageDialog(onDismiss = { ShowFlag = false })
     }
 }
 
@@ -403,42 +348,6 @@ fun PostItem(post: Post, screenWidth: androidx.compose.ui.unit.Dp, fontScale: Fl
                     modifier = Modifier.padding(top = 5.dp)
                 )
             }
-        }
-    }
-}
-
-// メッセージ作成ボタン仮
-@Composable
-fun MessageDialog(onDismiss: () -> Unit) {
-    Log.d("Create_Message", "ウィンドウの作成")
-
-    Box(
-        // ウィンドウ以外の背景
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0x80000000)) // 半透明の背景
-            .wrapContentSize(Alignment.Center)
-    ) {
-        Box(
-            // ウィンドウ
-            modifier = Modifier
-                .size(300.dp, 200.dp)
-                .background(Color.White, RoundedCornerShape(12.dp))
-        ) {
-            // ✕ボタン
-            IconButton(
-                onClick = onDismiss,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(8.dp)
-            ) {
-                Icon(
-                    Icons.Default.Close,
-                    contentDescription = "Close",
-                    tint = Color.Red
-                )
-            }
-            // ウィンドウの内容をここに追加
         }
     }
 }

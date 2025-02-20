@@ -1,6 +1,5 @@
 package io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS
-///*
-import android.util.Log
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -35,9 +34,6 @@ fun MessageSelect_Screen(navController: NavController) {
     val fontScale = screenWidth / 360.dp
 
     var searchText by remember { mutableStateOf("") }
-
-    // メッセージ作成ボタンのフラグ
-    var ShowFlag by remember { mutableStateOf(false) }
 
     // 最新メッセージの日付
     val dateFormatter = DateTimeFormatter.ofPattern("yyyy年MM月dd日")
@@ -113,7 +109,7 @@ fun MessageSelect_Screen(navController: NavController) {
                 username = "疲れた",
                 userid = "@jiminiooi",
                 date = LocalDate.parse("2023年02月16日", dateFormatter),
-                content = "投稿(仮)作るの疲れた！！！！！",
+                content = "投稿(仮)作るの疲れた(スクロールように作ったけど多い！！！！！)",
                 avatarColor = Color(0xFF9ea1a3) // 色を設定
             ),
             // 他の投稿を追加
@@ -191,10 +187,9 @@ fun MessageSelect_Screen(navController: NavController) {
                     // 戻るボタン
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.clickable { ShowFlag = true }
+                        modifier = Modifier.clickable { navController.navigate("ChatHistory_Screen") }
                     ) {
-                        IconButton(onClick = { /* 戻る */
-//                            ShowFlag = true
+                        IconButton(onClick = {
                             navController.navigate("ChatHistory_Screen")
                         }) {
                             Icon(
@@ -290,11 +285,6 @@ fun MessageSelect_Screen(navController: NavController) {
             }
         }
     }
-
-    // 戻るボタンの判定
-    if (ShowFlag == true) {
-        back(onDismiss = { ShowFlag = false })
-    }
 }
 
 // ユーザー一覧の表示
@@ -336,40 +326,3 @@ fun MessageRow(post: Post, fontScale: Float, navController: NavController) {
         }
     }
 }
-
-// 戻るボタン練習用
-@Composable
-fun back(onDismiss: () -> Unit) {
-    Log.d("Create_Message", "ウィンドウの作成")
-
-    Box(
-        // ウィンドウ以外の背景
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0x80000000)) // 半透明の背景
-            .wrapContentSize(Alignment.Center)
-    ) {
-        Box(
-            // ウィンドウ
-            modifier = Modifier
-                .size(300.dp, 200.dp)
-                .background(Color.White, RoundedCornerShape(12.dp))
-        ) {
-            // ✕ボタン
-            IconButton(
-                onClick = onDismiss,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(8.dp)
-            ) {
-                Icon(
-                    Icons.Default.Close,
-                    contentDescription = "Close",
-                    tint = Color.Red
-                )
-            }
-            // ウィンドウの内容をここに追加
-        }
-    }
-}
-//*/
