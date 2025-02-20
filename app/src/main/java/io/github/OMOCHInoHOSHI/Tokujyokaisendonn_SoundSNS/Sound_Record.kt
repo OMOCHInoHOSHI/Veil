@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -59,6 +60,7 @@ class AudioRecordTest(private val context: Context) {
                 setDataSource(fileName)
                 prepare()
                 start()
+                Toast.makeText(context, "再生中", Toast.LENGTH_SHORT).show()
             } catch (e: IOException) {
                 Log.e(LOG_TAG, "MediaPlayer prepare() failed: ${e.message}")
             }
@@ -83,6 +85,7 @@ class AudioRecordTest(private val context: Context) {
                 prepare()
                 start()
             }
+            Toast.makeText(context, "録音中", Toast.LENGTH_SHORT).show()
         } catch (e: IllegalStateException) {
             Log.e(LOG_TAG, "MediaRecorder start() invalid state: ${e.message}")
         } catch (e: IOException) {
