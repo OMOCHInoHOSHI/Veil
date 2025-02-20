@@ -53,7 +53,9 @@ fun Profile_Screen(
             TopAppBar(
                 title = { Text("プロフィール") },
                 actions = {
-                    Button(onClick = { /*TODO: 編集画面への遷移*/ }) {
+                    Button(onClick = {
+                        navController.navigate(Nav.ProfileCreate_Screen.name)
+                    }) {
                         Text("編集")
                     }
                 }
