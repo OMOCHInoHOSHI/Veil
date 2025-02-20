@@ -55,19 +55,12 @@ import androidx.navigation.NavController
 //@Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun Home_Screen(navController: NavController) {
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Veil ", fontWeight = FontWeight.Bold) },
-                actions = {
-                    // プロフィールアイコン
-                    IconButton(onClick = { }) {
-                        Icon(Icons.Default.Person, contentDescription = "プロフィール")
-                    }
-                }
-            )
+            // タイトルとアイコン表示
+            TopBar_Screen()
         },
         bottomBar = {
             // 下のナビゲーションバー
