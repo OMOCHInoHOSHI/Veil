@@ -29,18 +29,25 @@ private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
 
 class AudioRecordTest : AppCompatActivity() {
 
+    // 録音ファイルの名前（パス）を保持する変数。
     private var fileName: String = ""
 
+    // 録音開始・停止ボタン
     private var recordButton: RecordButton? = null
+    // 録音を行うためのMediaRecorderオブジェクト
     private var recorder: MediaRecorder? = null
 
+    // 再生開始・停止ボタン
     private var playButton: PlayButton? = null
+    // 再生を行うためのMediaPlayerオブジェクト
     private var player: MediaPlayer? = null
 
-    // Requesting permission to RECORD_AUDIO
+    // 録音パーミッションが許可されているかどうかを保持するフラグ。
     private var permissionToRecordAccepted = false
+    // リクエストするパーミッションの配列
     private var permissions: Array<String> = arrayOf(Manifest.permission.RECORD_AUDIO)
 
+    // パーミッションリクエストの結果を処理します。録音パーミッションが許可されていない場合、アクティビティを終了します。
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -55,18 +62,21 @@ class AudioRecordTest : AppCompatActivity() {
         if (!permissionToRecordAccepted) finish()
     }
 
+    // 録音の開始・停止を制御します。startがtrueの場合は録音を開始し、そうでない場合は録音を停止
     private fun onRecord(start: Boolean) = if (start) {
         startRecording()
     } else {
         stopRecording()
     }
 
+    // 再生の開始・停止を制御
     private fun onPlay(start: Boolean) = if (start) {
         startPlaying()
     } else {
         stopPlaying()
     }
 
+    // MediaPlayerを使用して録音ファイルの再生
     @OptIn(UnstableApi::class)
     private fun startPlaying() {
         player = MediaPlayer().apply {
@@ -80,11 +90,13 @@ class AudioRecordTest : AppCompatActivity() {
         }
     }
 
+    // 再生を停止し、MediaPlayerオブジェクトを解放します
     private fun stopPlaying() {
         player?.release()
         player = null
     }
 
+    // MediaRecorderを使用して音声の録音を開始
     @OptIn(UnstableApi::class)
     private fun startRecording() {
         recorder = MediaRecorder().apply {
@@ -103,6 +115,7 @@ class AudioRecordTest : AppCompatActivity() {
         }
     }
 
+    // 録音を停止し、MediaRecorderオブジェクトを解放
     private fun stopRecording() {
         recorder?.apply {
             stop()
@@ -111,6 +124,7 @@ class AudioRecordTest : AppCompatActivity() {
         recorder = null
     }
 
+    // 録音を開始・停止するボタンです。ボタンのテキストとクリックリスナーを設定
     internal inner class RecordButton(ctx: Context) : androidx.appcompat.widget.AppCompatButton(ctx) {
 
         var mStartRecording = true
@@ -130,6 +144,7 @@ class AudioRecordTest : AppCompatActivity() {
         }
     }
 
+    // 再生を開始・停止するボタンです。ボタンのテキストとクリックリスナーを設定
     internal inner class PlayButton(ctx: Context) : androidx.appcompat.widget.AppCompatButton(ctx) {
         var mStartPlaying = true
         var clicker: OnClickListener = OnClickListener {
@@ -147,6 +162,7 @@ class AudioRecordTest : AppCompatActivity() {
         }
     }
 
+    // アクティビティが作成されたときに呼び出されます。ファイル名を設定し、パーミッションをリクエストし、ボタンをレイアウトに追加
     override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
 
@@ -172,6 +188,7 @@ class AudioRecordTest : AppCompatActivity() {
         setContentView(ll)
     }
 
+    // 録音・再生オブジェクトを解放
     override fun onStop() {
         super.onStop()
         recorder?.release()
