@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.automirrored.filled.Message
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Drafts
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExitToApp
@@ -217,6 +218,17 @@ fun DropDownMenu_View(showMenu: Boolean, onDismiss: () -> Unit, navController: N
         expanded = showMenu,
         onDismissRequest = onDismiss
     ) {
+        // マイページ
+        DropdownMenuItem(
+            text = { Text("マイページ") },
+            onClick = {
+                onDismiss()
+                navController.navigate("Profile_Screen") },
+            leadingIcon = {
+                Icon(Icons.Default.AccountCircle, contentDescription = "マイページ")
+            }
+        )
+
         // メッセージ
         DropdownMenuItem(
             text = { Text("メッセージ") },
