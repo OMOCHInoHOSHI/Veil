@@ -59,7 +59,9 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.datastore.core.android)    // アイコン追加
+    implementation(libs.androidx.datastore.core.android)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.media3.common.ktx)    // アイコン追加
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
