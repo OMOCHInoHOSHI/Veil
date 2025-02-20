@@ -164,7 +164,9 @@ fun Profile_Screen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("プレイリスト", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    IconButton(onClick = { /*TODO: 新規プレイリスト作成画面への遷移*/ }) {
+                    IconButton(onClick = {
+                        navController.navigate(Nav.PlaylistCreate_Screen.name)
+                    /*TODO: 新規プレイリスト作成画面への遷移*/ }) {
                         Icon(imageVector = Icons.Default.Add, contentDescription = "Add Playlist")
                     }
                 }
@@ -178,11 +180,11 @@ fun Profile_Screen(
                                 .size(150.dp)
                                 .padding(8.dp)
                                 .background(Color.LightGray) // 仮の背景色
-                                .clickable { /*TODO: プレイリスト詳細画面への遷移など*/ }
+                                .clickable { navController.navigate(Nav.Playlist_Screen.name) }
                         ) {
                             Spacer(modifier = Modifier.height(4.dp))
                             Text("プレイリスト名", fontSize = 12.sp)
-                            IconButton(onClick = { /*TODO: プレイリスト画面への遷移*/ }) {
+                            IconButton(onClick = { navController.navigate(Nav.Playlist_Screen.name)}) {
                                 Image(
                                     painter = painterResource(id = R.drawable.ic_launcher_background), // 仮の画像
                                     contentDescription = "Playlist Image",
