@@ -52,6 +52,9 @@ enum class Nav {
     Home_Screen, //ホーム画面
     Notice_Screen, //通知画面
     SoundPost_Screen, //音投稿準備画面
+    MessageChat_Screen, //メッセージチャット画面
+    MessageSelect_Screen, // チャット選択画面
+    ChatHistory_Screen, // チャット履歴画面
 }
 // 画面遷移先E-------------------------
 
@@ -79,6 +82,22 @@ fun DisplayNav(){
         // ルート名：Notice_Screen　Notice_Screenに遷移
         composable(route = Nav.Notice_Screen.name) {
             Notice_Screen(navController = navController)
+        }
+
+        // ルート名：MessageChat_Screen　MessageChat_Screenに遷移
+        composable(route = Nav.MessageChat_Screen.name) {
+            MessageChat_Screen(navController = navController)
+        }
+
+        // ルート名：MessageSelect_Screen　MessageSelect_Screenに遷移
+        composable(route = Nav.MessageSelect_Screen.name) {
+            MessageSelect_Screen(navController = navController)
+        }
+
+
+        // ルート名：ChatHistory_Screen　ChatHistory_Screenに遷移
+        composable(route = Nav.ChatHistory_Screen.name) {
+            ChatHistory_Screen(navController = navController)
         }
     }
     // startDestinationは最初に表示するページE----------------------------------------------

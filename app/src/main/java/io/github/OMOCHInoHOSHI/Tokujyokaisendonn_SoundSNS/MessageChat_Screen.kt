@@ -1,8 +1,5 @@
 package io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,7 +19,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.back
+import androidx.navigation.NavController
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,7 +34,7 @@ data class ChatMessage(
 // メッセージチャット画面
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MessageChat_Screen() {
+fun MessageChat_Screen(navController: NavController) {
     // 大きさを画面サイズに合わせて調整
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
