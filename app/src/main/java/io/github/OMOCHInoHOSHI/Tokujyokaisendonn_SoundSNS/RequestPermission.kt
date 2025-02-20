@@ -6,46 +6,67 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.app.AlertDialog
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Box
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
+import java.lang.reflect.Modifier
 
-// シングルトンなクラス（１つしか生成されないことが保証されたクラス）を生成
-object AudioPermissionHelper {
 
-    // オーディオ録音パーミッションに対するリクエストコード
-    const val REQUEST_RECORD_AUDIO_PERMISSION = 200
+// 録音パーミッション
+@Composable
+fun PermissionRequestScreen() {
+    // パーミッションの状態を保持するための変数 hasPermission を定義
+    var hasPermission by remember { mutableStateOf(false) }
 
-    // RECORD_AUDIO パーミッションが許可されているか確認します。
-    // 許可されていない場合、説明ダイアログを表示するか直接パーミッションを要求します。
-    fun checkAudioPermission(activity: AppCompatActivity) {
-        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            // パーミッションが以前に拒否された場合、説明が必要かどうかをチェックします
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.RECORD_AUDIO)) {
-                showPermissionRationaleDialog(activity)
-            } else {
-                requestAudioPermission(activity)
+    // LocalContext を使用して現在のアクティビティを取得
+    val activity = LocalContext.current
+
+    // ActivityResultLauncher を使用してパーミッションのリクエストを行う
+    val requestPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        // パーミッションが許可されたかどうかを hasPermission に設定
+        hasPermission = isGranted
+    }
+
+    // LaunchedEffect を使用して初期化時にパーミッションの状態を確認およびリクエスト
+    LaunchedEffect(Unit) {
+        // パーミッションが既に許可されているか確認
+        when (PackageManager.PERMISSION_GRANTED) {
+            ContextCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO) -> {
+                // パーミッションが許可されている場合、hasPermission を true に設定
+                hasPermission = true
             }
-        } else {
-            // すでにパーミッションが許可されている場合は、オーディオ録音の処理を実行します
+            else -> {
+                // パーミッションが許可されていない場合、リクエストを行う
+                requestPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+            }
         }
     }
 
-    // オーディオ録音パーミッションが必要な理由を説明するダイアログを表示します
-    private fun showPermissionRationaleDialog(activity: AppCompatActivity) {
-        AlertDialog.Builder(activity)
-            .setTitle("録音パーミッションが必要です")
-            .setMessage("このアプリはオーディオ録音のためにマイクへのアクセスが必要です。")
-            .setPositiveButton("許可") { _, _ ->
-                requestAudioPermission(activity)
-            }
-            .setNegativeButton("拒否") { dialog, _ ->
-                dialog.dismiss()
-                // パーミッション拒否時の処理を必要に応じて実装してください
-            }
-            .show()
+    // パーミッションの状態に応じて適切なコンポーザブル関数を表示
+    if (hasPermission) {
+        // パーミッションが許可されている場合
+        GrantedPermission()
+    } else {
+        // パーミッションが拒否されている場合
+        DeniedPermission()
     }
+}
+fun GrantedPermission() {
+println("許可")
+}
 
-    // RECORD_AUDIO パーミッションを要求します
-    fun requestAudioPermission(activity: AppCompatActivity) {
-        val permissions = arrayOf(Manifest.permission.RECORD_AUDIO)
-        ActivityCompat.requestPermissions(activity, permissions, REQUEST_RECORD_AUDIO_PERMISSION)
-    }
+fun DeniedPermission() {
+    println("許可されてない")
 }
