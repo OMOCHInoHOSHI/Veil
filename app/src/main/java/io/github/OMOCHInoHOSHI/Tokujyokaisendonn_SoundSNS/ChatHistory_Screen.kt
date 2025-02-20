@@ -333,7 +333,7 @@ fun ChatHistory_Screen(navController: NavController) {
             contentPadding = PaddingValues(vertical = 8.dp) // 投稿同士の空白を狭くする
         ) {
             items(posts.value) { post ->
-                PostItem(post, screenWidth, fontScale)
+                PostItem(post, screenWidth, fontScale, navController)
             }
         }
     }
@@ -346,7 +346,7 @@ fun ChatHistory_Screen(navController: NavController) {
 
 // ユーザー一覧の表示
 @Composable
-fun PostItem(post: Post, screenWidth: androidx.compose.ui.unit.Dp, fontScale: Float) {
+fun PostItem(post: Post, screenWidth: androidx.compose.ui.unit.Dp, fontScale: Float, navController: NavController) {
     // 最新メッセージの日付フォーマット
     val dateFormatter = DateTimeFormatter.ofPattern("yyyy年MM月dd日")
 
@@ -357,7 +357,8 @@ fun PostItem(post: Post, screenWidth: androidx.compose.ui.unit.Dp, fontScale: Fl
             .padding(horizontal = 16.dp, vertical = 4.dp) // 上下のパディングを狭くする
             .clickable {
                 // 投稿をタッチしたときの処理
-            }
+                navController.navigate("MessageChat_Screen")
+            },
     ) {
         // アイコン
         Box(
