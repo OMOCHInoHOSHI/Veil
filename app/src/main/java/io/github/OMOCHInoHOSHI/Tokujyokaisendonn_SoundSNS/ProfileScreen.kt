@@ -32,12 +32,21 @@ import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Profile_Screen(
-    userName: String,
-    userBio: String,
-    profileImageUrl: String?,
-    modifier: Modifier = Modifier,
     navController: NavController
 ) {
+
+    var userName: String
+    var userBio: String
+    var profileImageUrl: String?
+
+    userName = "特上海鮮どんぶり"
+    userBio = "歌手目指してます"
+    profileImageUrl = "https://example.com/profile.jpg"
+
+//    userName: String,
+//    userBio: String,
+//    profileImageUrl: String?,
+//    modifier: Modifier = Modifier,
 
     Scaffold(
         topBar = {
@@ -53,7 +62,7 @@ fun Profile_Screen(
     ) { innerPadding ->
 
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(16.dp),
@@ -187,15 +196,15 @@ fun Profile_Screen(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ProfileScreenPreview() {
-    VeilTheme {
-        Profile_Screen(
-            userName = "特上海鮮どんぶり",
-            userBio = "歌手目指してます",
-            profileImageUrl = "https://example.com/profile.jpg",
-            navController = NavController(LocalContext.current)
-        )
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun ProfileScreenPreview() {
+//    VeilTheme {
+//        Profile_Screen(
+////            userName = "特上海鮮どんぶり",
+////            userBio = "歌手目指してます",
+////            profileImageUrl = "https://example.com/profile.jpg",
+//            navController = NavController(LocalContext.current)
+//        )
+//    }
+//}

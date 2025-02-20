@@ -102,6 +102,26 @@ fun DisplayNav(){
         composable(route = Nav.ChatHistory_Screen.name) {
             ChatHistory_Screen(navController = navController)
         }
+
+        // ルート名：Profile_Screen　Profile_Screenに遷移
+        composable(route = Nav.Profile_Screen.name) {
+            Profile_Screen(navController = navController)
+        }
+
+        // ルート名：ProfileCreate_Screen　ProfileCreate_Screenに遷移
+        composable(route = Nav.ProfileCreate_Screen.name) {
+            ProfileCreate_Screen(navController = navController)
+        }
+
+        // ルート名：Playlist_Screen　Playlist_Screenに遷移
+        composable(route = Nav.Playlist_Screen.name) {
+            Playlist_Screen(navController = navController)
+        }
+
+        // ルート名：PlaylistCreate_Screen　PlaylistCreate_Screenに遷移
+        composable(route = Nav.PlaylistCreate_Screen.name) {
+            PlaylistCreate_Screen(navController = navController)
+        }
     }
     // startDestinationは最初に表示するページE----------------------------------------------
 
