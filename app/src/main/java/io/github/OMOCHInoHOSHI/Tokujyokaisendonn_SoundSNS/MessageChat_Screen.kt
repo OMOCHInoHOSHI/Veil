@@ -1,5 +1,6 @@
 package io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS
 
+import android.view.View
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.Navigation.findNavController
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -87,7 +89,10 @@ fun MessageChat_Screen(navController: NavController) {
                 },
                 // 戻るボタン
                 navigationIcon = {
-                    IconButton(onClick = { /* 戻る */ ShowFlag = true }) {
+                    IconButton(onClick = { /* 戻る */
+//                        ShowFlag = true
+                        navController.navigateUp()
+                    }) {
                         Icon(
                             Icons.Default.ArrowBack,
                             contentDescription = "Back",
