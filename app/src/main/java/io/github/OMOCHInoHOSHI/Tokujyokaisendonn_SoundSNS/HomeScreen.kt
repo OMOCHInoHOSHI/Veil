@@ -60,7 +60,7 @@ fun Home_Screen(navController: NavController) {
     Scaffold(
         topBar = {
             // タイトルとアイコン表示
-            TopBar_Screen()
+            TopBar_Screen(navController)
         },
         bottomBar = {
             // 下のナビゲーションバー

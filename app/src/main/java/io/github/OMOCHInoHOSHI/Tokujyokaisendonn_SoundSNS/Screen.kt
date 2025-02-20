@@ -198,7 +198,7 @@ fun DropDownMenu_View(showMenu: Boolean, onDismiss: () -> Unit, navController: N
             text = { Text("メッセージ") },
             onClick = {
                 onDismiss()
-                navController.navigate(Nav.ChatHistory_Screen) },
+                navController.navigate(Nav.ChatHistory_Screen.name) },
             leadingIcon = {
                 Icon(Icons.AutoMirrored.Filled.Message, contentDescription = "メッセージ")
             }
