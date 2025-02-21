@@ -59,8 +59,6 @@ import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 @Composable
 fun Home_Screen(navController: NavController) {
 
-    // 録音パーミッション
-    PermissionRequestScreen()
 
     Scaffold(
         topBar = {

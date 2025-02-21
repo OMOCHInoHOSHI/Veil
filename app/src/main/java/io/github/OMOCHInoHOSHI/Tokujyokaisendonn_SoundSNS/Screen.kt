@@ -1,5 +1,6 @@
 package io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -37,6 +38,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -135,6 +137,10 @@ fun BottomNavBar(navController: NavController) {
 
     //この関数は位置の指定をしていません。呼び出し側で管理してください
 
+    // 録音パーミッションの許可
+    val recordPermission = PermissionRequestScreen()
+    val context = LocalContext.current
+
     // 選択管理
     var selectedTab by remember { mutableStateOf(0) }
 
@@ -164,8 +170,14 @@ fun BottomNavBar(navController: NavController) {
             // 現在のルートがSoundPost_Screenなら選択状態にする
             selected = currentRoute == Nav.SoundPost_Screen.name,
             onClick = {
-                if (currentRoute != Nav.SoundPost_Screen.name) {
-                    navController.navigate(Nav.SoundPost_Screen.name)
+                // 録音許可が無いと遷移しない
+                if(recordPermission){
+                    if (currentRoute != Nav.SoundPost_Screen.name) {
+                        navController.navigate(Nav.SoundPost_Screen.name)
+                    }
+                }
+                else {
+                    Toast.makeText(context, "録音許可が必要です", Toast.LENGTH_SHORT).show()
                 }
             }
         )

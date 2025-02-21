@@ -1,30 +1,22 @@
 package io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS
 
-import androidx.core.app.ActivityCompat
 import android.Manifest
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import android.app.AlertDialog
-import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
-import java.lang.reflect.Modifier
+import androidx.core.content.ContextCompat
 
 
-// 録音パーミッション
+// 録音パーミッション申請S------------------------------------------------------
 @Composable
-fun PermissionRequestScreen() {
+fun PermissionRequestScreen():Boolean {
     // パーミッションの状態を保持するための変数 hasPermission を定義
     var hasPermission by remember { mutableStateOf(false) }
 
@@ -54,19 +46,6 @@ fun PermissionRequestScreen() {
         }
     }
 
-    // パーミッションの状態に応じて適切なコンポーザブル関数を表示
-    if (hasPermission) {
-        // パーミッションが許可されている場合
-        GrantedPermission()
-    } else {
-        // パーミッションが拒否されている場合
-        DeniedPermission()
-    }
+    return hasPermission
 }
-fun GrantedPermission() {
-println("許可")
-}
-
-fun DeniedPermission() {
-    println("許可されてない")
-}
+// 録音パーミッション申請E------------------------------------------------------
