@@ -13,8 +13,38 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModel
+import coil.compose.AsyncImagePainter
+import kotlinx.coroutines.flow.MutableStateFlow
 import java.io.File
 import java.io.IOException
+
+// 音の再生状態などを管理するViewModelS-------------------------------------------------
+class soundViewModel : ViewModel() {
+
+    // 再生中の確認h
+    val _soudplaying = MutableStateFlow(false)
+
+    // コールバック関数
+    // 変更を外部に
+    private var onSoudPlayingStatusChanged: ((Boolean) -> Unit)? = null
+
+    // 再生中かを変更する関数
+    fun SetSoudPlaying(success: Boolean) {
+        _soudplaying.value = success
+
+        // 状態を変更する際にコールバックを実行
+        onSoudPlayingStatusChanged?.invoke(success)
+    }
+
+    // 現在の uploadSuccess の状態を取得
+    fun CheckSoudPlaying(): Boolean {
+        return _soudplaying.value
+    }
+}
+// 音の再生状態などを管理するViewModelE-------------------------------------------------
+
+
 
 private const val LOG_TAG = "AudioRecordTest"
 const val REQUEST_RECORD_AUDIO_PERMISSION = 200
