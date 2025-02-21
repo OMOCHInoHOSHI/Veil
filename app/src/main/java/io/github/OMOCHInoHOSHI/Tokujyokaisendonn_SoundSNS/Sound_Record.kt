@@ -95,6 +95,7 @@ class AudioRecordTest(private val context: Context) {
 
     private fun stopRecording() {
         try {
+            Toast.makeText(context, "録音停止", Toast.LENGTH_SHORT).show()
             recorder?.stop()
         } catch (e: IllegalStateException) {
             Log.e(LOG_TAG, "MediaRecorder stop() invalid state: ${e.message}")

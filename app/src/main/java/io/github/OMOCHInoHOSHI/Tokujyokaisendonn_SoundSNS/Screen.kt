@@ -145,6 +145,9 @@ fun BottomNavBar(navController: NavController) {
     val recordPermission = PermissionRequestScreen()
     val context = LocalContext.current
 
+    // AudioRecordTest のインスタンスを生成（Activity のライフサイクル外でも利用可能なようにコンストラクタで Context を渡しています）
+    val audioRecordTest = AudioRecordTest(context)
+
     // 選択管理
     var selectedTab by remember { mutableStateOf(0) }
 
@@ -190,14 +193,25 @@ fun BottomNavBar(navController: NavController) {
             icon = {
                 Box(
                     modifier = Modifier.pointerInteropFilter { event ->
+
+                        if (!recordPermission) {
+                            // 録音許可がない場合、何もせず処理を中断
+                            Toast.makeText(context, "録音許可が必要です", Toast.LENGTH_SHORT).show()
+                            return@pointerInteropFilter false
+                        }
+
                         when (event.action) {
+                            // 押した時の動作
                             MotionEvent.ACTION_DOWN -> {
-                                Toast.makeText(context, "aaaaa", Toast.LENGTH_SHORT).show()
-//                                start_mic()  // 押したときに実行
+                                // 録音開始
+                                audioRecordTest.onRecord(true)
+
                                 true
                             }
+                            // 話した時の動作
                             MotionEvent.ACTION_UP -> {
-//                                end_mic()  // 離したときに実行
+                                // 録音終了
+                                audioRecordTest.onRecord(false)
                                 if(currentRoute != Nav.SoundPost_Screen.name){
                                     navController.navigate(Nav.SoundPost_Screen.name)
                                 }
@@ -212,13 +226,13 @@ fun BottomNavBar(navController: NavController) {
             },
             selected = currentRoute == Nav.SoundPost_Screen.name,
             onClick = {
-                if (recordPermission) {
-                    if (currentRoute != Nav.SoundPost_Screen.name) {
-                        navController.navigate(Nav.SoundPost_Screen.name)
-                    }
-                } else {
-                    Toast.makeText(context, "録音許可が必要です", Toast.LENGTH_SHORT).show()
-                }
+//                if (recordPermission) {
+//                    if (currentRoute != Nav.SoundPost_Screen.name) {
+//                        navController.navigate(Nav.SoundPost_Screen.name)
+//                    }
+//                } else {
+//                    Toast.makeText(context, "録音許可が必要です", Toast.LENGTH_SHORT).show()
+//                }
             }
         )
 
