@@ -41,6 +41,7 @@ class AudioRecordTest(private val context: Context) {
         if (start) {
             startRecording()
         } else {
+            Thread.sleep(100)  // 0.1秒待ってから stop()（調整可能）
             stopRecording()
         }
     }
@@ -73,9 +74,14 @@ class AudioRecordTest(private val context: Context) {
     }
 
     private fun startRecording() {
-        // 出力先のディレクトリが存在しているか確認し、存在しなければ作成
+        if (recorder != null) {
+            Log.e(LOG_TAG, "Recorder はすでに初期化されています")
+            return
+        }
+
         val outputFile = File(fileName)
         outputFile.parentFile?.mkdirs()
+
         try {
             recorder = MediaRecorder().apply {
                 setAudioSource(MediaRecorder.AudioSource.MIC)
@@ -86,21 +92,28 @@ class AudioRecordTest(private val context: Context) {
                 start()
             }
             Toast.makeText(context, "録音中", Toast.LENGTH_SHORT).show()
-        } catch (e: IllegalStateException) {
-            Log.e(LOG_TAG, "MediaRecorder start() invalid state: ${e.message}")
-        } catch (e: IOException) {
-            Log.e(LOG_TAG, "MediaRecorder prepare() failed: ${e.message}")
+        } catch (e: Exception) {
+            Toast.makeText(context, "録音開始エラー: ${e.message}", Toast.LENGTH_SHORT).show()
+            Log.e(LOG_TAG, "録音開始エラー: ${e.message}")
+            recorder?.release()
+            recorder = null
         }
     }
 
+
     private fun stopRecording() {
         try {
-            Toast.makeText(context, "録音停止", Toast.LENGTH_SHORT).show()
-            recorder?.stop()
+            if (recorder != null) {
+                recorder?.stop()  // MediaRecorder の状態を確認してから stop()
+                Toast.makeText(context, "録音停止", Toast.LENGTH_SHORT).show()
+            } else {
+                Log.e(LOG_TAG, "Recorder が null のため stop() を呼べません")
+            }
         } catch (e: IllegalStateException) {
             Log.e(LOG_TAG, "MediaRecorder stop() invalid state: ${e.message}")
+        } finally {
+            recorder?.release()
+            recorder = null
         }
-        recorder?.release()
-        recorder = null
     }
 }

@@ -205,7 +205,6 @@ fun BottomNavBar(navController: NavController) {
                             MotionEvent.ACTION_DOWN -> {
                                 // 録音開始
                                 audioRecordTest.onRecord(true)
-
                                 true
                             }
                             // 話した時の動作
@@ -213,10 +212,20 @@ fun BottomNavBar(navController: NavController) {
                                 // 録音終了
                                 audioRecordTest.onRecord(false)
                                 if(currentRoute != Nav.SoundPost_Screen.name){
+                                    // 録音終了
+//                                    audioRecordTest.onRecord(false)
                                     navController.navigate(Nav.SoundPost_Screen.name)
+
                                 }
                                 true
                             }
+
+                            // タッチがキャンセルされた場合の処理
+                            MotionEvent.ACTION_CANCEL -> {
+                                audioRecordTest.onRecord(false)
+                                true
+                            }
+
                             else -> false
                         }
                     }
