@@ -48,6 +48,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
@@ -64,6 +65,11 @@ import androidx.navigation.NavController
 // 通知画面
 @Composable
 fun SoundPost_Screen(navController: NavController){
+
+    val context = LocalContext.current
+    // AudioRecordTest のインスタンスを生成（Activity のライフサイクル外でも利用可能なようにコンストラクタで Context を渡しています）
+    val audioRecordTest = AudioRecordTest(context)
+
     // Use LocalConfiguration to get the screen dimensions reliably
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
@@ -129,7 +135,11 @@ fun SoundPost_Screen(navController: NavController){
             ) {
                 // マイクアイコンと再生ボタンが重ねて表示されるコンテナーS---------
                 Box(
-                    modifier = Modifier.size(400.dp)
+                    modifier = Modifier
+                        .size(400.dp)
+                        .clickable{
+                            audioRecordTest.onPlay(true)
+                        }
                 ) {
                     // マイクのアイコンを背景にしてコンテナを埋める
                     Icon(
