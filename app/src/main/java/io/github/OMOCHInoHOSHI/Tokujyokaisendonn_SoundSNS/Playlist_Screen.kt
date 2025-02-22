@@ -180,8 +180,7 @@ fun Playlist_Screen(navController: NavController){
             // 再生中バー
             Card(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 80.dp),
+                    .fillMaxWidth(),
                 colors = CardDefaults.cardColors(
                     containerColor = Color(0xE6301934)
                 )
