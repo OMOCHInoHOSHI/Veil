@@ -14,6 +14,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.automirrored.filled.Message
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -53,6 +55,9 @@ fun Playlist_Screen(navController: NavController){
     var selectedSound by remember { mutableStateOf<Sound?>(null) }
     var isPlaying by remember { mutableStateOf(false) }
 
+    //
+    var MenuFlag by remember { mutableStateOf(false) }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -70,9 +75,12 @@ fun Playlist_Screen(navController: NavController){
                     }
                 },
                 actions = {
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = { MenuFlag = !MenuFlag }) {
                         Icon(Icons.Default.MoreVert, contentDescription = "More", tint = Color.White)
                     }
+
+                    // ドロップダウンメニューの表示
+                    DropDownMenu(MenuFlag, onDismiss = { MenuFlag = false })
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.Transparent
@@ -271,6 +279,47 @@ fun Playlist_Screen(navController: NavController){
             // ナビゲーションバー
             BottomNavBar(navController)
         }
+    }
+}
+
+// ドロップダウンメニュー
+@Composable
+fun DropDownMenu(showMenu: Boolean, onDismiss: () -> Unit) {
+    DropdownMenu(
+        expanded = showMenu,
+        onDismissRequest = onDismiss
+    ) {
+        // 共有
+        DropdownMenuItem(
+            text = { Text("プレイリスト共有") },
+            onClick = {
+                onDismiss()
+            }
+        )
+
+        // 編集
+        DropdownMenuItem(
+            text = { Text("プレイリスト編集") },
+            onClick = {
+                onDismiss()
+            }
+        )
+
+        // イメージ画像の選択
+        DropdownMenuItem(
+            text = { Text("イメージ画像選択") },
+            onClick = {
+                onDismiss()
+            }
+        )
+
+        // 削除
+        DropdownMenuItem(
+            text = { Text("プレイリスト削除") },
+            onClick = {
+                onDismiss()
+            }
+        )
     }
 }
 
