@@ -45,6 +45,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -74,6 +75,8 @@ fun DisplayNav(){
     // NavControllerを定義
     val navController = rememberNavController()
 
+    val soundView = SoundViewModel()
+
     // NavHostを作成
     // startDestinationは最初に表示するページS----------------------------------------------
     NavHost(navController = navController,
@@ -86,7 +89,7 @@ fun DisplayNav(){
 
         // ルート名：SoundPost_Screen　SoundPost_Screenに遷移
         composable(route = Nav.SoundPost_Screen.name) {
-            SoundPost_Screen(navController = navController)
+            SoundPost_Screen(navController = navController, soundView)
         }
 
         // ルート名：Notice_Screen　Notice_Screenに遷移
@@ -137,7 +140,10 @@ fun DisplayNav(){
 // 下のナビゲーションバーセットS----------------------------------------------------------------------------------------
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun BottomNavBar(navController: NavController) {
+fun BottomNavBar(
+    navController: NavController,
+    soundView: SoundViewModel = viewModel() // デフォルト引数
+) {
 
     //この関数は位置の指定をしていません。呼び出し側で管理してください
 
@@ -146,7 +152,7 @@ fun BottomNavBar(navController: NavController) {
     val context = LocalContext.current
 
     // AudioRecordTest のインスタンスを生成（Activity のライフサイクル外でも利用可能なようにコンストラクタで Context を渡しています）
-    val audioRecordTest = AudioRecordTest(context)
+    val audioRecordTest = AudioRecordTest(context, soundView)
 
     // 選択管理
     var selectedTab by remember { mutableStateOf(0) }

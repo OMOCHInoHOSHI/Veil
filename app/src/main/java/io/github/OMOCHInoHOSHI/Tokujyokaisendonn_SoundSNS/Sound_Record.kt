@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImagePainter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -50,9 +51,7 @@ class SoundViewModel : ViewModel() {
 private const val LOG_TAG = "AudioRecordTest"
 const val REQUEST_RECORD_AUDIO_PERMISSION = 200
 
-class AudioRecordTest(private val context: Context) {
-
-    val soundView = SoundViewModel()
+class AudioRecordTest(private val context: Context, val soundView: SoundViewModel/* = SoundViewModel()*/) {
 
     private var fileName: String = ""
     private var recorder: MediaRecorder? = null
