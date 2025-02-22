@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,7 +29,7 @@ import androidx.compose.ui.unit.sp
 // 音声(仮)
 data class Sound(
     val title: String,
-    val artist: String,
+    val user: String,
     val color: Color
 )
 
@@ -37,15 +38,16 @@ data class Sound(
 @Composable
 fun Playlist_Screen(navController: NavController){
     // 音声リスト(仮)
-    val Sounds = remember {
+    val sounds = remember {
         listOf(
-            Sound("Sound1", "aaa", Color(0xFFa0d8ef)),
-            Sound("Sound2", "bbb", Color(0xFFa0d8ef)),
-            Sound("Sound3", "ccc", Color(0xFFa0d8ef)),
-            Sound("Sound4", "ddd", Color(0xFFa0d8ef)),
-            Sound("Sound5", "eee", Color(0xFFa0d8ef))
+            Sound("Sound1", "Aaa", Color(0xFFa0d8ef)),
+            Sound("Sound2", "Bbb", Color(0xFFa0d8ef)),
+            Sound("Sound3", "Ccc", Color(0xFFa0d8ef)),
         )
     }
+
+    // 選択された音声の状態を管理
+    var selectedSound by remember { mutableStateOf<Sound?>(null) }
 
     Box(
         modifier = Modifier
@@ -100,47 +102,46 @@ fun Playlist_Screen(navController: NavController){
             ) {
                 Column {
                     // ユーザー情報
-                    Card(
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = Color(0x1AFFFFFF)
-                        )
-                    ) {
-                        Row(
+                    selectedSound?.let { sound ->
+                        Card(
                             modifier = Modifier
                                 .padding(16.dp)
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                                .fillMaxWidth()
+                                .height(80.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = Color(0x1AFFFFFF)
+                            )
                         ) {
                             Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Box(
-                                    modifier = Modifier
-                                        .size(48.dp)
-                                        .clip(CircleShape)
-                                        .background(Color.Gray)
-                                )
-                                Column {
-                                    Text(
-                                        "ユーザー名",
-                                        fontWeight = FontWeight.Medium
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(48.dp)
+                                            .clip(CircleShape)
+                                            .background(sound.color)
                                     )
-                                    Text(
-                                        "#街中",
-                                        fontSize = 12.sp
-                                    )
+                                    Column {
+                                        Text(
+                                            sound.user,
+                                            fontWeight = FontWeight.Medium
+                                        )
+                                        Text(
+                                            "#街中",
+                                            fontSize = 12.sp
+                                        )
+                                    }
                                 }
-                            }
 
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(16.dp)
-                            ) {
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally
+                                Row(
+                                    modifier = Modifier.offset(y = (-2).dp)  // 位置を少し上にずらす
                                 ) {
                                     IconButton(onClick = { }) {
                                         Icon(
@@ -149,18 +150,13 @@ fun Playlist_Screen(navController: NavController){
                                             tint = Color.White
                                         )
                                     }
-                                    Text(
-                                        "1.2M",
-                                        color = Color.White,
-                                        fontSize = 12.sp
-                                    )
-                                }
-                                IconButton(onClick = { }) {
-                                    Icon(
-                                        Icons.Default.Share,
-                                        contentDescription = "Share",
-                                        tint = Color.White
-                                    )
+                                    IconButton(onClick = { }) {
+                                        Icon(
+                                            Icons.Default.Share,
+                                            contentDescription = "Share",
+                                            tint = Color.White
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -168,65 +164,82 @@ fun Playlist_Screen(navController: NavController){
 
                     // 音声リスト
                     LazyColumn {
-                        items(Sounds) { Sound ->
-                            SoundItem(Sound)
+                        items(sounds) { sound ->
+                            SoundItem(sound) {
+                                selectedSound = sound
+                            }
                         }
                     }
                 }
             }
 
             // 再生中バー
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xE6301934))
-                    .padding(16.dp)
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+            selectedSound?.let { sound ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xE6301934))
+                        .padding(16.dp)
                 ) {
                     Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .background(sound.color)
+                            )
+                            Column {
+                                Text(
+                                    sound.title,
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Medium
+                                )
+                                Text(
+                                    sound.user,
+                                    color = Color.Gray,
+                                    fontSize = 12.sp
+                                )
+                            }
+                        }
+                        // 再生ボタンを中央に配置
                         Box(
-                            modifier = Modifier
-                                .size(40.dp)
-                                .background(Color(0xFFa0d8ef))
-                        )
-                        Column {
-                            Text(
-                                "再生中の音声タイトル",
-                                color = Color.White,
-                                fontWeight = FontWeight.Medium
-                            )
-                            Text(
-                                "再生中の音声ユーザー",
-                                color = Color.Gray,
-                                fontSize = 12.sp
-                            )
+                            modifier = Modifier.weight(1f),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            IconButton(onClick = { }) {
+                                Icon(
+                                    Icons.Default.PlayArrow,
+                                    contentDescription = "Play",
+                                    tint = Color.White
+                                )
+                            }
                         }
-                    }
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        // 再生ボタン
-                        IconButton(onClick = { }) {
-                            Icon(
-                                Icons.Default.PlayArrow,
-                                contentDescription = "Play",
-                                tint = Color.White
-                            )
-                        }
-                        // ループ再生
-                        IconButton(onClick = { }) {
-                            Icon(
-                                Icons.Default.Repeat,
-                                contentDescription = "Repeat",
-                                tint = Color.White
-                            )
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            // ループ再生
+                            IconButton(onClick = { }) {
+                                Icon(
+                                    Icons.Default.Repeat,
+                                    contentDescription = "Repeat",
+                                    tint = Color.White
+                                )
+                            }
+                            // バツマーク
+                            IconButton(onClick = { selectedSound = null }) {
+                                Icon(
+                                    Icons.Default.Close,
+                                    contentDescription = "Close",
+                                    tint = Color.White
+                                )
+                            }
                         }
                     }
                 }
@@ -238,13 +251,13 @@ fun Playlist_Screen(navController: NavController){
     }
 }
 
-// SoundItem Composable は変更なし
 @Composable
-fun SoundItem(Sound: Sound) {
+fun SoundItem(sound: Sound, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clickable { onClick() },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -255,17 +268,16 @@ fun SoundItem(Sound: Sound) {
             Box(
                 modifier = Modifier
                     .size(48.dp)
-                    .clip(RoundedCornerShape(4.dp))
-                    .background(Sound.color)
+                    .background(sound.color)
             )
             Column {
                 Text(
-                    Sound.title,
+                    sound.title,
                     color = Color.White,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
-                    Sound.artist,
+                    sound.user,
                     color = Color.Gray,
                     fontSize = 12.sp
                 )
