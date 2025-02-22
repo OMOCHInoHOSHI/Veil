@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 data class Sound(
     val title: String,
     val user: String,
+    val hash: String,
     val color: Color
 )
 
@@ -40,9 +41,11 @@ fun Playlist_Screen(navController: NavController){
     // 音声リスト(仮)
     val sounds = remember {
         listOf(
-            Sound("Sound1", "Aaa", Color(0xFFa0d8ef)),
-            Sound("Sound2", "Bbb", Color(0xFFa0d8ef)),
-            Sound("Sound3", "Ccc", Color(0xFFa0d8ef)),
+            Sound("Sound1", "Aaa", "街中", Color(0xFFa0d8ef)),
+            Sound("Sound2", "Bbb", "海", Color(0xFFa0d8ef)),
+            Sound("Sound3", "Ccc", "山", Color(0xFFa0d8ef)),
+            Sound("Sound4", "Ddd", "仕事", Color(0xFFa0d8ef)),
+            Sound("Sound5", "Eee", "睡眠", Color(0xFFa0d8ef)),
         )
     }
 
@@ -134,7 +137,7 @@ fun Playlist_Screen(navController: NavController){
                                             fontWeight = FontWeight.Medium
                                         )
                                         Text(
-                                            "#街中",
+                                            sound.hash,
                                             fontSize = 12.sp
                                         )
                                     }
