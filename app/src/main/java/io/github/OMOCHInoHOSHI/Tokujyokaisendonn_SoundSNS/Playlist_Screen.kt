@@ -49,43 +49,40 @@ fun Playlist_Screen(navController: NavController){
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF1A1A1A))
+            .background(Color(0xFF98d98e))
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
+            // ヘッダー
+            TopAppBar(
+                title = { },
+                navigationIcon = {
+                    IconButton(onClick = { }) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Color.White)
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { }) {
+                        Icon(Icons.Default.MoreVert, contentDescription = "More", tint = Color.White)
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent
+                )
+            )
+
             // 上半分: タイトル
             Column(
                 modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .background(Color(0xFF98d98e)),
-                verticalArrangement = Arrangement.SpaceBetween
+                    .height(200.dp)  // 高さを短く設定
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Header
-                TopAppBar(
-                    title = { },
-                    navigationIcon = {
-                        IconButton(onClick = { }) {
-                            Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Color.White)
-                        }
-                    },
-                    actions = {
-                        IconButton(onClick = { }) {
-                            Icon(Icons.Default.MoreVert, contentDescription = "More", tint = Color.White)
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Transparent
-                    )
-                )
-
                 // Title
                 Text(
                     "海音まとめ",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
                     color = Color.White,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
@@ -178,17 +175,14 @@ fun Playlist_Screen(navController: NavController){
             }
 
             // 再生中バー
-            Card(
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color(0xE6301934)
-                )
+                    .fillMaxWidth()
+                    .background(Color(0xE6301934))
+                    .padding(16.dp)
             ) {
                 Row(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -199,7 +193,6 @@ fun Playlist_Screen(navController: NavController){
                         Box(
                             modifier = Modifier
                                 .size(40.dp)
-                                .clip(RoundedCornerShape(4.dp))
                                 .background(Color(0xFFa0d8ef))
                         )
                         Column {
