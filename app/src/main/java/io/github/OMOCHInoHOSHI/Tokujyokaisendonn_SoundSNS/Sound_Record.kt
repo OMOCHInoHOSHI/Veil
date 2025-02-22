@@ -24,6 +24,10 @@ import java.io.IOException
 // 音の再生状態などを管理するViewModelS-------------------------------------------------
 class SoundViewModel : ViewModel() {
 
+    // 録音中かの確認
+    private val _recording = MutableStateFlow(false)
+    val recording: StateFlow<Boolean> get() = _recording
+
     // 再生中の確認
     private val _soundPlaying = MutableStateFlow(false)
     val soundPlaying: StateFlow<Boolean> get() = _soundPlaying
@@ -32,6 +36,8 @@ class SoundViewModel : ViewModel() {
     // 変更を外部に通知
     private var onSoundPlayingStatusChanged: ((Boolean) -> Unit)? = null
 
+    private var onRecordingStatusChanged: ((Boolean) -> Unit)? = null
+
     // 再生中かを変更する関数
     fun setSoundPlaying(success: Boolean) {
         _soundPlaying.value = success
@@ -39,9 +45,21 @@ class SoundViewModel : ViewModel() {
         onSoundPlayingStatusChanged?.invoke(success)
     }
 
+    // 録音中かを変更する関数
+    fun setRecording(success: Boolean) {
+        _recording.value = success
+        // 状態を変更する際にコールバックを実行
+        onRecordingStatusChanged?.invoke(success)
+    }
+
     // 現在の soundPlaying の状態を取得
     fun checkSoundPlaying(): Boolean {
         return _soundPlaying.value
+    }
+
+    // 現在の recording の状態を取得
+    fun checkRecording(): Boolean {
+        return _recording.value
     }
 }
 // 音の再生状態などを管理するViewModelE-------------------------------------------------
@@ -56,7 +74,6 @@ class AudioRecordTest(private val context: Context, val soundView: SoundViewMode
     private var fileName: String = ""
     private var recorder: MediaRecorder? = null
     private var player: MediaPlayer? = null
-
     init {
         // 外部キャッシュディレクトリを利用して出力ファイルのパスを作成
         // ※context を利用しているので、Activity 以外のクラスからも利用できます。
@@ -72,9 +89,12 @@ class AudioRecordTest(private val context: Context, val soundView: SoundViewMode
     fun onRecord(start: Boolean) {
         if (start) {
             startRecording()
+            Thread.sleep(500)
         } else {
-            Thread.sleep(100)  // 0.1秒待ってから stop()（調整可能）
-            stopRecording()
+//            Thread.sleep(200)  // 0.1秒待ってから stop()（調整可能）
+            if(soundView.checkRecording()){
+                stopRecording()
+            }
         }
     }
 
@@ -126,6 +146,7 @@ class AudioRecordTest(private val context: Context, val soundView: SoundViewMode
                 start()
             }
             Toast.makeText(context, "録音中", Toast.LENGTH_SHORT).show()
+            soundView.setRecording(true)
         } catch (e: Exception) {
             Toast.makeText(context, "録音開始エラー: ${e.message}", Toast.LENGTH_SHORT).show()
             Log.e(LOG_TAG, "録音開始エラー: ${e.message}")
@@ -148,6 +169,8 @@ class AudioRecordTest(private val context: Context, val soundView: SoundViewMode
         } finally {
             recorder?.release()
             recorder = null
+            soundView.setRecording(false)
+
         }
     }
 }
