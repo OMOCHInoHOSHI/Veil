@@ -51,6 +51,7 @@ fun Playlist_Screen(navController: NavController){
 
     // 選択された音声の状態を管理
     var selectedSound by remember { mutableStateOf<Sound?>(null) }
+    var isPlaying by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -94,6 +95,24 @@ fun Playlist_Screen(navController: NavController){
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
                 )
+
+                // 再生ボタン
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    IconButton(
+                        onClick = { isPlaying = !isPlaying },
+                        modifier = Modifier.size(60.dp)  // ボタンの大きさを設定
+                    ) {
+                        Icon(
+                            if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                            contentDescription = if (isPlaying) "Pause" else "Play",
+                            tint = Color.White,
+                            modifier = Modifier.size(60.dp)  // アイコンの大きさを設定
+                        )
+                    }
+                }
             }
 
             // 下半分: ユーザー情報と音声リスト
@@ -170,6 +189,7 @@ fun Playlist_Screen(navController: NavController){
                         items(sounds) { sound ->
                             SoundItem(sound) {
                                 selectedSound = sound
+                                isPlaying = true
                             }
                         }
                     }
@@ -216,10 +236,10 @@ fun Playlist_Screen(navController: NavController){
                             modifier = Modifier.weight(1f),
                             contentAlignment = Alignment.Center
                         ) {
-                            IconButton(onClick = { }) {
+                            IconButton(onClick = { isPlaying = !isPlaying }) {
                                 Icon(
-                                    Icons.Default.PlayArrow,
-                                    contentDescription = "Play",
+                                    if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                                    contentDescription = if (isPlaying) "Pause" else "Play",
                                     tint = Color.White
                                 )
                             }
@@ -236,7 +256,7 @@ fun Playlist_Screen(navController: NavController){
                                 )
                             }
                             // バツマーク
-                            IconButton(onClick = { selectedSound = null }) {
+                            IconButton(onClick = { selectedSound = null; isPlaying = false }) {
                                 Icon(
                                     Icons.Default.Close,
                                     contentDescription = "Close",
@@ -260,7 +280,10 @@ fun SoundItem(sound: Sound, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .clickable { onClick() },
+            .clickable {
+                onClick()
+                //isPlaying = true  // 他の音声を押したときに再生ボタンに変わるようにする
+            },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
