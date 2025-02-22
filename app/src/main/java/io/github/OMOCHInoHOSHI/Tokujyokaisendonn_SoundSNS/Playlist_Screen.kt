@@ -36,6 +36,7 @@ data class Sound(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Playlist_Screen(navController: NavController){
+    // 音声リスト(仮)
     val Sounds = remember {
         listOf(
             Sound("Sound1", "aaa", Color(0xFFa0d8ef)),
@@ -211,6 +212,7 @@ fun Playlist_Screen(navController: NavController){
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
+                        // 再生ボタン
                         IconButton(onClick = { }) {
                             Icon(
                                 Icons.Default.PlayArrow,
@@ -218,6 +220,7 @@ fun Playlist_Screen(navController: NavController){
                                 tint = Color.White
                             )
                         }
+                        // ループ再生
                         IconButton(onClick = { }) {
                             Icon(
                                 Icons.Default.Repeat,
@@ -229,38 +232,8 @@ fun Playlist_Screen(navController: NavController){
                 }
             }
 
-            // Bottom Navigation
-            NavigationBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.Black),
-                containerColor = Color.Black
-            ) {
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
-                    label = { Text("ホーム") },
-                    selected = false,
-                    onClick = { }
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Search, contentDescription = "Search") },
-                    label = { Text("見つける") },
-                    selected = false,
-                    onClick = { }
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.LibraryMusic, contentDescription = "Library") },
-                    label = { Text("ライブラリ") },
-                    selected = true,
-                    onClick = { }
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Upload, contentDescription = "Upgrade") },
-                    label = { Text("アップグレード") },
-                    selected = false,
-                    onClick = { }
-                )
-            }
+            // ナビゲーションバー
+            BottomNavBar(navController)
         }
     }
 }
