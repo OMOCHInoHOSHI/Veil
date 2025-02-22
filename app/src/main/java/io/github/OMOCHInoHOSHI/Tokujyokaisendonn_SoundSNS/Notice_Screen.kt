@@ -11,14 +11,28 @@ import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 @Composable
 fun Notice_Screen(navController: NavController) {
+
+    val soundView: SoundViewModel = viewModel()
+    val isPlaying by soundView.soundPlaying.collectAsState()
+
+    var play by remember { mutableStateOf(isPlaying) }
+
+    println("isPlaying = $play")
+
     // Compose 内では LocalContext.current を使って Context を取得
     val context = LocalContext.current
     // AudioRecordTest のインスタンスを生成（Activity のライフサイクル外でも利用可能なようにコンストラクタで Context を渡しています）

@@ -16,30 +16,31 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import coil.compose.AsyncImagePainter
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.io.File
 import java.io.IOException
 
 // 音の再生状態などを管理するViewModelS-------------------------------------------------
-class soundViewModel : ViewModel() {
+class SoundViewModel : ViewModel() {
 
-    // 再生中の確認h
-    val _soudplaying = MutableStateFlow(false)
+    // 再生中の確認
+    private val _soundPlaying = MutableStateFlow(false)
+    val soundPlaying: StateFlow<Boolean> get() = _soundPlaying
 
     // コールバック関数
-    // 変更を外部に
-    private var onSoudPlayingStatusChanged: ((Boolean) -> Unit)? = null
+    // 変更を外部に通知
+    private var onSoundPlayingStatusChanged: ((Boolean) -> Unit)? = null
 
     // 再生中かを変更する関数
-    fun SetSoudPlaying(success: Boolean) {
-        _soudplaying.value = success
-
+    fun setSoundPlaying(success: Boolean) {
+        _soundPlaying.value = success
         // 状態を変更する際にコールバックを実行
-        onSoudPlayingStatusChanged?.invoke(success)
+        onSoundPlayingStatusChanged?.invoke(success)
     }
 
-    // 現在の uploadSuccess の状態を取得
-    fun CheckSoudPlaying(): Boolean {
-        return _soudplaying.value
+    // 現在の soundPlaying の状態を取得
+    fun checkSoundPlaying(): Boolean {
+        return _soundPlaying.value
     }
 }
 // 音の再生状態などを管理するViewModelE-------------------------------------------------
@@ -50,6 +51,8 @@ private const val LOG_TAG = "AudioRecordTest"
 const val REQUEST_RECORD_AUDIO_PERMISSION = 200
 
 class AudioRecordTest(private val context: Context) {
+
+    val soundView = SoundViewModel()
 
     private var fileName: String = ""
     private var recorder: MediaRecorder? = null
@@ -79,9 +82,11 @@ class AudioRecordTest(private val context: Context) {
     // 再生開始・停止の制御
     fun onPlay(start: Boolean) {
         if (start) {
+            soundView.setSoundPlaying(true)
             startPlaying()
         } else {
             stopPlaying()
+            soundView.setSoundPlaying(false)
         }
     }
 
