@@ -6,6 +6,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -29,6 +32,10 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 
+// プレイリストのデータモデル
+data class Playlist(val name: String, val imageResId: Int)
+data class Link(val url: String, val title: String)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Profile_Screen(
@@ -38,6 +45,14 @@ fun Profile_Screen(
     var userName: String
     var userBio: String
     var profileImageUrl: String?
+
+    val links = listOf(""
+    )
+    val playlists = listOf(
+        Playlist("マイリスト", R.drawable.ic_launcher_background),
+        Playlist("お気に入り", R.drawable.ic_launcher_background)
+    )
+
 
     userName = "特上海鮮どんぶり"
     userBio = "歌手目指してます"
@@ -168,7 +183,7 @@ fun Profile_Screen(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("プレイリスト", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text("プレイリスト", fontSize = 20.sp, fontWeight = FontWeight.Bold)
                     IconButton(onClick = {
                         navController.navigate(Nav.PlaylistCreate_Screen.name)
                     /*TODO: 新規プレイリスト作成画面への遷移*/ }) {
@@ -178,25 +193,31 @@ fun Profile_Screen(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                LazyRow {
-                    items(3) {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2), // 横に2つずつ表示
+                    horizontalArrangement = Arrangement.spacedBy(8.dp), // 水平方向のスペース
+                    verticalArrangement = Arrangement.spacedBy(8.dp), // 垂直方向のスペース
+                    modifier = Modifier.padding(horizontal = 8.dp) // 全体のパディング
+                ){
+                    items(playlists) { playlist ->
                         Column(
                             modifier = Modifier
                                 .size(150.dp)
                                 .padding(8.dp)
-                                .background(Color.LightGray) // 仮の背景色
+                                .background(Color.LightGray)
                                 .clickable { navController.navigate(Nav.Playlist_Screen.name) }
                         ) {
                             Spacer(modifier = Modifier.height(4.dp))
-                            Text("プレイリスト名", fontSize = 12.sp)
-                            IconButton(onClick = { navController.navigate(Nav.Playlist_Screen.name)}) {
-                                Image(
-                                    painter = painterResource(id = R.drawable.ic_launcher_background), // 仮の画像
-                                    contentDescription = "Playlist Image",
-                                    modifier = Modifier.fillMaxWidth(),
-                                    contentScale = ContentScale.Crop
-                                )
-                            }
+                            Text(playlist.name, fontSize = 12.sp)
+                            Image(
+                                painter = painterResource(id = playlist.imageResId),
+                                contentDescription = "Playlist Image",
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clickable { navController.navigate(Nav.Playlist_Screen.name) },
+                                contentScale = ContentScale.Crop
+                            )
+
                         }
                     }
                 }
