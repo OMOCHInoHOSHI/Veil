@@ -43,9 +43,9 @@ import org.openapitools.client.models.RequestUserSignupRequest
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
-@Preview
+//@Preview
 @Composable
-fun LoginScreen(): Boolean {
+fun LoginScreen(getAPIViewModel: getAPIViewModel): Boolean {
 
     val context = LocalContext.current
 
@@ -177,7 +177,7 @@ fun LoginScreen(): Boolean {
 //                            if (user?.isNotBlank() ?:  && email.isNotBlank() && password.isNotBlank()) {
                             // バックグラウンドスレッドで API コールを実行
                             CoroutineScope(Dispatchers.IO).launch {
-                                loginState = performSignup(userApi, user!!, email!!, password!!)
+                                loginState = performSignup(userApi, user!!, email!!, password!!, getAPIViewModel)
                             }
 //                            } else {
 //                                Log.e("Signup", "入力内容を確認してください。")
@@ -241,8 +241,9 @@ fun LoginScreen(): Boolean {
 //}
 
 // 新規登録のための API 呼び出し関数
-suspend fun performSignup(userApi: UserApi, user: String, email: String, password: String):Boolean {
+suspend fun performSignup(userApi: UserApi, user: String, email: String, password: String, getAPIViewModel: getAPIViewModel):Boolean {
 
+    // viewモデル
     Log.i("Signup", "user: $user, email: $email, password: $password")
 
     try {
@@ -252,6 +253,8 @@ suspend fun performSignup(userApi: UserApi, user: String, email: String, passwor
         // signupPost を呼び出して結果を取得
         val res = userApi.signupPost(signupRequest)
         Log.i("Signup", "Signup response: $res")
+
+
 
         return true
     } catch (e: Exception) {

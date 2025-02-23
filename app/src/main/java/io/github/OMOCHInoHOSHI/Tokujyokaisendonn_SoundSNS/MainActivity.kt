@@ -42,6 +42,9 @@ class MainActivity : ComponentActivity() {
 //                val userApi = UserApi("\"http://192.168.10.109:8088/v1\"")
 //                val users = userApi
 
+                // viewモデル
+                val getAPIViewModel = getAPIViewModel()
+
                 // ログイン成功ならDisplayNavへ
                 if (loginflg){
                     DisplayNav()
