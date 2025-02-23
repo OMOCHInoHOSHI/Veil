@@ -165,7 +165,7 @@ fun LoginScreen(): Boolean {
 //                            if (user?.isNotBlank() ?:  && email.isNotBlank() && password.isNotBlank()) {
                                 // バックグラウンドスレッドで API コールを実行
                                 CoroutineScope(Dispatchers.IO).launch {
-                                    performSignup(userApi, user!!, email!!, password!!)
+                                    loginState = performSignup(userApi, user!!, email!!, password!!)
                                 }
 //                            } else {
 //                                Log.e("Signup", "入力内容を確認してください。")
@@ -219,7 +219,7 @@ suspend fun performNetworkCall(client: OkHttpClient) {
 }
 
 // 新規登録のための API 呼び出し関数
-suspend fun performSignup(userApi: UserApi, user: String, email: String, password: String) {
+suspend fun performSignup(userApi: UserApi, user: String, email: String, password: String):Boolean {
 
     Log.i("Signup", "user: $user, email: $email, password: $password")
 
@@ -230,8 +230,13 @@ suspend fun performSignup(userApi: UserApi, user: String, email: String, passwor
         // signupPost を呼び出して結果を取得
         val res = userApi.signupPost(signupRequest)
         Log.i("Signup", "Signup response: $res")
+
+        return true
     } catch (e: Exception) {
         e.printStackTrace()
         Log.e("Signup", "登録API呼び出しに失敗しました", e)
+
+        return false
     }
+
 }

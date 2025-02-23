@@ -10,6 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,9 +41,17 @@ class MainActivity : ComponentActivity() {
 //                    DisplayNav()
 //                }
 
-                LoginScreen()
+                // ログインで来たか保存
+                var loginflg by rememberSaveable { mutableStateOf(false) }
 //                val userApi = UserApi("\"http://192.168.10.109:8088/v1\"")
 //                val users = userApi
+
+                // ログイン成功ならDisplayNavへ
+                if (loginflg){
+                    DisplayNav()
+                }else{
+                    loginflg = LoginScreen()
+                }
 
 //                DisplayNav()
 //                SoundPost_Screen()
