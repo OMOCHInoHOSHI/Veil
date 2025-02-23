@@ -6,6 +6,7 @@ All URIs are relative to *http://localhost:8080/api*
 | ------------- | ------------- | ------------- |
 | [**signinPost**](UserApi.md#signinPost) | **POST** /signin | ユーザーのサインインを行う |
 | [**signupPost**](UserApi.md#signupPost) | **POST** /signup | ユーザーのサインアップを行う |
+| [**usersFollowPost**](UserApi.md#usersFollowPost) | **POST** /users/follow | 他ユーザーをフォローする |
 | [**usersMeGet**](UserApi.md#usersMeGet) | **GET** /users/me | 自分自身のユーザー情報を取得する |
 
 
@@ -87,6 +88,50 @@ try {
 ### Return type
 
 [**ResponseUserSignupResponse**](ResponseUserSignupResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+<a id="usersFollowPost"></a>
+# **usersFollowPost**
+> kotlin.String usersFollowPost(request)
+
+他ユーザーをフォローする
+
+### Example
+```kotlin
+// Import classes:
+//import org.openapitools.client.infrastructure.*
+//import org.openapitools.client.models.*
+
+val apiInstance = UserApi()
+val request : RequestUserFollowRequest =  // RequestUserFollowRequest | フォローリクエスト
+try {
+    val result : kotlin.String = apiInstance.usersFollowPost(request)
+    println(result)
+} catch (e: ClientException) {
+    println("4xx response calling UserApi#usersFollowPost")
+    e.printStackTrace()
+} catch (e: ServerException) {
+    println("5xx response calling UserApi#usersFollowPost")
+    e.printStackTrace()
+}
+```
+
+### Parameters
+| Name | Type | Description  | Notes |
+| ------------- | ------------- | ------------- | ------------- |
+| **request** | [**RequestUserFollowRequest**](RequestUserFollowRequest.md)| フォローリクエスト | |
+
+### Return type
+
+**kotlin.String**
 
 ### Authorization
 

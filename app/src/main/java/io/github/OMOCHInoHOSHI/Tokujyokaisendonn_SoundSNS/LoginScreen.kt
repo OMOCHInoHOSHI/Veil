@@ -50,7 +50,7 @@ fun LoginScreen(): Boolean {
     val context = LocalContext.current
 
     // タイムアウトを30秒に設定した OkHttpClient を生成
-    val client = createOkHttpClientWithTimeout(30)
+//    val client = createOkHttpClientWithTimeout(30)
 
     // ログイン結果
     var loginState by remember { mutableStateOf(false) }
@@ -211,14 +211,14 @@ fun LoginScreen(): Boolean {
 
 
 
-// 指定秒数のタイムアウトを設定した OkHttpClient を生成する関数
-fun createOkHttpClientWithTimeout(timeoutSeconds: Long): OkHttpClient {
-    return OkHttpClient.Builder()
-        .connectTimeout(timeoutSeconds, TimeUnit.SECONDS)
-        .readTimeout(timeoutSeconds, TimeUnit.SECONDS)
-        .writeTimeout(timeoutSeconds, TimeUnit.SECONDS)
-        .build()
-}
+//// 指定秒数のタイムアウトを設定した OkHttpClient を生成する関数
+//fun createOkHttpClientWithTimeout(timeoutSeconds: Long): OkHttpClient {
+//    return OkHttpClient.Builder()
+//        .connectTimeout(timeoutSeconds, TimeUnit.SECONDS)
+//        .readTimeout(timeoutSeconds, TimeUnit.SECONDS)
+//        .writeTimeout(timeoutSeconds, TimeUnit.SECONDS)
+//        .build()
+//}
 
 //// ネットワーク接続を行い、呼び出し結果・エラーを Logcat に出力する関数
 //suspend fun performNetworkCall(client: OkHttpClient) {

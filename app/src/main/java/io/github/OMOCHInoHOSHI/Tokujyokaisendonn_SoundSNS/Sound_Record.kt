@@ -16,10 +16,16 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImagePainter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import org.openapitools.client.apis.UserApi
+import org.openapitools.client.models.RequestUserSignupRequest
 import java.io.File
 import java.io.IOException
+import org.openapitools.client.apis.FileApi
 
 // 音の再生状態などを管理するViewModelS-------------------------------------------------
 class SoundViewModel : ViewModel() {
@@ -74,6 +80,9 @@ class AudioRecordTest(private val context: Context, val soundView: SoundViewMode
     private var fileName: String = ""
     private var recorder: MediaRecorder? = null
     private var player: MediaPlayer? = null
+
+    var uploadState = false
+
     init {
         // 外部キャッシュディレクトリを利用して出力ファイルのパスを作成
         // ※context を利用しているので、Activity 以外のクラスからも利用できます。
@@ -179,5 +188,12 @@ class AudioRecordTest(private val context: Context, val soundView: SoundViewMode
             soundView.setRecording(false)
 
         }
+    }
+
+    fun uploadSound(userApi: UserApi, fileApi: FileApi){
+//        val signupRequest = fileApi.usersUserIdAudiosPost()
+//        CoroutineScope(Dispatchers.IO).launch {
+//            uploadState =
+//        }
     }
 }

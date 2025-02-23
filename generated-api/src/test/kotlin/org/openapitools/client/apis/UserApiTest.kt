@@ -19,6 +19,7 @@ import io.kotlintest.shouldBe
 import io.kotlintest.specs.ShouldSpec
 
 import org.openapitools.client.apis.UserApi
+import org.openapitools.client.models.RequestUserFollowRequest
 import org.openapitools.client.models.RequestUserSigninRequest
 import org.openapitools.client.models.RequestUserSignupRequest
 import org.openapitools.client.models.ResponseUserInfoResponse
@@ -43,6 +44,14 @@ class UserApiTest : ShouldSpec() {
             // uncomment below to test signupPost
             //val request : RequestUserSignupRequest =  // RequestUserSignupRequest | ユーザーログインリクエスト
             //val result : ResponseUserSignupResponse = apiInstance.signupPost(request)
+            //result shouldBe ("TODO")
+        }
+
+        // to test usersFollowPost
+        should("test usersFollowPost") {
+            // uncomment below to test usersFollowPost
+            //val request : RequestUserFollowRequest =  // RequestUserFollowRequest | フォローリクエスト
+            //val result : kotlin.String = apiInstance.usersFollowPost(request)
             //result shouldBe ("TODO")
         }
 

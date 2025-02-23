@@ -1,12 +1,5 @@
 rootProject.name = 'kotlin-client'
 
-//pluginManagement {
-//    repositories {
-//        mavenCentral()
-//        google()
-//        gradlePluginPortal()
-//    }
-//}
 
 dependencyResolutionManagement {
     repositories {

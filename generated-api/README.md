@@ -45,17 +45,21 @@ All URIs are relative to *http://localhost:8080/api*
 
 | Class | Method | HTTP request | Description |
 | ------------ | ------------- | ------------- | ------------- |
+| *FileApi* | [**usersUserIdAudiosPost**](docs/FileApi.md#usersuseridaudiospost) | **POST** /users/{userId}/audios | UplopadAudio |
 | *TokenApi* | [**refreshPost**](docs/TokenApi.md#refreshpost) | **POST** /refresh | アクセストークンをリフレッシュする |
 | *UserApi* | [**signinPost**](docs/UserApi.md#signinpost) | **POST** /signin | ユーザーのサインインを行う |
 | *UserApi* | [**signupPost**](docs/UserApi.md#signuppost) | **POST** /signup | ユーザーのサインアップを行う |
+| *UserApi* | [**usersFollowPost**](docs/UserApi.md#usersfollowpost) | **POST** /users/follow | 他ユーザーをフォローする |
 | *UserApi* | [**usersMeGet**](docs/UserApi.md#usersmeget) | **GET** /users/me | 自分自身のユーザー情報を取得する |
 
 
 <a id="documentation-for-models"></a>
 ## Documentation for Models
 
+ - [org.openapitools.client.models.RequestUserFollowRequest](docs/RequestUserFollowRequest.md)
  - [org.openapitools.client.models.RequestUserSigninRequest](docs/RequestUserSigninRequest.md)
  - [org.openapitools.client.models.RequestUserSignupRequest](docs/RequestUserSignupRequest.md)
+ - [org.openapitools.client.models.ResponseAudioUploadResponse](docs/ResponseAudioUploadResponse.md)
  - [org.openapitools.client.models.ResponseRefreshResponse](docs/ResponseRefreshResponse.md)
  - [org.openapitools.client.models.ResponseUserInfoResponse](docs/ResponseUserInfoResponse.md)
  - [org.openapitools.client.models.ResponseUserSigninResponse](docs/ResponseUserSigninResponse.md)
