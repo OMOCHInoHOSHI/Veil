@@ -95,7 +95,7 @@ fun LoginScreen(): Boolean {
                     // メアドS------------------------------------------------------------
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "ユーザー名を入力",
+                        text = "ユーザー名(3~32文字)",
                         style = TextStyle(color = Color.White, fontSize = 14.sp),
                         modifier = Modifier.fillMaxWidth()
                     )
