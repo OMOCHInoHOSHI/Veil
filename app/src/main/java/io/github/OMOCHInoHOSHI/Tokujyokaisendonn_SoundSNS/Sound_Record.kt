@@ -116,6 +116,13 @@ class AudioRecordTest(private val context: Context, val soundView: SoundViewMode
                 prepare()
                 start()
                 Toast.makeText(context, "再生中", Toast.LENGTH_SHORT).show()
+
+                // 再生終了を検知するリスナーを設定
+                setOnCompletionListener {
+                    soundView.setSoundPlaying(false)
+                    Toast.makeText(context, "再生終了", Toast.LENGTH_SHORT).show()
+                    stopPlaying()  // MediaPlayer を解放
+                }
             } catch (e: IOException) {
                 Log.e(LOG_TAG, "MediaPlayer prepare() failed: ${e.message}")
             }
