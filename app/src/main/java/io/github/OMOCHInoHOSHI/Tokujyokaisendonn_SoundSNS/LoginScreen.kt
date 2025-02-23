@@ -96,7 +96,7 @@ fun LoginScreen(): Boolean {
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = "ユーザー名(3~32文字)",
-                        style = TextStyle(color = Color.White, fontSize = 14.sp),
+                        style = TextStyle(color = ColerSelect(), fontSize = 14.sp),
                         modifier = Modifier.fillMaxWidth()
                     )
                     TextField(
@@ -111,7 +111,7 @@ fun LoginScreen(): Boolean {
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = "メールアドレスを入力",
-                        style = TextStyle(color = Color.White, fontSize = 14.sp),
+                        style = TextStyle(color = ColerSelect(), fontSize = 14.sp),
                         modifier = Modifier.fillMaxWidth()
                     )
                     TextField(
@@ -127,7 +127,7 @@ fun LoginScreen(): Boolean {
                     // パスワード入力S------------------------------------------------------
                     Text(
                         text = "パスワードは6文字以上",
-                        style = TextStyle(color = Color.White, fontSize = 14.sp),
+                        style = TextStyle(color = ColerSelect(), fontSize = 14.sp),
                         modifier = Modifier.fillMaxWidth()
                     )
                     TextField(
