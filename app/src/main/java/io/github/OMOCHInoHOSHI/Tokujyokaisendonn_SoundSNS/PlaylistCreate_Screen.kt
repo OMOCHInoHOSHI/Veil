@@ -62,7 +62,7 @@ fun PlaylistCreate_Screen(navController: NavController){
                 navigationIcon = {
                     // 戻るボタン
                     IconButton(onClick = {
-
+                        navController.navigate("Profile_Screen")
                     }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Color.White)
                     }
