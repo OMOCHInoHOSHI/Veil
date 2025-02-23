@@ -33,7 +33,8 @@ data class Sound(
     val title: String,
     val user: String,
     val hash: String,
-    val color: Color
+    val PostColor: Color,
+    val UserIcon: Color
 )
 
 // プレイリスト画面
@@ -43,11 +44,11 @@ fun Playlist_Screen(navController: NavController){
     // 音声リスト(仮)
     val sounds = remember {
         listOf(
-            Sound("Sound1", "Aaa", "街中", Color(0xFFa0d8ef)),
-            Sound("Sound2", "Bbb", "海", Color(0xFFa0d8ef)),
-            Sound("Sound3", "Ccc", "山", Color(0xFFa0d8ef)),
-            Sound("Sound4", "Ddd", "仕事", Color(0xFFa0d8ef)),
-            Sound("Sound5", "Eee", "睡眠", Color(0xFFa0d8ef)),
+            Sound("Sound1", "Aaa", "街中", Color(0xFFa0d8ef), Color(0xFFe83929)),
+            Sound("Sound2", "Bbb", "海", Color(0xFF9ea1a3), Color(0xFFffffff)),
+            Sound("Sound3", "Ccc", "山", Color(0xFFa0d8ef), Color(0xFF98d98e)),
+            Sound("Sound4", "Ddd", "仕事", Color(0xFF9ea1a3), Color(0xFF65318e)),
+            Sound("Sound5", "Eee", "睡眠", Color(0xFF9ea1a3), Color(0xFFf5e56b)),
         )
     }
 
@@ -160,7 +161,7 @@ fun Playlist_Screen(navController: NavController){
                                         modifier = Modifier
                                             .size(48.dp)
                                             .clip(CircleShape)
-                                            .background(sound.color)
+                                            .background(sound.UserIcon)
                                     )
                                     Column {
                                         Text(
@@ -230,7 +231,7 @@ fun Playlist_Screen(navController: NavController){
                             Box(
                                 modifier = Modifier
                                     .size(40.dp)
-                                    .background(sound.color)
+                                    .background(sound.PostColor)
                             )
                             Column {
                                 Text(
@@ -350,7 +351,7 @@ fun SoundItem(sound: Sound, onClick: () -> Unit) {
             Box(
                 modifier = Modifier
                     .size(48.dp)
-                    .background(sound.color)
+                    .background(sound.PostColor)
             )
             Column {
                 Text(
