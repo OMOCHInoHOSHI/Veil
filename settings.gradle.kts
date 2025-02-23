@@ -16,9 +16,13 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
 }
 
 rootProject.name = "Veil"
 include(":app")
+include(":generated-api")   // APIたたくやつ追加
+
+
  
