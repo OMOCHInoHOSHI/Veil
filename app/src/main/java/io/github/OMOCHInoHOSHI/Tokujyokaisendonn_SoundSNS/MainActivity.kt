@@ -36,10 +36,11 @@ class MainActivity : ComponentActivity() {
 //                    DisplayNav()
 //                }
 
-                val userApi = UserApi("\"http://192.168.10.109:8080/v1\"")
-                val users = userApi
+                LoginScreen()
+//                val userApi = UserApi("\"http://192.168.10.109:8088/v1\"")
+//                val users = userApi
 
-                DisplayNav()
+//                DisplayNav()
 //                SoundPost_Screen()
 //                SoundSNSApp()
 //                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -81,3 +82,4 @@ fun ColerSelect(): Color {
     return dividerColor
 }
 // システムカラーに合わせて白か黒を決定E----------------------------------------
+
