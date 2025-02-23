@@ -1,6 +1,7 @@
 package io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -44,6 +46,8 @@ import java.util.concurrent.TimeUnit
 @Preview
 @Composable
 fun LoginScreen(): Boolean {
+
+    val context = LocalContext.current
 
     // タイムアウトを30秒に設定した OkHttpClient を生成
     val client = createOkHttpClientWithTimeout(30)
@@ -140,7 +144,15 @@ fun LoginScreen(): Boolean {
                     // ログインS-----------------------------------------------------------
                     Button(
 //                        onClick = { /* ログイン処理 */ },
-                        onClick = { loginState = true },
+                        onClick = { loginState = true
+
+                            if(loginState){
+                                Toast.makeText(context, "ログイン成功", Toast.LENGTH_SHORT).show()
+                            }
+                            else{
+                                Toast.makeText(context, "ログイン失敗", Toast.LENGTH_SHORT).show()
+                            }
+                        },
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text("ログイン", fontSize = 18.sp)
@@ -163,13 +175,23 @@ fun LoginScreen(): Boolean {
                         onClick = {
                             // 入力値が空でないことを簡易チェック
 //                            if (user?.isNotBlank() ?:  && email.isNotBlank() && password.isNotBlank()) {
-                                // バックグラウンドスレッドで API コールを実行
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    loginState = performSignup(userApi, user!!, email!!, password!!)
-                                }
+                            // バックグラウンドスレッドで API コールを実行
+                            CoroutineScope(Dispatchers.IO).launch {
+                                loginState = performSignup(userApi, user!!, email!!, password!!)
+                            }
 //                            } else {
 //                                Log.e("Signup", "入力内容を確認してください。")
 //                            }
+
+                            // 登録の視覚的コールバック
+                            if(loginState){
+                                Toast.makeText(context, "登録成功", Toast.LENGTH_SHORT).show()
+                            }
+                            else{
+                                Toast.makeText(context, "登録失敗", Toast.LENGTH_SHORT).show()
+                            }
+
+
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
