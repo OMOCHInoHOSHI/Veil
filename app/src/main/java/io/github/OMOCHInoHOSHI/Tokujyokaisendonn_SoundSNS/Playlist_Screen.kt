@@ -44,11 +44,11 @@ fun Playlist_Screen(navController: NavController){
     // 音声リスト(仮)
     val sounds = remember {
         listOf(
-            Sound("Sound1", "Aaa", "街中", Color(0xFFa0d8ef), Color(0xFFe83929)),
-            Sound("Sound2", "Bbb", "海", Color(0xFF9ea1a3), Color(0xFFffffff)),
-            Sound("Sound3", "Ccc", "山", Color(0xFFa0d8ef), Color(0xFF98d98e)),
-            Sound("Sound4", "Ddd", "仕事", Color(0xFF9ea1a3), Color(0xFF65318e)),
-            Sound("Sound5", "Eee", "睡眠", Color(0xFF9ea1a3), Color(0xFFf5e56b)),
+            Sound("Sound1", "Aaa", "街中", Color(0xFFA0D8EF), Color(0xFFE83929)),
+            Sound("Sound2", "Bbb", "海", Color(0xFF9EA1A3), Color(0xFFFFFFFF)),
+            Sound("Sound3", "Ccc", "山", Color(0xFFA0D8EF), Color(0xFF98D98E)),
+            Sound("Sound4", "Ddd", "仕事", Color(0xFF9EA1A3), Color(0xFF65318E)),
+            Sound("Sound5", "Eee", "睡眠", Color(0xFF9EA1A3), Color(0xFFF5E56B)),
         )
     }
 
@@ -64,7 +64,7 @@ fun Playlist_Screen(navController: NavController){
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF98d98e))
+            .background(Color(0xFF98D98E))      // 上半分の背景
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
@@ -133,7 +133,7 @@ fun Playlist_Screen(navController: NavController){
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth(),
-                color = Color(0xFF1A1A1A)
+                color = Color(0xFFFDEFF2)
             ) {
                 Column {
                     // ユーザー情報
@@ -144,7 +144,7 @@ fun Playlist_Screen(navController: NavController){
                                 .fillMaxWidth()
                                 .height(80.dp),
                             colors = CardDefaults.cardColors(
-                                containerColor = Color(0x1AFFFFFF)
+                                containerColor = Color(0xFFFFFFFF)
                             )
                         ) {
                             Row(
@@ -183,7 +183,7 @@ fun Playlist_Screen(navController: NavController){
                                         Icon(
                                             Icons.Default.Favorite,
                                             contentDescription = "Like",
-                                            tint = Color.White
+                                            tint = Color.Gray
                                         )
                                     }
                                     // 共有ボタン
@@ -191,7 +191,7 @@ fun Playlist_Screen(navController: NavController){
                                         Icon(
                                             Icons.Default.Share,
                                             contentDescription = "Share",
-                                            tint = Color.White
+                                            tint = Color.Gray
                                         )
                                     }
                                 }
@@ -216,7 +216,7 @@ fun Playlist_Screen(navController: NavController){
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color(0xE6301934))
+                        .background(Color(0xFFFFFFFF))
                         .padding(16.dp)
                 ) {
                     Row(
@@ -236,12 +236,12 @@ fun Playlist_Screen(navController: NavController){
                             Column {
                                 Text(
                                     sound.title,
-                                    color = Color.White,
+                                    color = Color.DarkGray,
                                     fontWeight = FontWeight.Medium
                                 )
                                 Text(
                                     sound.user,
-                                    color = Color.Gray,
+                                    color = Color.LightGray,
                                     fontSize = 12.sp
                                 )
                             }
@@ -255,7 +255,7 @@ fun Playlist_Screen(navController: NavController){
                                 Icon(
                                     if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
                                     contentDescription = if (isPlaying) "Pause" else "Play",
-                                    tint = Color.White
+                                    tint = Color.Gray
                                 )
                             }
                         }
@@ -267,7 +267,7 @@ fun Playlist_Screen(navController: NavController){
                                 Icon(
                                     Icons.Default.Repeat,
                                     contentDescription = "Repeat",
-                                    tint = Color.White
+                                    tint = Color.Gray
                                 )
                             }
                             // バツボタン
@@ -275,7 +275,7 @@ fun Playlist_Screen(navController: NavController){
                                 Icon(
                                     Icons.Default.Close,
                                     contentDescription = "Close",
-                                    tint = Color.White
+                                    tint = Color.Gray
                                 )
                             }
                         }
@@ -356,12 +356,12 @@ fun SoundItem(sound: Sound, onClick: () -> Unit) {
             Column {
                 Text(
                     sound.title,
-                    color = Color.White,
+                    color = Color.DarkGray,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
                     sound.user,
-                    color = Color.Gray,
+                    color = Color.LightGray,
                     fontSize = 12.sp
                 )
             }
@@ -374,7 +374,7 @@ fun SoundItem(sound: Sound, onClick: () -> Unit) {
                 Icon(
                     Icons.Default.Favorite,
                     contentDescription = "Like",
-                    tint = Color.White
+                    tint = Color.Gray
                 )
             }
             // その他ボタン
@@ -382,7 +382,7 @@ fun SoundItem(sound: Sound, onClick: () -> Unit) {
                 Icon(
                     Icons.Default.MoreVert,
                     contentDescription = "More",
-                    tint = Color.White
+                    tint = Color.Gray
                 )
             }
         }
