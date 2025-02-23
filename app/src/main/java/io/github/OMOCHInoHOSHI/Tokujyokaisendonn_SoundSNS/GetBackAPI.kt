@@ -31,4 +31,24 @@ class getAPIViewModel: ViewModel(){
     fun setUserID(id: String){
         this.user_id = id
     }
+
+    // ユーザー名を取得
+    fun getUserName(): String{
+        return this.uesrname
+    }
+
+    // メアドを取得
+    fun getEmail(): String{
+        return this.email
+    }
+
+    // パスワードを取得
+    fun getPassword(): String{
+        return this.password
+    }
+
+    // userIDを取得
+    fun getUserID(): String{
+        return this.user_id
+    }
 }
