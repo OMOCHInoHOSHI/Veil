@@ -220,25 +220,25 @@ fun createOkHttpClientWithTimeout(timeoutSeconds: Long): OkHttpClient {
         .build()
 }
 
-// ネットワーク接続を行い、呼び出し結果・エラーを Logcat に出力する関数
-suspend fun performNetworkCall(client: OkHttpClient) {
-    // URL に正しいポート番号（例：8088）を指定する
-    val request = okhttp3.Request.Builder()
-        .url("http://192.168.1.9:8088")
-        .build()
-
-    try {
-        val response = client.newCall(request).execute()
-        if (response.isSuccessful) {
-            Log.i("NetworkCall", "Response: ${response.body?.string()}")
-        } else {
-            Log.e("NetworkCall", "サーバーエラー – コード: ${response.code}")
-        }
-    } catch (e: IOException) {
-        e.printStackTrace()
-        Log.e("NetworkCall", "ネットワーク呼び出しに失敗しました", e)
-    }
-}
+//// ネットワーク接続を行い、呼び出し結果・エラーを Logcat に出力する関数
+//suspend fun performNetworkCall(client: OkHttpClient) {
+//    // URL に正しいポート番号（例：8088）を指定する
+//    val request = okhttp3.Request.Builder()
+//        .url("http://192.168.1.9:8088")
+//        .build()
+//
+//    try {
+//        val response = client.newCall(request).execute()
+//        if (response.isSuccessful) {
+//            Log.i("NetworkCall", "Response: ${response.body?.string()}")
+//        } else {
+//            Log.e("NetworkCall", "サーバーエラー – コード: ${response.code}")
+//        }
+//    } catch (e: IOException) {
+//        e.printStackTrace()
+//        Log.e("NetworkCall", "ネットワーク呼び出しに失敗しました", e)
+//    }
+//}
 
 // 新規登録のための API 呼び出し関数
 suspend fun performSignup(userApi: UserApi, user: String, email: String, password: String):Boolean {

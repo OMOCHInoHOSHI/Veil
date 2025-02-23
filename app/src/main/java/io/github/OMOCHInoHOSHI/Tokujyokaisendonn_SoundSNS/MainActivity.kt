@@ -36,10 +36,6 @@ class MainActivity : ComponentActivity() {
 //                    )
 //                }
 
-                // ログイン成功でHome起動
-//                if (LoginScreen()){
-//                    DisplayNav()
-//                }
 
                 // ログインで来たか保存
                 var loginflg by rememberSaveable { mutableStateOf(false) }
