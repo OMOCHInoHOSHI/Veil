@@ -51,11 +51,13 @@ fun Playlist_Screen(navController: NavController){
         )
     }
 
-    // 選択された音声の状態を管理
+    // 選択された音声
     var selectedSound by remember { mutableStateOf<Sound?>(null) }
+
+    // 再生状況
     var isPlaying by remember { mutableStateOf(false) }
 
-    //
+    // メニュー表示の判定
     var MenuFlag by remember { mutableStateOf(false) }
 
     Box(
@@ -70,10 +72,12 @@ fun Playlist_Screen(navController: NavController){
             TopAppBar(
                 title = { },
                 navigationIcon = {
+                    // 戻るボタン
                     IconButton(onClick = { }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Color.White)
                     }
                 },
+                // メニューボタン
                 actions = {
                     IconButton(onClick = { MenuFlag = !MenuFlag }) {
                         Icon(Icons.Default.MoreVert, contentDescription = "More", tint = Color.White)
@@ -173,6 +177,7 @@ fun Playlist_Screen(navController: NavController){
                                 Row(
                                     modifier = Modifier.offset(y = (-2).dp)  // 位置を少し上にずらす
                                 ) {
+                                    // ハートボタン
                                     IconButton(onClick = { }) {
                                         Icon(
                                             Icons.Default.Favorite,
@@ -180,6 +185,7 @@ fun Playlist_Screen(navController: NavController){
                                             tint = Color.White
                                         )
                                     }
+                                    // 共有ボタン
                                     IconButton(onClick = { }) {
                                         Icon(
                                             Icons.Default.Share,
@@ -239,7 +245,7 @@ fun Playlist_Screen(navController: NavController){
                                 )
                             }
                         }
-                        // 再生ボタンを中央に配置
+                        // 再生ボタン
                         Box(
                             modifier = Modifier.weight(1f),
                             contentAlignment = Alignment.Center
@@ -255,7 +261,7 @@ fun Playlist_Screen(navController: NavController){
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            // ループ再生
+                            // ループ再生ボタン
                             IconButton(onClick = { }) {
                                 Icon(
                                     Icons.Default.Repeat,
@@ -263,7 +269,7 @@ fun Playlist_Screen(navController: NavController){
                                     tint = Color.White
                                 )
                             }
-                            // バツマーク
+                            // バツボタン
                             IconButton(onClick = { selectedSound = null; isPlaying = false }) {
                                 Icon(
                                     Icons.Default.Close,
@@ -323,6 +329,7 @@ fun DropDownMenu(showMenu: Boolean, onDismiss: () -> Unit) {
     }
 }
 
+// プレイリスト
 @Composable
 fun SoundItem(sound: Sound, onClick: () -> Unit) {
     Row(
@@ -361,6 +368,7 @@ fun SoundItem(sound: Sound, onClick: () -> Unit) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            // ハートボタン
             IconButton(onClick = { }) {
                 Icon(
                     Icons.Default.Favorite,
@@ -368,6 +376,7 @@ fun SoundItem(sound: Sound, onClick: () -> Unit) {
                     tint = Color.White
                 )
             }
+            // その他ボタン
             IconButton(onClick = { }) {
                 Icon(
                     Icons.Default.MoreVert,
