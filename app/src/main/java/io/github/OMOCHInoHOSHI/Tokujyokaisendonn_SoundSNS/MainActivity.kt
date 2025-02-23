@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
+import org.openapitools.client.apis.UserApi
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +35,9 @@ class MainActivity : ComponentActivity() {
 //                if (LoginScreen()){
 //                    DisplayNav()
 //                }
+
+                val userApi = UserApi("\"http://192.168.10.109:8080/v1\"")
+                val users = userApi
 
                 DisplayNav()
 //                SoundPost_Screen()
