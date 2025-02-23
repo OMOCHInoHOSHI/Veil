@@ -60,6 +60,11 @@ fun Profile_Screen(
                     }
                 }
             )
+        },
+        bottomBar = {
+            // 下のナビゲーションバー
+            BottomNavBar(navController)
+
         }
     ) { innerPadding ->
 
