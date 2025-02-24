@@ -150,11 +150,15 @@ fun Home_Screen(navController: NavController) {
                                         .clip(CircleShape),
                                     color = MaterialTheme.colorScheme.secondaryContainer
                                 ) {
-                                    Icon(
-                                        Icons.Default.Mic,
-                                        contentDescription = "音声",
+                                    IconButton(
+                                        onClick = { /* 音声処理 */ },
                                         modifier = Modifier.padding(12.dp)
+                                    ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Mic,
+                                        contentDescription = "音声",
                                     )
+                                    }
                                 }
 
                                 Column {
