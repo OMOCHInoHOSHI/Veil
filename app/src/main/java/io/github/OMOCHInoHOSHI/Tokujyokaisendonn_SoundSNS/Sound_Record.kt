@@ -190,7 +190,12 @@ class AudioRecordTest(private val context: Context, val soundView: SoundViewMode
         }
     }
 
-    fun uploadSound(userApi: UserApi, fileApi: FileApi){
+    fun uploadSound(fileApi: FileApi){
+
+        val userApi = ApiManager.userApi
+
+
+
 //        val signupRequest = fileApi.usersUserIdAudiosPost()
 //        CoroutineScope(Dispatchers.IO).launch {
 //            uploadState =

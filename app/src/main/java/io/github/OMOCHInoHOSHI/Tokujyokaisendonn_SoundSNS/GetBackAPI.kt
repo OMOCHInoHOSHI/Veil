@@ -27,5 +27,19 @@ class getAPIViewModel: ViewModel(){
         Log.i("FetchUserInfo", "View Email: $getemail, ID: $getid, Name: $getname")
     }
 
+    // useridを取得
+    fun getUserId():String{
+        return user_id
+    }
+
+    // emailを取得
+    fun getEmail():String{
+        return email
+    }
+
+    // usernameを取得
+    fun getUsername():String{
+        return uesrname
+    }
 
 }

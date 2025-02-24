@@ -226,7 +226,7 @@ fun LoginScreen(getAPIViewModel: getAPIViewModel): Boolean {
 
     )
 
-    return false
+    return loginState
 }
 
 
