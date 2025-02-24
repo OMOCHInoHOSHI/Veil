@@ -160,6 +160,7 @@ fun SoundSNSTheme(
     )
 }
 
+// 投稿
 @Composable
 fun PostCard() {
     Card(
@@ -169,13 +170,13 @@ fun PostCard() {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp) // カードの下半分の高さを指定
+                .height(130.dp) // カードの高さ
         ) {
-            // 下半分を青色にする
+            // イメージカラー
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(3.dp) // 下半分の高さを設定
+                    .height(3.dp) // 高さを設定
                     .align(Alignment.BottomCenter)
                     .background(Color.Blue)
             )
@@ -220,12 +221,13 @@ fun PostCard() {
                 }
             }
 
-            // アクションボタン
+            // アクションボタンを右下に配置
             Row(
                 modifier = Modifier
-                    .padding(0.dp) // ボックスの縦の長さ
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
+                    .padding(0.dp)
+                    .align(Alignment.BottomEnd) // 右下に配置
+                    .padding(8.dp), // ボタンの周りにパディングを追加
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 IconButton(
                     onClick = { /* いいね処理 */ },
