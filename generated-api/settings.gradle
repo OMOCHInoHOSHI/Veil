@@ -1,0 +1,9 @@
+rootProject.name = 'kotlin-client'
+
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        google()
+    }
+}

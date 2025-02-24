@@ -1,5 +1,8 @@
 package io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS
 
+import android.util.Log
+import android.view.MotionEvent
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -36,16 +39,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInteropFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
+import org.openapitools.client.apis.UserApi
 
 // 画面遷移先S-------------------------
 enum class Nav {
@@ -66,8 +74,22 @@ enum class Nav {
 //画面遷移の設定　どこのページへ移動するかnavControllerに定義する S--------------------------------------------------
 @Composable
 fun DisplayNav(){
+
+    val userApi = ApiManager.userApi
+
+    try {
+        val response = userApi.usersMeGet()
+//                                        setUserInfo(response)
+        Log.i("FetchUserInfo", "User info retrieved: $response")
+    } catch (e: Exception) {
+        Log.e("FetchUserInfo", "Failed to retrieve user info", e)
+//
+    }
+
     // NavControllerを定義
     val navController = rememberNavController()
+
+    val soundView = SoundViewModel()
 
     // NavHostを作成
     // startDestinationは最初に表示するページS----------------------------------------------
@@ -81,7 +103,7 @@ fun DisplayNav(){
 
         // ルート名：SoundPost_Screen　SoundPost_Screenに遷移
         composable(route = Nav.SoundPost_Screen.name) {
-            SoundPost_Screen(navController = navController)
+            SoundPost_Screen(navController = navController, soundView)
         }
 
         // ルート名：Notice_Screen　Notice_Screenに遷移
@@ -90,8 +112,9 @@ fun DisplayNav(){
         }
 
         // ルート名：MessageChat_Screen　MessageChat_Screenに遷移
-        composable(route = Nav.MessageChat_Screen.name) {
-            MessageChat_Screen(navController = navController)
+        composable(route = "MessageChat_Screen/{username}") { backStackEntry ->
+            val username = backStackEntry.arguments?.getString("username") ?: ""
+            MessageChat_Screen(navController = navController, username = username)
         }
 
         // ルート名：MessageSelect_Screen　MessageSelect_Screenに遷移
@@ -130,10 +153,21 @@ fun DisplayNav(){
 //画面遷移の設定　どこのページへ移動するかnavControllerに定義する E--------------------------------------------------
 
 // 下のナビゲーションバーセットS----------------------------------------------------------------------------------------
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun BottomNavBar(navController: NavController) {
+fun BottomNavBar(
+    navController: NavController,
+    soundView: SoundViewModel = viewModel() // デフォルト引数
+) {
 
     //この関数は位置の指定をしていません。呼び出し側で管理してください
+
+    // 録音パーミッションの許可
+    val recordPermission = PermissionRequestScreen()
+    val context = LocalContext.current
+
+    // AudioRecordTest のインスタンスを生成（Activity のライフサイクル外でも利用可能なようにコンストラクタで Context を渡しています）
+    val audioRecordTest = AudioRecordTest(context, soundView)
 
     // 選択管理
     var selectedTab by remember { mutableStateOf(0) }
@@ -157,18 +191,81 @@ fun BottomNavBar(navController: NavController) {
                 }
             }
         )
+
         // マイクアイコン
+//        NavigationBarItem(
+//            icon = { Icon(Icons.Default.Mic, "録音") },
+////            label = { Text("録音") },
+//            // 現在のルートがSoundPost_Screenなら選択状態にする
+//            selected = currentRoute == Nav.SoundPost_Screen.name,
+//            onClick = {
+//                // 録音許可が無いと遷移しない
+//                if(recordPermission){
+//                    if (currentRoute != Nav.SoundPost_Screen.name) {
+//                        navController.navigate(Nav.SoundPost_Screen.name)
+//                    }
+//                }
+//                else {
+//                    Toast.makeText(context, "録音許可が必要です", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        )
         NavigationBarItem(
-            icon = { Icon(Icons.Default.Mic, "録音") },
-//            label = { Text("録音") },
-            // 現在のルートがSoundPost_Screenなら選択状態にする
+            icon = {
+                Box(
+                    modifier = Modifier.pointerInteropFilter { event ->
+
+                        if (!recordPermission) {
+                            // 録音許可がない場合、何もせず処理を中断
+                            Toast.makeText(context, "録音許可が必要です", Toast.LENGTH_SHORT).show()
+                            return@pointerInteropFilter false
+                        }
+
+                        when (event.action) {
+                            // 押した時の動作
+                            MotionEvent.ACTION_DOWN -> {
+                                // 録音開始
+                                audioRecordTest.onRecord(true)
+                                true
+                            }
+                            // 話した時の動作
+                            MotionEvent.ACTION_UP -> {
+                                // 録音終了
+                                audioRecordTest.onRecord(false)
+                                if(currentRoute != Nav.SoundPost_Screen.name){
+                                    // 録音終了
+//                                    audioRecordTest.onRecord(false)
+                                    navController.navigate(Nav.SoundPost_Screen.name)
+
+                                }
+                                true
+                            }
+
+                            // タッチがキャンセルされた場合の処理
+                            MotionEvent.ACTION_CANCEL -> {
+                                audioRecordTest.onRecord(false)
+                                true
+                            }
+
+                            else -> false
+                        }
+                    }
+                ) {
+                    Icon(Icons.Default.Mic, "録音")
+                }
+            },
             selected = currentRoute == Nav.SoundPost_Screen.name,
             onClick = {
-                if (currentRoute != Nav.SoundPost_Screen.name) {
-                    navController.navigate(Nav.SoundPost_Screen.name)
-                }
+//                if (recordPermission) {
+//                    if (currentRoute != Nav.SoundPost_Screen.name) {
+//                        navController.navigate(Nav.SoundPost_Screen.name)
+//                    }
+//                } else {
+//                    Toast.makeText(context, "録音許可が必要です", Toast.LENGTH_SHORT).show()
+//                }
             }
         )
+
         // 通知アイコン
         NavigationBarItem(
             icon = { Icon(Icons.Default.Notifications, "通知") },

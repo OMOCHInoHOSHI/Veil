@@ -46,16 +46,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 
 //@Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home_Screen(navController: NavController) {
+
 
     Scaffold(
         topBar = {
@@ -104,18 +107,19 @@ fun Home_Screen(navController: NavController) {
             )
 
             // AUTO再生ボタン
-            Row(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(0.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Text("AUTO", fontWeight = FontWeight.Bold)
-                IconButton(onClick = { }) {
-                    Icon(Icons.Default.PlayArrow, "再生")
+                IconButton(onClick = { /* ここに処理を記述 */ }) {
+                    Icon(Icons.Default.PlayArrow, contentDescription = "再生")
                 }
+                Text("AUTO", fontWeight = FontWeight.Bold)
             }
+
 
             // 投稿リスト
             LazyColumn(
@@ -211,27 +215,113 @@ fun Home_Screen(navController: NavController) {
     }
 }
 
-private val LightColors = lightColorScheme(
-    primary = Color(0xFF6750A4),
-    secondary = Color(0xFF625B71),
-    tertiary = Color(0xFF7D5260),
-)
-
-private val DarkColors = darkColorScheme(
-    primary = Color(0xFFD0BCFF),
-    secondary = Color(0xFFCCC2DC),
-    tertiary = Color(0xFFEFB8C8),
-)
-
+// Hotの表示
 @Composable
-fun SoundSNSTheme(
-    darkTheme: Boolean = false,
-    content: @Composable () -> Unit
-) {
-    val colorScheme = if (darkTheme) DarkColors else LightColors
+fun Hot_SoundScreen(){
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        content = content
-    )
+//    items(10) {
+//        Card(
+//            modifier = Modifier.fillMaxWidth(),
+//        ) {
+//            Row(
+//                modifier = Modifier
+//                    .padding(15.dp) // カードの縦の長さ
+//                    .fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween,
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Row(
+//                    horizontalArrangement = Arrangement.spacedBy(15.dp),
+//                    verticalAlignment = Alignment.CenterVertically  //高さの中央
+//                ) {
+//                    // 音声アイコン
+//                    Surface(
+//                        modifier = Modifier
+//                            .size(48.dp)
+//                            .clip(CircleShape),
+//                        color = MaterialTheme.colorScheme.secondaryContainer
+//                    ) {
+//                        Icon(
+//                            Icons.Default.Mic,
+//                            contentDescription = "音声",
+//                            modifier = Modifier.padding(12.dp)
+//                        )
+//                    }
+//
+//                    Column {
+//                        Text(
+//                            "user name",
+//                            fontWeight = FontWeight.ExtraBold,  //テキストの太さ
+//                            fontSize = 24.sp
+//                        )
+//                        Text(
+//                            "# 海",
+//                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+//                            fontSize = 20.sp
+//                        )
+//                    }
+//                }
+//
+//
+//            }
+//            // アクションボタン
+//            Row(
+//                modifier = Modifier
+//                    .padding(0.dp) // カードの縦の長さ
+//                    .fillMaxWidth(),
+//                horizontalArrangement = Arrangement.End,
+////                            verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                IconButton(
+//                    onClick = { /* いいね処理 */ },
+//                    modifier = Modifier.padding(0.dp)
+//                ) {
+//                    Icon(
+//                        imageVector = Icons.Filled.Favorite,
+//                        contentDescription = "いいね",
+//                    )
+//                }
+//                IconButton(
+//                    onClick = { /* ブックマーク処理 */ },
+//                    modifier = Modifier.padding(0.dp)
+//                ) {
+//                    Icon(
+//                        imageVector = Icons.Filled.BookmarkBorder,
+//                        contentDescription = "ブックマーク",
+//                    )
+//                }
+//                IconButton(
+//                    onClick = { /* シェア処理 */ },
+//                    modifier = Modifier.padding(0.dp)
+//                ) {
+//                    Icon(
+//                        imageVector = Icons.Filled.Share,
+//                        contentDescription = "シェア",
+//                    )
+//                }
+//            }
+//        }
+//    }
+
+}
+
+// 新着順の表示
+@Composable
+fun New_SoundScreen(){
+
+}
+
+// フォロー中の表示
+@Composable
+fun Follow_SoundScreen(){
+
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HomePreview() {
+    val navController = NavController(LocalContext.current)
+    VeilTheme {
+        Home_Screen(navController)
+    }
 }

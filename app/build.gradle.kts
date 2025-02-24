@@ -76,4 +76,15 @@ dependencies {
 
     // ナビゲーションコントローラー
     implementation("androidx.navigation:navigation-compose:2.8.7")
+
+    implementation (libs.androidx.core.ktx.v190)
+    implementation ("androidx.appcompat:appcompat:1.7.0")
+
+
+    // 生成したAPIたたくやつ
+    implementation ("org.jetbrains.kotlin:kotlin-stdlib:2.0.0")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0") // Retrofit を使う場合
+    implementation(project(":generated-api"))
+
 }
+

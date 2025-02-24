@@ -10,12 +10,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
+import org.openapitools.client.apis.UserApi
+
+// どこでもuserApiを使えるようにする
+object ApiManager {
+    val userApi: UserApi by lazy {
+        UserApi("http://192.168.1.9:8088/api")
+    }
+}
 
 class MainActivity : ComponentActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,12 +45,24 @@ class MainActivity : ComponentActivity() {
 //                    )
 //                }
 
-                // ログイン成功でHome起動
-//                if (LoginScreen()){
-//                    DisplayNav()
-//                }
 
-                DisplayNav()
+                // ログインで来たか保存
+                var loginflg by rememberSaveable { mutableStateOf(false) }
+//                val users = userApi
+
+//                val userApi = ApiManager.userApi
+
+                // viewモデル
+                val getAPIViewModel = getAPIViewModel()
+
+                // ログイン成功ならDisplayNavへ
+                if (loginflg){
+                    DisplayNav()
+                }else{
+                    loginflg = LoginScreen(getAPIViewModel)
+                }
+
+//                DisplayNav()
 //                SoundPost_Screen()
 //                SoundSNSApp()
 //                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -77,3 +104,4 @@ fun ColerSelect(): Color {
     return dividerColor
 }
 // システムカラーに合わせて白か黒を決定E----------------------------------------
+

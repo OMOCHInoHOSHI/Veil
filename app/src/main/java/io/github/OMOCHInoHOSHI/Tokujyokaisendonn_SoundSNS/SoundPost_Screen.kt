@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.SaveAlt
+import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,6 +39,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -48,6 +50,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
@@ -58,12 +61,24 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 
 
 // 通知画面
 @Composable
-fun SoundPost_Screen(navController: NavController){
+fun SoundPost_Screen(navController: NavController, soundView: SoundViewModel){
+
+    val context = LocalContext.current
+    // AudioRecordTest のインスタンスを生成（Activity のライフサイクル外でも利用可能なようにコンストラクタで Context を渡しています）
+    val audioRecordTest = AudioRecordTest(context, soundView)
+
+    // 再生状態を監視
+//    val soundView: SoundViewModel = viewModel()
+    val isPlaying by soundView.soundPlaying.collectAsState()
+    var playflg by remember { mutableStateOf(false) }
+
     // Use LocalConfiguration to get the screen dimensions reliably
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
@@ -113,7 +128,7 @@ fun SoundPost_Screen(navController: NavController){
                 }
                 // 投稿ボタンの行E--------------------------------------------------------
 
-                BottomNavBar(navController)
+                BottomNavBar(navController, soundView)
             }
         }
     ) { innerPadding ->
@@ -129,25 +144,42 @@ fun SoundPost_Screen(navController: NavController){
             ) {
                 // マイクアイコンと再生ボタンが重ねて表示されるコンテナーS---------
                 Box(
-                    modifier = Modifier.size(400.dp)
+                    modifier = Modifier
+                        .size(300.dp)
+                        .clickable{
+                            if(isPlaying){
+                                audioRecordTest.onPlay(false)
+//                                soundView.setSoundPlaying(false)
+                            }else{
+                                audioRecordTest.onPlay(true)
+//                                soundView.setSoundPlaying(true)
+                            }
+                        }
                 ) {
-                    // マイクのアイコンを背景にしてコンテナを埋める
+
                     Icon(
-                        imageVector = Icons.Filled.Mic,
-                        contentDescription = "Microphone Icon",
+                        imageVector = if (isPlaying) Icons.Filled.Stop else Icons.Filled.PlayArrow,
+                        contentDescription = if (isPlaying) "再生停止" else "再生開始",
                         modifier = Modifier.fillMaxSize()
                     )
-                    // 再生ボタンを右下に重ねる
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.BottomEnd
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.PlayArrow,
-                            contentDescription = "Play Button",
-                            modifier = Modifier.size(80.dp)
-                        )
-                    }
+
+//                    // マイクのアイコンを背景にしてコンテナを埋める
+//                    Icon(
+//                        imageVector = Icons.Filled.Mic,
+//                        contentDescription = "Microphone Icon",
+//                        modifier = Modifier.fillMaxSize()
+//                    )
+//                    // 再生ボタンを右下に重ねる
+//                    Box(
+//                        modifier = Modifier.fillMaxSize(),
+//                        contentAlignment = Alignment.BottomEnd
+//                    ) {
+//                        Icon(
+//                            imageVector = if (isPlaying) Icons.Filled.Stop else Icons.Filled.PlayArrow,
+//                            contentDescription = if (isPlaying) "再生停止" else "再生開始",
+//                            modifier = Modifier.size(80.dp)
+//                        )
+//                    }
                 }
                 // マイクアイコンと再生ボタンが重ねて表示されるコンテナーE---------
 
@@ -504,7 +536,6 @@ fun DynamicHashtagTextField(
 }
 // 個々のハッシュタグを入力するテキストフィールドのUIを実装E-------------------------------------------------
 
-@Preview
 @Composable
 fun SoundPost_Screen() {
     // Use LocalConfiguration to get the screen dimensions reliably
@@ -679,5 +710,15 @@ fun SoundPost_Screen() {
                 // 投稿データE---------------------------------------------------------------
             }
         }
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun SOundpost() {
+    val navController = NavController(LocalContext.current)
+    VeilTheme {
+        SoundPost_Screen(navController, soundView = SoundViewModel())
     }
 }

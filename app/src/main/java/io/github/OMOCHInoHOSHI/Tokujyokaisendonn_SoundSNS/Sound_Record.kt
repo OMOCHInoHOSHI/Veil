@@ -13,17 +13,75 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
+import coil.compose.AsyncImagePainter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import org.openapitools.client.apis.UserApi
+import org.openapitools.client.models.RequestUserSignupRequest
 import java.io.File
 import java.io.IOException
+import org.openapitools.client.apis.FileApi
+
+// 音の再生状態などを管理するViewModelS-------------------------------------------------
+class SoundViewModel : ViewModel() {
+
+    // 録音中かの確認
+    private val _recording = MutableStateFlow(false)
+    val recording: StateFlow<Boolean> get() = _recording
+
+    // 再生中の確認
+    private val _soundPlaying = MutableStateFlow(false)
+    val soundPlaying: StateFlow<Boolean> get() = _soundPlaying
+
+    // コールバック関数
+    // 変更を外部に通知
+    private var onSoundPlayingStatusChanged: ((Boolean) -> Unit)? = null
+
+    private var onRecordingStatusChanged: ((Boolean) -> Unit)? = null
+
+    // 再生中かを変更する関数
+    fun setSoundPlaying(success: Boolean) {
+        _soundPlaying.value = success
+        // 状態を変更する際にコールバックを実行
+        onSoundPlayingStatusChanged?.invoke(success)
+    }
+
+    // 録音中かを変更する関数
+    fun setRecording(success: Boolean) {
+        _recording.value = success
+        // 状態を変更する際にコールバックを実行
+        onRecordingStatusChanged?.invoke(success)
+    }
+
+    // 現在の soundPlaying の状態を取得
+    fun checkSoundPlaying(): Boolean {
+        return _soundPlaying.value
+    }
+
+    // 現在の recording の状態を取得
+    fun checkRecording(): Boolean {
+        return _recording.value
+    }
+}
+// 音の再生状態などを管理するViewModelE-------------------------------------------------
+
+
 
 private const val LOG_TAG = "AudioRecordTest"
-private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
+const val REQUEST_RECORD_AUDIO_PERMISSION = 200
 
-class AudioRecordTest(private val context: Context) {
+class AudioRecordTest(private val context: Context, val soundView: SoundViewModel/* = SoundViewModel()*/) {
 
     private var fileName: String = ""
     private var recorder: MediaRecorder? = null
     private var player: MediaPlayer? = null
+
+    var uploadState = false
 
     init {
         // 外部キャッシュディレクトリを利用して出力ファイルのパスを作成
@@ -40,17 +98,23 @@ class AudioRecordTest(private val context: Context) {
     fun onRecord(start: Boolean) {
         if (start) {
             startRecording()
+            Thread.sleep(500)
         } else {
-            stopRecording()
+//            Thread.sleep(200)  // 0.1秒待ってから stop()（調整可能）
+            if(soundView.checkRecording()){
+                stopRecording()
+            }
         }
     }
 
     // 再生開始・停止の制御
     fun onPlay(start: Boolean) {
         if (start) {
+            soundView.setSoundPlaying(true)
             startPlaying()
         } else {
             stopPlaying()
+            soundView.setSoundPlaying(false)
         }
     }
 
@@ -61,6 +125,13 @@ class AudioRecordTest(private val context: Context) {
                 prepare()
                 start()
                 Toast.makeText(context, "再生中", Toast.LENGTH_SHORT).show()
+
+                // 再生終了を検知するリスナーを設定
+                setOnCompletionListener {
+                    soundView.setSoundPlaying(false)
+                    Toast.makeText(context, "再生終了", Toast.LENGTH_SHORT).show()
+                    stopPlaying()  // MediaPlayer を解放
+                }
             } catch (e: IOException) {
                 Log.e(LOG_TAG, "MediaPlayer prepare() failed: ${e.message}")
             }
@@ -73,9 +144,14 @@ class AudioRecordTest(private val context: Context) {
     }
 
     private fun startRecording() {
-        // 出力先のディレクトリが存在しているか確認し、存在しなければ作成
+        if (recorder != null) {
+            Log.e(LOG_TAG, "Recorder はすでに初期化されています")
+            return
+        }
+
         val outputFile = File(fileName)
         outputFile.parentFile?.mkdirs()
+
         try {
             recorder = MediaRecorder().apply {
                 setAudioSource(MediaRecorder.AudioSource.MIC)
@@ -86,20 +162,38 @@ class AudioRecordTest(private val context: Context) {
                 start()
             }
             Toast.makeText(context, "録音中", Toast.LENGTH_SHORT).show()
-        } catch (e: IllegalStateException) {
-            Log.e(LOG_TAG, "MediaRecorder start() invalid state: ${e.message}")
-        } catch (e: IOException) {
-            Log.e(LOG_TAG, "MediaRecorder prepare() failed: ${e.message}")
+            soundView.setRecording(true)
+        } catch (e: Exception) {
+            Toast.makeText(context, "録音開始エラー: ${e.message}", Toast.LENGTH_SHORT).show()
+            Log.e(LOG_TAG, "録音開始エラー: ${e.message}")
+            recorder?.release()
+            recorder = null
         }
     }
 
+
     private fun stopRecording() {
         try {
-            recorder?.stop()
+            if (recorder != null) {
+                recorder?.stop()  // MediaRecorder の状態を確認してから stop()
+                Toast.makeText(context, "録音停止", Toast.LENGTH_SHORT).show()
+            } else {
+                Log.e(LOG_TAG, "Recorder が null のため stop() を呼べません")
+            }
         } catch (e: IllegalStateException) {
             Log.e(LOG_TAG, "MediaRecorder stop() invalid state: ${e.message}")
+        } finally {
+            recorder?.release()
+            recorder = null
+            soundView.setRecording(false)
+
         }
-        recorder?.release()
-        recorder = null
+    }
+
+    fun uploadSound(userApi: UserApi, fileApi: FileApi){
+//        val signupRequest = fileApi.usersUserIdAudiosPost()
+//        CoroutineScope(Dispatchers.IO).launch {
+//            uploadState =
+//        }
     }
 }
