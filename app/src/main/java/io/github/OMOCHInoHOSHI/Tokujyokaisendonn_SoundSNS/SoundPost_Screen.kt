@@ -93,7 +93,8 @@ fun SoundPost_Screen(navController: NavController, soundView: SoundViewModel){
     var tags:List<String> = remember { mutableStateListOf("") }
 
     // 音声投稿
-    val fileApi = FileApi()
+    val userApi = ApiManager.userApi
+    val fileApi = FileApi(userApi.baseUrl)
 
     Scaffold(
         bottomBar = {

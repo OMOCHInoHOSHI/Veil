@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImagePainter
+import com.google.common.io.Files.getFileExtension
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -215,6 +216,17 @@ class AudioRecordTest(private val context: Context, val soundView: SoundViewMode
 
 
         } catch (e: Exception) {
+
+            val file = File(fileName)
+            val extension = getFileExtension(file.name)
+            println("拡張子: $extension") // 出力: txt
+            if (file.isFile()) {
+                Log.d("UPLOAD", "通常のファイルです")
+            } else {
+                Log.e("UPLOAD", "通常のファイルではありません")
+            }
+            Log.e("UPLOAD", "エラーメッセージ: ${e.message}")
+            Log.i("UPLOAD", "アップロードエラーuid = $uid file = ${File(fileName)}")
             Log.e("UPLOAD", "アップロードエラー: ${e.javaClass.name}")
         }
 
