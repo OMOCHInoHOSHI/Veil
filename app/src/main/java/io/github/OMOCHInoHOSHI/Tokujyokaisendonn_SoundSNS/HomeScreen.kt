@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Favorite
@@ -127,100 +128,7 @@ fun Home_Screen(navController: NavController) {
                 verticalArrangement = Arrangement.spacedBy(8.dp) //次の項目との間隔
             ) {
                 items(10) {
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(100.dp) // カードの下半分の高さを指定
-                        ) {
-                            // 下半分を青色にする
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(3.dp) // 下半分の高さを設定
-                                    .align(Alignment.BottomCenter)
-                                    .background(Color.Blue)
-                            )
-
-                            Row(
-                                modifier = Modifier
-                                    .padding(15.dp) // ボックスの縦の長さ
-                                    .fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Row(
-                                    horizontalArrangement = Arrangement.spacedBy(15.dp),
-                                    verticalAlignment = Alignment.CenterVertically  //高さの中央
-                                ) {
-                                    // 音声アイコン
-                                    Surface(
-                                        modifier = Modifier
-                                            .size(48.dp)
-                                            .clip(CircleShape),
-                                        color = MaterialTheme.colorScheme.secondaryContainer
-                                    ) {
-                                        Icon(
-                                            Icons.Default.Mic,
-                                            contentDescription = "音声",
-                                            modifier = Modifier.padding(12.dp)
-                                        )
-                                    }
-
-                                    Column {
-                                        Text(
-                                            "user name",
-                                            fontWeight = FontWeight.ExtraBold,  //テキストの太さ
-                                            fontSize = 24.sp
-                                        )
-                                        Text(
-                                            "# 海",
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                            fontSize = 20.sp
-                                        )
-                                    }
-                                }
-                            }
-
-                            // アクションボタン
-                            Row(
-                                modifier = Modifier
-                                    .padding(0.dp) // ボックスの縦の長さ
-                                    .fillMaxWidth(),
-                                horizontalArrangement = Arrangement.End,
-                            ) {
-                                IconButton(
-                                    onClick = { /* いいね処理 */ },
-                                    modifier = Modifier.padding(0.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Favorite,
-                                        contentDescription = "いいね",
-                                    )
-                                }
-                                IconButton(
-                                    onClick = { /* ブックマーク処理 */ },
-                                    modifier = Modifier.padding(0.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.BookmarkBorder,
-                                        contentDescription = "ブックマーク",
-                                    )
-                                }
-                                IconButton(
-                                    onClick = { /* シェア処理 */ },
-                                    modifier = Modifier.padding(0.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Share,
-                                        contentDescription = "シェア",
-                                    )
-                                }
-                            }
-                        }
-                    }
+                    PostCard()
                 }
             }
         }
@@ -250,4 +158,103 @@ fun SoundSNSTheme(
         colorScheme = colorScheme,
         content = content
     )
+}
+
+@Composable
+fun PostCard() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp) // カードの下半分の高さを指定
+        ) {
+            // 下半分を青色にする
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(3.dp) // 下半分の高さを設定
+                    .align(Alignment.BottomCenter)
+                    .background(Color.Blue)
+            )
+
+            Row(
+                modifier = Modifier
+                    .padding(15.dp) // ボックスの縦の長さ
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(15.dp),
+                    verticalAlignment = Alignment.CenterVertically  //高さの中央
+                ) {
+                    // 音声アイコン
+                    Surface(
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clip(CircleShape),
+                        color = MaterialTheme.colorScheme.secondaryContainer
+                    ) {
+                        Icon(
+                            Icons.Default.Mic,
+                            contentDescription = "音声",
+                            modifier = Modifier.padding(12.dp)
+                        )
+                    }
+
+                    Column {
+                        Text(
+                            "user name",
+                            fontWeight = FontWeight.ExtraBold,  //テキストの太さ
+                            fontSize = 24.sp
+                        )
+                        Text(
+                            "# 海",
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontSize = 20.sp
+                        )
+                    }
+                }
+            }
+
+            // アクションボタン
+            Row(
+                modifier = Modifier
+                    .padding(0.dp) // ボックスの縦の長さ
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+            ) {
+                IconButton(
+                    onClick = { /* いいね処理 */ },
+                    modifier = Modifier.padding(0.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Favorite,
+                        contentDescription = "いいね",
+                    )
+                }
+                IconButton(
+                    onClick = { /* ブックマーク処理 */ },
+                    modifier = Modifier.padding(0.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.BookmarkBorder,
+                        contentDescription = "ブックマーク",
+                    )
+                }
+                IconButton(
+                    onClick = { /* シェア処理 */ },
+                    modifier = Modifier.padding(0.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Share,
+                        contentDescription = "シェア",
+                    )
+                }
+            }
+        }
+    }
 }
