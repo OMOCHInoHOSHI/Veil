@@ -1,5 +1,6 @@
 package io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS
 
+import androidx.compose.foundation.Image
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
@@ -17,6 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -38,11 +41,11 @@ fun Playlist_Screen(navController: NavController){
     // 音声リスト(仮)
     val sounds = remember {
         listOf(
-            Sound("Sound1", "Aaa", "街中", Color(0xFFA0D8EF), Color(0xFFE83929)),
-            Sound("Sound2", "Bbb", "海", Color(0xFF9EA1A3), Color(0xFFFFFFFF)),
-            Sound("Sound3", "Ccc", "山", Color(0xFFA0D8EF), Color(0xFF98D98E)),
-            Sound("Sound4", "Ddd", "仕事", Color(0xFF9EA1A3), Color(0xFF65318E)),
-            Sound("Sound5", "Eee", "睡眠", Color(0xFF9EA1A3), Color(0xFFF5E56B)),
+            Sound("Sound1", "N_A", "#街中, #帰り道", Color(0xFFA0D8EF), Color(0xFF65318E)),
+            Sound("Sound2", "リオ", "#海, #青春", Color(0xFFafeeee), Color(0xFF98D98E)),
+            Sound("Sound3", "リオ", "#山", Color(0xFF38b48b), Color(0xFF98D98E)),
+            Sound("Sound4", "N_A", "#仕事", Color(0xFF5b7e91), Color(0xFF65318E)),
+            Sound("Sound5", "N_A", "#睡眠, #安らぎ, #休憩", Color(0xFFf2f2b0), Color(0xFF65318E)),
         )
     }
 
@@ -58,68 +61,79 @@ fun Playlist_Screen(navController: NavController){
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF98D98E))      // 上半分の背景
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            // ヘッダー
-            TopAppBar(
-                title = { },
-                navigationIcon = {
-                    // 戻るボタン
-                    IconButton(onClick = {
-                        navController.navigate("Profile_Screen")
-                    }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Color.White)
-                    }
-                },
-                // メニューボタン
-                actions = {
-                    IconButton(onClick = { MenuFlag = !MenuFlag }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "More", tint = Color.White)
-                    }
-
-                    // ドロップダウンメニューの表示
-                    DropDownMenu(MenuFlag, onDismiss = { MenuFlag = false })
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent
-                )
-            )
-
-            // 上半分: タイトル
-            Column(
+            // 上半分: ヘッダーとタイトル
+            Box(
                 modifier = Modifier
-                    .height(200.dp)  // 高さを短く設定
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .height(300.dp)  // 高さを短く設定
+                    .fillMaxWidth()
             ) {
-                // Title
-                Text(
-                    "海音まとめ",
-                    color = Color.White,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
+                Image(
+                    painter = painterResource(id = R.drawable.kari_image),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
                 )
-
-                // 再生ボタン
-                Box(
-                    modifier = Modifier.weight(1f),
-                    contentAlignment = Alignment.Center
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color(0x80000000)),  // 半透明の黒背景を追加してテキストを見やすくする
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    IconButton(
-                        onClick = { isPlaying = !isPlaying },
-                        modifier = Modifier.size(60.dp)  // ボタンの大きさを設定
-                    ) {
-                        Icon(
-                            if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                            contentDescription = if (isPlaying) "Pause" else "Play",
-                            tint = Color.White,
-                            modifier = Modifier.size(60.dp)  // アイコンの大きさを設定
+                    // ヘッダー
+                    TopAppBar(
+                        title = { },
+                        navigationIcon = {
+                            // 戻るボタン
+                            IconButton(onClick = {
+                                navController.navigate("Profile_Screen")
+                            }) {
+                                Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Color.White)
+                            }
+                        },
+                        // メニューボタン
+                        actions = {
+                            IconButton(onClick = { MenuFlag = !MenuFlag }) {
+                                Icon(Icons.Default.MoreVert, contentDescription = "More", tint = Color.White)
+                            }
+
+                            // ドロップダウンメニューの表示
+                            DropDownMenu(MenuFlag, onDismiss = { MenuFlag = false })
+                        },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = Color.Transparent
                         )
+                    )
+
+                    // タイトル
+                    Text(
+                        "お気に入り",
+                        color = Color.White,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+
+                    // 再生ボタン
+                    Box(
+                        modifier = Modifier.weight(1f),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        IconButton(
+                            onClick = { isPlaying = !isPlaying },
+                            modifier = Modifier.size(60.dp)  // ボタンの大きさを設定
+                        ) {
+                            Icon(
+                                if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                                contentDescription = if (isPlaying) "Pause" else "Play",
+                                tint = Color.White,
+                                modifier = Modifier.size(60.dp)  // アイコンの大きさを設定
+                            )
+                        }
                     }
                 }
             }
@@ -166,7 +180,7 @@ fun Playlist_Screen(navController: NavController){
                                         )
                                         Text(
                                             sound.hash,
-                                            fontSize = 12.sp
+                                            fontSize = 14.sp
                                         )
                                     }
                                 }
@@ -231,14 +245,9 @@ fun Playlist_Screen(navController: NavController){
                             )
                             Column {
                                 Text(
-                                    sound.title,
+                                    sound.hash,
                                     color = Color.DarkGray,
                                     fontWeight = FontWeight.Medium
-                                )
-                                Text(
-                                    sound.user,
-                                    color = Color.LightGray,
-                                    fontSize = 12.sp
                                 )
                             }
                         }
@@ -351,14 +360,9 @@ fun SoundItem(sound: Sound, onClick: () -> Unit) {
             )
             Column {
                 Text(
-                    sound.title,
+                    sound.hash,
                     color = Color.DarkGray,
                     fontWeight = FontWeight.Medium
-                )
-                Text(
-                    sound.user,
-                    color = Color.LightGray,
-                    fontSize = 12.sp
                 )
             }
         }
