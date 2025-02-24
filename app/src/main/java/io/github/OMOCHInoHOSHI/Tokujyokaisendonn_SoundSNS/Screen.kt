@@ -1,5 +1,6 @@
 package io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS
 
+import android.util.Log
 import android.view.MotionEvent
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
@@ -52,6 +53,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
+import org.openapitools.client.apis.UserApi
 
 // 画面遷移先S-------------------------
 enum class Nav {
@@ -72,6 +74,18 @@ enum class Nav {
 //画面遷移の設定　どこのページへ移動するかnavControllerに定義する S--------------------------------------------------
 @Composable
 fun DisplayNav(){
+
+    val userApi = ApiManager.userApi
+
+    try {
+        val response = userApi.usersMeGet()
+//                                        setUserInfo(response)
+        Log.i("FetchUserInfo", "User info retrieved: $response")
+    } catch (e: Exception) {
+        Log.e("FetchUserInfo", "Failed to retrieve user info", e)
+//
+    }
+
     // NavControllerを定義
     val navController = rememberNavController()
 

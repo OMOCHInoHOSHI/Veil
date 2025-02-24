@@ -21,7 +21,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 import org.openapitools.client.apis.UserApi
 
+// どこでもuserApiを使えるようにする
+object ApiManager {
+    val userApi: UserApi by lazy {
+        UserApi("http://192.168.1.9:8088/api")
+    }
+}
+
 class MainActivity : ComponentActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -39,8 +48,9 @@ class MainActivity : ComponentActivity() {
 
                 // ログインで来たか保存
                 var loginflg by rememberSaveable { mutableStateOf(false) }
-//                val userApi = UserApi("\"http://192.168.10.109:8088/v1\"")
 //                val users = userApi
+
+//                val userApi = ApiManager.userApi
 
                 // viewモデル
                 val getAPIViewModel = getAPIViewModel()
@@ -49,7 +59,7 @@ class MainActivity : ComponentActivity() {
                 if (loginflg){
                     DisplayNav()
                 }else{
-                    loginflg = LoginScreen()
+                    loginflg = LoginScreen(getAPIViewModel)
                 }
 
 //                DisplayNav()

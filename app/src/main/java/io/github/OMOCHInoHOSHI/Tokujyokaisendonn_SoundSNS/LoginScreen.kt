@@ -47,6 +47,8 @@ import java.util.concurrent.TimeUnit
 @Composable
 fun LoginScreen(getAPIViewModel: getAPIViewModel): Boolean {
 
+    val userApi = ApiManager.userApi
+
     val context = LocalContext.current
 
     // タイムアウトを30秒に設定した OkHttpClient を生成
@@ -65,7 +67,7 @@ fun LoginScreen(getAPIViewModel: getAPIViewModel): Boolean {
 
 
     // おれのローカル
-    val userApi = UserApi("http://192.168.1.9:8088/api")
+//    val userApi = UserApi("http://192.168.1.9:8088/api")
 //    val userApi = UserApi("http://127.0.0.1:8088")
 //    val users = userApi
 
@@ -144,7 +146,9 @@ fun LoginScreen(getAPIViewModel: getAPIViewModel): Boolean {
                     // ログインS-----------------------------------------------------------
                     Button(
 //                        onClick = { /* ログイン処理 */ },
-                        onClick = { loginState = true
+                        onClick = {
+
+//                            loginState = true
 
                             if(loginState){
                                 Toast.makeText(context, "ログイン成功", Toast.LENGTH_SHORT).show()
@@ -178,6 +182,19 @@ fun LoginScreen(getAPIViewModel: getAPIViewModel): Boolean {
                             // バックグラウンドスレッドで API コールを実行
                             CoroutineScope(Dispatchers.IO).launch {
                                 loginState = performSignup(userApi, user!!, email!!, password!!, getAPIViewModel)
+
+                                if (loginState){
+//                                    try {
+//                                        val response = userApi.usersMeGet()
+////                                        setUserInfo(response)
+//                                        Log.i("FetchUserInfo", "User info retrieved: $response")
+//                                    } catch (e: Exception) {
+//                                        Log.e("FetchUserInfo", "Failed to retrieve user info", e)
+////
+//                                    }
+                                }
+
+//                                loginState = false
                             }
 //                            } else {
 //                                Log.e("Signup", "入力内容を確認してください。")
@@ -190,7 +207,6 @@ fun LoginScreen(getAPIViewModel: getAPIViewModel): Boolean {
                             else{
                                 Toast.makeText(context, "登録失敗", Toast.LENGTH_SHORT).show()
                             }
-
 
                         },
                         modifier = Modifier.fillMaxWidth()
@@ -247,13 +263,20 @@ suspend fun performSignup(userApi: UserApi, user: String, email: String, passwor
     Log.i("Signup", "user: $user, email: $email, password: $password")
 
     try {
-        Log.i("Signup", "Signup response: ${userApi.baseUrl}")
+        Log.i("Signup", "Signup responseURL: ${userApi.baseUrl}")
         // API 呼び出しのためのリクエストオブジェクトを作成
         val signupRequest = RequestUserSignupRequest(email,user,  password)
         // signupPost を呼び出して結果を取得
         val res = userApi.signupPost(signupRequest)
         Log.i("Signup", "Signup response: $res")
 
+
+//            try {
+//                val response = userApi.usersMeGet()
+//                Log.i("FetchUserInfo", "User info retrieved: $response")
+//            } catch (e: Exception) {
+//                Log.e("FetchUserInfo", "Failed to retrieve user info", e)
+//            }
 
 
         return true
