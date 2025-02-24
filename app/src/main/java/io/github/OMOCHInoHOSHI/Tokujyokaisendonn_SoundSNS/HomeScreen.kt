@@ -107,18 +107,19 @@ fun Home_Screen(navController: NavController) {
             )
 
             // AUTO再生ボタン
-            Row(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(0.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Text("AUTO", fontWeight = FontWeight.Bold)
-                IconButton(onClick = { }) {
-                    Icon(Icons.Default.PlayArrow, "再生")
+                IconButton(onClick = { /* ここに処理を記述 */ }) {
+                    Icon(Icons.Default.PlayArrow, contentDescription = "再生")
                 }
+                Text("AUTO", fontWeight = FontWeight.Bold)
             }
+
 
             // 投稿リスト
             LazyColumn(
