@@ -145,7 +145,7 @@ fun SoundPost_Screen(navController: NavController, soundView: SoundViewModel){
                 // マイクアイコンと再生ボタンが重ねて表示されるコンテナーS---------
                 Box(
                     modifier = Modifier
-                        .size(100.dp)
+                        .size(300.dp)
                         .clickable{
                             if(isPlaying){
                                 audioRecordTest.onPlay(false)
@@ -536,7 +536,6 @@ fun DynamicHashtagTextField(
 }
 // 個々のハッシュタグを入力するテキストフィールドのUIを実装E-------------------------------------------------
 
-@Preview
 @Composable
 fun SoundPost_Screen() {
     // Use LocalConfiguration to get the screen dimensions reliably
@@ -720,6 +719,6 @@ fun SoundPost_Screen() {
 fun SOundpost() {
     val navController = NavController(LocalContext.current)
     VeilTheme {
-        SoundPost_Screen()
+        SoundPost_Screen(navController, soundView = SoundViewModel())
     }
 }
