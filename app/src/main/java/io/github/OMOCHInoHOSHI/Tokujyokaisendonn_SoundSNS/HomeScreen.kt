@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
@@ -181,12 +182,21 @@ fun Home_Screen(navController: NavController) {
 //                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             IconButton(
-                                onClick = { /* いいね処理 */ },
+                                onClick = { /* フォロー処理 */ },
                                 modifier = Modifier.padding(0.dp)
                             ) {
                                 Icon(
-                                    imageVector = Icons.Filled.Favorite,
-                                    contentDescription = "いいね",
+                                    imageVector = Icons.Filled.PersonAdd,
+                                    contentDescription = "フォロー",
+                                )
+                            }
+                            IconButton(
+                                onClick = { /* シェア処理 */ },
+                                modifier = Modifier.padding(0.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Share,
+                                    contentDescription = "シェア",
                                 )
                             }
                             IconButton(
@@ -199,12 +209,12 @@ fun Home_Screen(navController: NavController) {
                                 )
                             }
                             IconButton(
-                                onClick = { /* シェア処理 */ },
+                                onClick = { /* いいね処理 */ },
                                 modifier = Modifier.padding(0.dp)
                             ) {
                                 Icon(
-                                    imageVector = Icons.Filled.Share,
-                                    contentDescription = "シェア",
+                                    imageVector = Icons.Filled.Favorite,
+                                    contentDescription = "いいね",
                                 )
                             }
                         }
