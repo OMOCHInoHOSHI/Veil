@@ -123,7 +123,7 @@ fun SoundPost_Screen(navController: NavController, soundView: SoundViewModel){
 
                         // 右側の投稿アイコン
                         IconButton(onClick = { /* doSomething() for sending post */
-                            audioRecordTest.uploadSound(fileApi)
+                            audioRecordTest.callUploadSound(fileApi,"a","a")
                         }) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.Send,

@@ -21,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.openapitools.client.apis.UserApi
 import org.openapitools.client.models.RequestUserSignupRequest
 import java.io.File
@@ -190,7 +191,12 @@ class AudioRecordTest(private val context: Context, val soundView: SoundViewMode
         }
     }
 
-    fun uploadSound(fileApi: FileApi){
+    fun callUploadSound(fileApi: FileApi, col: String, tags: String) {
+        CoroutineScope(Dispatchers.IO).launch { // コルーチンスコープ内で呼び出す
+            uploadSound(fileApi, col, tags)
+        }
+    }
+    suspend fun uploadSound(fileApi: FileApi, col:String, tags:String){
 
         val userApi = ApiManager.userApi
 
@@ -198,9 +204,21 @@ class AudioRecordTest(private val context: Context, val soundView: SoundViewMode
 
         println("uid = $uid")
 
-//        val signupRequest = fileApi.usersUserIdAudiosPost()
-//        CoroutineScope(Dispatchers.IO).launch {
-//            uploadState =
-//        }
+
+
+        try {
+            val response = withContext(Dispatchers.IO){
+                fileApi.usersUserIdAudiosPost(uid, File(fileName), "#000000", "tagA,tagB" )
+            }
+            Log.i("UPLOAD", "uid = $uid file = $fileName")
+            Log.d("UPLOAD", "アップロード成功: $response")
+
+
+        } catch (e: Exception) {
+            Log.e("UPLOAD", "アップロードエラー: ${e.javaClass.name}")
+        }
+
+
+
     }
 }
