@@ -193,11 +193,18 @@ class AudioRecordTest(private val context: Context, val soundView: SoundViewMode
     }
 
     fun callUploadSound(fileApi: FileApi, col: String, tags: String) {
-        CoroutineScope(Dispatchers.IO).launch { // コルーチンスコープ内で呼び出す
-            uploadSound(fileApi, col, tags)
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = uploadSound(fileApi, col, tags)
+            withContext(Dispatchers.Main) {
+                val message = if (result) "アップロード成功！" else "アップロード失敗"
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            }
         }
     }
-    suspend fun uploadSound(fileApi: FileApi, col:String, tags:String){
+
+    suspend fun uploadSound(fileApi: FileApi, col:String, tags:String):Boolean{
+
+        var flg:Boolean
 
         val userApi = ApiManager.userApi
 
@@ -214,7 +221,7 @@ class AudioRecordTest(private val context: Context, val soundView: SoundViewMode
             Log.i("UPLOAD", "uid = $uid file = $fileName")
             Log.d("UPLOAD", "アップロード成功: $response")
 
-
+            flg = true
         } catch (e: Exception) {
 
             val file = File(fileName)
@@ -228,9 +235,27 @@ class AudioRecordTest(private val context: Context, val soundView: SoundViewMode
             Log.e("UPLOAD", "エラーメッセージ: ${e.message}")
             Log.i("UPLOAD", "アップロードエラーuid = $uid file = ${File(fileName)}")
             Log.e("UPLOAD", "アップロードエラー: ${e.javaClass.name}")
+
+            flg = false
         }
 
+        return flg
+    }
 
+
+    fun callgetsound(){
+
+    }
+
+    suspend fun getSound(fileApi: FileApi){
+
+
+        try {
+
+        }
+        catch (e:Exception){
+
+        }
 
     }
 }

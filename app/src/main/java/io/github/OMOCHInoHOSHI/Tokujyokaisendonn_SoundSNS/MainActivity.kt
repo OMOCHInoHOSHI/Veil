@@ -18,13 +18,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ApiManager.userApi
 import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
+import org.openapitools.client.apis.FileApi
 import org.openapitools.client.apis.UserApi
 
 // どこでもuserApiを使えるようにする
 object ApiManager {
     val userApi: UserApi by lazy {
         UserApi("http://192.168.1.9:8088/api")
+    }
+
+    val fileApi : FileApi by lazy {
+        FileApi(userApi.baseUrl)
     }
 }
 

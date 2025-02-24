@@ -59,6 +59,8 @@ import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 @Composable
 fun Home_Screen(navController: NavController) {
 
+    val fileApi = ApiManager.fileApi
+
 
     Scaffold(
         topBar = {

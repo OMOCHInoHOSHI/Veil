@@ -94,7 +94,7 @@ fun SoundPost_Screen(navController: NavController, soundView: SoundViewModel){
 
     // 音声投稿
     val userApi = ApiManager.userApi
-    val fileApi = FileApi(userApi.baseUrl)
+    val fileApi = ApiManager.fileApi
 
     Scaffold(
         bottomBar = {
