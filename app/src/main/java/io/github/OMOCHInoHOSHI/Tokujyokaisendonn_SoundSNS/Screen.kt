@@ -112,8 +112,9 @@ fun DisplayNav(){
         }
 
         // ルート名：MessageChat_Screen　MessageChat_Screenに遷移
-        composable(route = Nav.MessageChat_Screen.name) {
-            MessageChat_Screen(navController = navController)
+        composable(route = "MessageChat_Screen/{username}") { backStackEntry ->
+            val username = backStackEntry.arguments?.getString("username") ?: ""
+            MessageChat_Screen(navController = navController, username = username)
         }
 
         // ルート名：MessageSelect_Screen　MessageSelect_Screenに遷移
