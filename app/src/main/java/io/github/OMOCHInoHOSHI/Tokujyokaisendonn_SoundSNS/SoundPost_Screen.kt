@@ -63,6 +63,7 @@ import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
 
 
 // 通知画面
@@ -144,7 +145,7 @@ fun SoundPost_Screen(navController: NavController, soundView: SoundViewModel){
                 // マイクアイコンと再生ボタンが重ねて表示されるコンテナーS---------
                 Box(
                     modifier = Modifier
-                        .size(400.dp)
+                        .size(100.dp)
                         .clickable{
                             if(isPlaying){
                                 audioRecordTest.onPlay(false)
@@ -710,5 +711,15 @@ fun SoundPost_Screen() {
                 // 投稿データE---------------------------------------------------------------
             }
         }
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun SOundpost() {
+    val navController = NavController(LocalContext.current)
+    VeilTheme {
+        SoundPost_Screen()
     }
 }
