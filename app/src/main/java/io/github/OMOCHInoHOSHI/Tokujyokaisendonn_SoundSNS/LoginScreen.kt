@@ -17,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +41,8 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.openapitools.client.apis.UserApi
+import org.openapitools.client.infrastructure.ApiClient
+import org.openapitools.client.models.RequestUserSigninRequest
 import org.openapitools.client.models.RequestUserSignupRequest
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -191,6 +194,16 @@ fun LoginScreen(getAPIViewModel: getAPIViewModel): Boolean {
                                         val message = if (loginState) "登録成功" else "登録失敗"
                                         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 
+                                        if(loginState){
+                                            try {
+                                                val response = withContext(Dispatchers.IO) { // ネットワーク処理をIOスレッドで実行
+                                                    userApi.usersMeGet()
+                                                }
+                                                Log.i("FetchUserInfo", "User info retrieved: $response")
+                                            } catch (e: Exception) {
+                                                Log.e("FetchUserInfo", "Failed to retrieve user info", e)
+                                            }
+                                        }
                                     }
     //                                loginState = false
                                 }
@@ -213,7 +226,7 @@ fun LoginScreen(getAPIViewModel: getAPIViewModel): Boolean {
 
     )
 
-    return loginState
+    return false
 }
 
 
@@ -257,17 +270,22 @@ suspend fun performSignup(userApi: UserApi, user: String, email: String, passwor
         Log.i("Signup", "Signup responseURL: ${userApi.baseUrl}")
         // API 呼び出しのためのリクエストオブジェクトを作成
         val signupRequest = RequestUserSignupRequest(email,user,  password)
+        val singinRequest = RequestUserSigninRequest(user,  password)
         // signupPost を呼び出して結果を取得
         val res = userApi.signupPost(signupRequest)
         Log.i("Signup", "Signup response: $res")
 
+        val sin = userApi.signinPost(singinRequest)
 
-//            try {
-//                val response = userApi.usersMeGet()
-//                Log.i("FetchUserInfo", "User info retrieved: $response")
-//            } catch (e: Exception) {
-//                Log.e("FetchUserInfo", "Failed to retrieve user info", e)
-//            }
+        ApiClient.apiKey.put("Authorization", "Bearer ${sin.accessToken}")
+        Log.i("Signup", "ApiClient.apiKey: ${ApiClient.apiKey}")
+
+            try {
+                val response = userApi.usersMeGet()
+                Log.i("FetchUserInfo", "User info retrieved: $response")
+            } catch (e: Exception) {
+                Log.e("FetchUserInfo", "Failed to retrieve user info", e)
+            }
 
 
         return true

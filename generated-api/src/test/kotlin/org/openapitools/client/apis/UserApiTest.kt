@@ -22,6 +22,7 @@ import org.openapitools.client.apis.UserApi
 import org.openapitools.client.models.RequestUserFollowRequest
 import org.openapitools.client.models.RequestUserSigninRequest
 import org.openapitools.client.models.RequestUserSignupRequest
+import org.openapitools.client.models.RequestUserUnfollowRequest
 import org.openapitools.client.models.ResponseUserInfoResponse
 import org.openapitools.client.models.ResponseUserSigninResponse
 import org.openapitools.client.models.ResponseUserSignupResponse
@@ -59,6 +60,14 @@ class UserApiTest : ShouldSpec() {
         should("test usersMeGet") {
             // uncomment below to test usersMeGet
             //val result : ResponseUserInfoResponse = apiInstance.usersMeGet()
+            //result shouldBe ("TODO")
+        }
+
+        // to test usersUnfollowDelete
+        should("test usersUnfollowDelete") {
+            // uncomment below to test usersUnfollowDelete
+            //val request : RequestUserUnfollowRequest =  // RequestUserUnfollowRequest | フォロー解除リクエスト
+            //val result : kotlin.String = apiInstance.usersUnfollowDelete(request)
             //result shouldBe ("TODO")
         }
 

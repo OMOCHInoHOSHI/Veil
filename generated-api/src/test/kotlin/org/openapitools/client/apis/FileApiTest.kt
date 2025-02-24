@@ -20,6 +20,7 @@ import io.kotlintest.specs.ShouldSpec
 
 import org.openapitools.client.apis.FileApi
 import org.openapitools.client.models.ResponseAudioUploadResponse
+import org.openapitools.client.models.ResponsePlaylistCreateResponse
 
 class FileApiTest : ShouldSpec() {
     init {
@@ -34,6 +35,17 @@ class FileApiTest : ShouldSpec() {
             //val color : kotlin.String = color_example // kotlin.String | イメージカラー
             //val tags : kotlin.String = tags_example // kotlin.String | タグ
             //val result : ResponseAudioUploadResponse = apiInstance.usersUserIdAudiosPost(userId, audio, color, tags)
+            //result shouldBe ("TODO")
+        }
+
+        // to test usersUserIdPlaylistsPost
+        should("test usersUserIdPlaylistsPost") {
+            // uncomment below to test usersUserIdPlaylistsPost
+            //val userId : kotlin.String = userId_example // kotlin.String | ユーザーID
+            //val image : java.io.File = BINARY_DATA_HERE // java.io.File | 画像ファイル
+            //val title : kotlin.String = title_example // kotlin.String | プレイリストタイトル
+            //val `public` : kotlin.String = `public`_example // kotlin.String | 公開設定(true,false)
+            //val result : ResponsePlaylistCreateResponse = apiInstance.usersUserIdPlaylistsPost(userId, image, title, `public`)
             //result shouldBe ("TODO")
         }
 

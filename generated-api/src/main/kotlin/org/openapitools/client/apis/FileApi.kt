@@ -20,6 +20,7 @@ import okhttp3.Call
 import okhttp3.HttpUrl
 
 import org.openapitools.client.models.ResponseAudioUploadResponse
+import org.openapitools.client.models.ResponsePlaylistCreateResponse
 
 import com.squareup.moshi.Json
 
@@ -123,7 +124,90 @@ class FileApi(basePath: kotlin.String = defaultBasePath, client: Call.Factory = 
             path = "/users/{userId}/audios".replace("{"+"userId"+"}", encodeURIComponent(userId.toString())),
             query = localVariableQuery,
             headers = localVariableHeaders,
-            requiresAuthentication = false,
+            requiresAuthentication = true,
+            body = localVariableBody
+        )
+    }
+
+    /**
+     * CreatePlaylist
+     * プレイリストを作成する
+     * @param userId ユーザーID
+     * @param image 画像ファイル
+     * @param title プレイリストタイトル
+     * @param `public` 公開設定(true,false)
+     * @return ResponsePlaylistCreateResponse
+     * @throws IllegalStateException If the request is not correctly configured
+     * @throws IOException Rethrows the OkHttp execute method exception
+     * @throws UnsupportedOperationException If the API returns an informational or redirection response
+     * @throws ClientException If the API returns a client error response
+     * @throws ServerException If the API returns a server error response
+     */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class, UnsupportedOperationException::class, ClientException::class, ServerException::class)
+    fun usersUserIdPlaylistsPost(userId: kotlin.String, image: java.io.File, title: kotlin.String, `public`: kotlin.String) : ResponsePlaylistCreateResponse {
+        val localVarResponse = usersUserIdPlaylistsPostWithHttpInfo(userId = userId, image = image, title = title, `public` = `public`)
+
+        return when (localVarResponse.responseType) {
+            ResponseType.Success -> (localVarResponse as Success<*>).data as ResponsePlaylistCreateResponse
+            ResponseType.Informational -> throw UnsupportedOperationException("Client does not support Informational responses.")
+            ResponseType.Redirection -> throw UnsupportedOperationException("Client does not support Redirection responses.")
+            ResponseType.ClientError -> {
+                val localVarError = localVarResponse as ClientError<*>
+                throw ClientException("Client error : ${localVarError.statusCode} ${localVarError.message.orEmpty()}", localVarError.statusCode, localVarResponse)
+            }
+            ResponseType.ServerError -> {
+                val localVarError = localVarResponse as ServerError<*>
+                throw ServerException("Server error : ${localVarError.statusCode} ${localVarError.message.orEmpty()} ${localVarError.body}", localVarError.statusCode, localVarResponse)
+            }
+        }
+    }
+
+    /**
+     * CreatePlaylist
+     * プレイリストを作成する
+     * @param userId ユーザーID
+     * @param image 画像ファイル
+     * @param title プレイリストタイトル
+     * @param `public` 公開設定(true,false)
+     * @return ApiResponse<ResponsePlaylistCreateResponse?>
+     * @throws IllegalStateException If the request is not correctly configured
+     * @throws IOException Rethrows the OkHttp execute method exception
+     */
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class, IOException::class)
+    fun usersUserIdPlaylistsPostWithHttpInfo(userId: kotlin.String, image: java.io.File, title: kotlin.String, `public`: kotlin.String) : ApiResponse<ResponsePlaylistCreateResponse?> {
+        val localVariableConfig = usersUserIdPlaylistsPostRequestConfig(userId = userId, image = image, title = title, `public` = `public`)
+
+        return request<Map<String, PartConfig<*>>, ResponsePlaylistCreateResponse>(
+            localVariableConfig
+        )
+    }
+
+    /**
+     * To obtain the request config of the operation usersUserIdPlaylistsPost
+     *
+     * @param userId ユーザーID
+     * @param image 画像ファイル
+     * @param title プレイリストタイトル
+     * @param `public` 公開設定(true,false)
+     * @return RequestConfig
+     */
+    fun usersUserIdPlaylistsPostRequestConfig(userId: kotlin.String, image: java.io.File, title: kotlin.String, `public`: kotlin.String) : RequestConfig<Map<String, PartConfig<*>>> {
+        val localVariableBody = mapOf(
+            "image" to PartConfig(body = image, headers = mutableMapOf()),
+            "title" to PartConfig(body = title, headers = mutableMapOf()),
+            "public" to PartConfig(body = `public`, headers = mutableMapOf()),)
+        val localVariableQuery: MultiValueMap = mutableMapOf()
+        val localVariableHeaders: MutableMap<String, String> = mutableMapOf("Content-Type" to "multipart/form-data")
+        localVariableHeaders["Accept"] = "application/json"
+
+        return RequestConfig(
+            method = RequestMethod.POST,
+            path = "/users/{userId}/playlists".replace("{"+"userId"+"}", encodeURIComponent(userId.toString())),
+            query = localVariableQuery,
+            headers = localVariableHeaders,
+            requiresAuthentication = true,
             body = localVariableBody
         )
     }

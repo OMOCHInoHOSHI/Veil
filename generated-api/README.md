@@ -45,12 +45,16 @@ All URIs are relative to *http://localhost:8080/api*
 
 | Class | Method | HTTP request | Description |
 | ------------ | ------------- | ------------- | ------------- |
+| *DiscoverApi* | [**discoverFollowsGet**](docs/DiscoverApi.md#discoverfollowsget) | **GET** /discover/follows | GetLatestFollows |
+| *DiscoverApi* | [**discoverLatestGet**](docs/DiscoverApi.md#discoverlatestget) | **GET** /discover/latest | GetLatest |
 | *FileApi* | [**usersUserIdAudiosPost**](docs/FileApi.md#usersuseridaudiospost) | **POST** /users/{userId}/audios | UplopadAudio |
+| *FileApi* | [**usersUserIdPlaylistsPost**](docs/FileApi.md#usersuseridplaylistspost) | **POST** /users/{userId}/playlists | CreatePlaylist |
 | *TokenApi* | [**refreshPost**](docs/TokenApi.md#refreshpost) | **POST** /refresh | アクセストークンをリフレッシュする |
 | *UserApi* | [**signinPost**](docs/UserApi.md#signinpost) | **POST** /signin | ユーザーのサインインを行う |
 | *UserApi* | [**signupPost**](docs/UserApi.md#signuppost) | **POST** /signup | ユーザーのサインアップを行う |
 | *UserApi* | [**usersFollowPost**](docs/UserApi.md#usersfollowpost) | **POST** /users/follow | 他ユーザーをフォローする |
 | *UserApi* | [**usersMeGet**](docs/UserApi.md#usersmeget) | **GET** /users/me | 自分自身のユーザー情報を取得する |
+| *UserApi* | [**usersUnfollowDelete**](docs/UserApi.md#usersunfollowdelete) | **DELETE** /users/unfollow | 他ユーザーのフォロー解除を行う |
 
 
 <a id="documentation-for-models"></a>
@@ -59,7 +63,11 @@ All URIs are relative to *http://localhost:8080/api*
  - [org.openapitools.client.models.RequestUserFollowRequest](docs/RequestUserFollowRequest.md)
  - [org.openapitools.client.models.RequestUserSigninRequest](docs/RequestUserSigninRequest.md)
  - [org.openapitools.client.models.RequestUserSignupRequest](docs/RequestUserSignupRequest.md)
+ - [org.openapitools.client.models.RequestUserUnfollowRequest](docs/RequestUserUnfollowRequest.md)
  - [org.openapitools.client.models.ResponseAudioUploadResponse](docs/ResponseAudioUploadResponse.md)
+ - [org.openapitools.client.models.ResponseDiscoverResponse](docs/ResponseDiscoverResponse.md)
+ - [org.openapitools.client.models.ResponseDiscoverResponseItem](docs/ResponseDiscoverResponseItem.md)
+ - [org.openapitools.client.models.ResponsePlaylistCreateResponse](docs/ResponsePlaylistCreateResponse.md)
  - [org.openapitools.client.models.ResponseRefreshResponse](docs/ResponseRefreshResponse.md)
  - [org.openapitools.client.models.ResponseUserInfoResponse](docs/ResponseUserInfoResponse.md)
  - [org.openapitools.client.models.ResponseUserSigninResponse](docs/ResponseUserSigninResponse.md)
@@ -69,5 +77,12 @@ All URIs are relative to *http://localhost:8080/api*
 <a id="documentation-for-authorization"></a>
 ## Documentation for Authorization
 
-Endpoints do not require authorization.
+
+Authentication schemes defined for the API:
+<a id="BearerAuth"></a>
+### BearerAuth
+
+- **Type**: API key
+- **API key parameter name**: Authorization
+- **Location**: HTTP header
 

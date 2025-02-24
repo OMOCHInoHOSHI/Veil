@@ -35,9 +35,11 @@ import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -53,7 +55,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.openapitools.client.apis.UserApi
+import org.openapitools.client.models.RequestUserSignupRequest
 
 // 画面遷移先S-------------------------
 enum class Nav {
@@ -75,15 +87,20 @@ enum class Nav {
 @Composable
 fun DisplayNav(){
 
+
     val userApi = ApiManager.userApi
 
-    try {
-        val response = userApi.usersMeGet()
-//                                        setUserInfo(response)
-        Log.i("FetchUserInfo", "User info retrieved: $response")
-    } catch (e: Exception) {
-        Log.e("FetchUserInfo", "Failed to retrieve user info", e)
-//
+    LaunchedEffect(Unit) { // LaunchedEffectを使用
+
+        try {
+            val response = withContext(Dispatchers.IO) { // ネットワーク処理をIOスレッドで実行
+                userApi.usersMeGet()
+            }
+            Log.i("FetchUserInfo", "User info retrieved: $response")
+        } catch (e: Exception) {
+            Log.e("FetchUserInfo", "Failed to retrieve user info", e)
+        }
+
     }
 
     // NavControllerを定義

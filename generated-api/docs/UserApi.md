@@ -8,6 +8,7 @@ All URIs are relative to *http://localhost:8080/api*
 | [**signupPost**](UserApi.md#signupPost) | **POST** /signup | ユーザーのサインアップを行う |
 | [**usersFollowPost**](UserApi.md#usersFollowPost) | **POST** /users/follow | 他ユーザーをフォローする |
 | [**usersMeGet**](UserApi.md#usersMeGet) | **GET** /users/me | 自分自身のユーザー情報を取得する |
+| [**usersUnfollowDelete**](UserApi.md#usersUnfollowDelete) | **DELETE** /users/unfollow | 他ユーザーのフォロー解除を行う |
 
 
 <a id="signinPost"></a>
@@ -135,7 +136,10 @@ try {
 
 ### Authorization
 
-No authorization required
+
+Configure BearerAuth:
+    ApiClient.apiKey["Authorization"] = ""
+    ApiClient.apiKeyPrefix["Authorization"] = ""
 
 ### HTTP request headers
 
@@ -173,6 +177,53 @@ This endpoint does not need any parameter.
 ### Return type
 
 [**ResponseUserInfoResponse**](ResponseUserInfoResponse.md)
+
+### Authorization
+
+
+Configure BearerAuth:
+    ApiClient.apiKey["Authorization"] = ""
+    ApiClient.apiKeyPrefix["Authorization"] = ""
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+<a id="usersUnfollowDelete"></a>
+# **usersUnfollowDelete**
+> kotlin.String usersUnfollowDelete(request)
+
+他ユーザーのフォロー解除を行う
+
+### Example
+```kotlin
+// Import classes:
+//import org.openapitools.client.infrastructure.*
+//import org.openapitools.client.models.*
+
+val apiInstance = UserApi()
+val request : RequestUserUnfollowRequest =  // RequestUserUnfollowRequest | フォロー解除リクエスト
+try {
+    val result : kotlin.String = apiInstance.usersUnfollowDelete(request)
+    println(result)
+} catch (e: ClientException) {
+    println("4xx response calling UserApi#usersUnfollowDelete")
+    e.printStackTrace()
+} catch (e: ServerException) {
+    println("5xx response calling UserApi#usersUnfollowDelete")
+    e.printStackTrace()
+}
+```
+
+### Parameters
+| Name | Type | Description  | Notes |
+| ------------- | ------------- | ------------- | ------------- |
+| **request** | [**RequestUserUnfollowRequest**](RequestUserUnfollowRequest.md)| フォロー解除リクエスト | |
+
+### Return type
+
+**kotlin.String**
 
 ### Authorization
 
