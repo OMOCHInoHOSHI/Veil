@@ -194,7 +194,9 @@ class AudioRecordTest(private val context: Context, val soundView: SoundViewMode
 
         val userApi = ApiManager.userApi
 
+        val uid = getAPIViewModel.get_UserId()
 
+        println("uid = $uid")
 
 //        val signupRequest = fileApi.usersUserIdAudiosPost()
 //        CoroutineScope(Dispatchers.IO).launch {

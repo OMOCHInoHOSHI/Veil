@@ -53,13 +53,14 @@ class MainActivity : ComponentActivity() {
 //                val userApi = ApiManager.userApi
 
                 // viewモデル
-                val getAPIViewModel = getAPIViewModel()
+//                val getAPIViewModel = getAPIViewModel()
 
                 // ログイン成功ならDisplayNavへ
                 if (loginflg){
                     DisplayNav()
                 }else{
-                    loginflg = LoginScreen(getAPIViewModel)
+//                    loginflg = LoginScreen(getAPIViewModel)
+                    loginflg = LoginScreen()
                 }
 
 //                DisplayNav()

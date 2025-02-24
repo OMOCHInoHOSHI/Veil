@@ -64,6 +64,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import io.github.OMOCHInoHOSHI.Tokujyokaisendonn_SoundSNS.ui.theme.VeilTheme
+import org.openapitools.client.apis.FileApi
 
 
 // 通知画面
@@ -90,6 +91,9 @@ fun SoundPost_Screen(navController: NavController, soundView: SoundViewModel){
 
     // 保存用ハッシュタグリスト
     var tags:List<String> = remember { mutableStateListOf("") }
+
+    // 音声投稿
+    val fileApi = FileApi()
 
     Scaffold(
         bottomBar = {
@@ -118,7 +122,9 @@ fun SoundPost_Screen(navController: NavController, soundView: SoundViewModel){
                         }
 
                         // 右側の投稿アイコン
-                        IconButton(onClick = { /* doSomething() for sending post */ }) {
+                        IconButton(onClick = { /* doSomething() for sending post */
+                            audioRecordTest.uploadSound(fileApi)
+                        }) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.Send,
                                 contentDescription = "投稿"
@@ -535,183 +541,6 @@ fun DynamicHashtagTextField(
     }
 }
 // 個々のハッシュタグを入力するテキストフィールドのUIを実装E-------------------------------------------------
-
-@Composable
-fun SoundPost_Screen() {
-    // Use LocalConfiguration to get the screen dimensions reliably
-    val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
-    // スマホの横幅を取得
-    val screenWidth = configuration.screenWidthDp.dp
-
-    // どの円が選択されたか
-    var selectedCircle by remember { mutableStateOf("") }
-
-    // 保存用ハッシュタグリスト
-    var tags: List<String> = remember { mutableStateListOf("") }
-
-    Scaffold(
-        bottomBar = {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(),  // 親の幅いっぱいにする
-                contentAlignment = Alignment.Center  // コンテンツを中央揃え
-            ) {
-                Row(
-                    modifier = Modifier
-                        .width(screenWidth * 0.9f)  // 90%の幅にする
-                        .background(Color.LightGray),
-                    horizontalArrangement = Arrangement.SpaceBetween,  // アイコンを左右の端に配置
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    // 左側の下書き保存アイコン
-                    IconButton(onClick = { /* doSomething() for draft saving */ }) {
-                        Icon(
-                            imageVector = Icons.Default.DriveFileRenameOutline, // ペンマーク
-                            contentDescription = "下書き保存"
-                        )
-                    }
-
-                    // 右側の投稿アイコン
-                    IconButton(onClick = { /* doSomething() for sending post */ }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.Send,
-                            contentDescription = "投稿"
-                        )
-                    }
-                }
-            }
-
-
-
-        }
-    ) { innerPadding ->
-
-        Box(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-        ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // マイクアイコンと再生ボタンが重ねて表示されるコンテナーS---------
-                Box(
-                    modifier = Modifier.size(400.dp)
-                ) {
-                    // マイクのアイコンを背景にしてコンテナを埋める
-                    Icon(
-                        imageVector = Icons.Filled.Mic,
-                        contentDescription = "Microphone Icon",
-                        modifier = Modifier.fillMaxSize()
-                    )
-                    // 再生ボタンを右下に重ねる
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.BottomEnd
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.PlayArrow,
-                            contentDescription = "Play Button",
-                            modifier = Modifier.size(80.dp)
-                        )
-                    }
-                }
-                // マイクアイコンと再生ボタンが重ねて表示されるコンテナーE---------
-
-                // 直線部分
-                HorizontalDividerExample()
-
-                // 投稿データS---------------------------------------------------------------
-
-                //　イメージカラー行S----------------------------------------------------
-
-                Box(
-                    modifier = Modifier
-                        .width(screenWidth * 0.9f)  // 開始位置を線の下に
-                        .fillMaxWidth()
-                ) {
-
-                    // イメージカラーのテキストS------------------------------------
-                    Text(
-                        text = "イメージカラー",
-                        modifier = Modifier
-                            .align(Alignment.CenterStart)  // 左寄せ
-                            .padding(top = 16.dp)  // 仕切りから少し間隔をあける
-                    )
-                    // イメージカラーのテキストE------------------------------------
-
-                    Row(
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .padding(top = 16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(15.dp)
-                    ) {
-
-                        // すでに選択なら空白、それ以外なら対応した色文字列
-                        ToggleCircle(
-                            fillColor = Color.Red,
-                            borderColor = ColerSelect(),
-                            selected = selectedCircle == "Red",
-                            onClick = {
-                                selectedCircle = if (selectedCircle == "Red") "" else "Red"
-                            }
-                        )
-
-                        ToggleCircle(
-                            fillColor = Color(0xFF4EB0F4),
-                            borderColor = ColerSelect(),
-                            selected = selectedCircle == "Blue",
-                            onClick = {
-                                selectedCircle = if (selectedCircle == "Blue") "" else "Blue"
-                            }
-                        )
-
-                        ToggleCircle(
-                            fillColor = Color.Green,
-                            borderColor = ColerSelect(),
-                            selected = selectedCircle == "Green",
-                            onClick = {
-                                selectedCircle = if (selectedCircle == "Green") "" else "Green"
-                            }
-                        )
-
-                        ToggleCircle(
-                            fillColor = Color(0xFFFF47D3),
-                            borderColor = ColerSelect(),
-                            selected = selectedCircle == "Pink",
-                            onClick = {
-                                selectedCircle = if (selectedCircle == "Pink") "" else "Pink"
-                            }
-                        )
-                    }
-                }
-
-                println("Selected circle: $selectedCircle")
-                //　イメージカラー行E----------------------------------------------------
-
-                // ハッシュタグS--------------------------------------------------------------
-                Box(
-                    modifier = Modifier
-                        .width(screenWidth * 0.9f)  // 開始位置を線の下に
-                        .fillMaxWidth()
-                ) {
-
-                    LazyColumn {
-                        item {
-                            tags = DynamicHashtagTextFields()
-                            println("tags: $tags")
-                        }
-                    }
-                }
-                // ハッシュタグE--------------------------------------------------------------
-
-                // 投稿データE---------------------------------------------------------------
-            }
-        }
-    }
-}
 
 
 @Preview(showBackground = true)

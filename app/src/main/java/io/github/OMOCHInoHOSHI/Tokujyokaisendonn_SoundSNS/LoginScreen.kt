@@ -49,7 +49,7 @@ import java.util.concurrent.TimeUnit
 
 //@Preview
 @Composable
-fun LoginScreen(getAPIViewModel: getAPIViewModel): Boolean {
+fun LoginScreen(): Boolean {
 
     val userApi = ApiManager.userApi
 
@@ -185,7 +185,7 @@ fun LoginScreen(getAPIViewModel: getAPIViewModel): Boolean {
                             if (user != null && email != null && password != null) {
                                 // バックグラウンドスレッドで API コールを実行
                                 CoroutineScope(Dispatchers.IO).launch {
-                                    val result = performSignup(userApi, user!!, email!!, password!!, getAPIViewModel)
+                                    val result = performSignup(userApi, user!!, email!!, password!!/*, getAPIViewModel*/)
 
                                     withContext(Dispatchers.Main) {
                                         loginState = result
@@ -261,7 +261,7 @@ fun LoginScreen(getAPIViewModel: getAPIViewModel): Boolean {
 //}
 
 // 新規登録のための API 呼び出し関数
-suspend fun performSignup(userApi: UserApi, user: String, email: String, password: String, getAPIViewModel: getAPIViewModel):Boolean {
+suspend fun performSignup(userApi: UserApi, user: String, email: String, password: String, /*getAPIViewModel: getAPIViewModel*/):Boolean {
 
     // viewモデル
     Log.i("Signup", "user: $user, email: $email, password: $password")

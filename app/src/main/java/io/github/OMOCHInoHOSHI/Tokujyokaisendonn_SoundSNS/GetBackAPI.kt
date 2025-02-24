@@ -6,7 +6,8 @@ import org.openapitools.client.apis.UserApi
 import org.openapitools.client.apis.FileApi
 
 // APIから取得したユーザー情報を管理するViewModelS-------------------------------------------------
-class getAPIViewModel: ViewModel(){
+// objectにしてシングルトンにする
+object getAPIViewModel: ViewModel(){
 
     var createdAt:String = ""   //作成時間
     var email: String = ""      //メアド
