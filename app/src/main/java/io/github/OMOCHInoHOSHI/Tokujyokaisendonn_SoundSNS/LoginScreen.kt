@@ -149,7 +149,7 @@ fun LoginScreen(getAPIViewModel: getAPIViewModel): Boolean {
 //                        onClick = { /* ログイン処理 */ },
                         onClick = {
 
-//                            loginState = true
+                            loginState = true
 
                             if(loginState){
                                 Toast.makeText(context, "ログイン成功", Toast.LENGTH_SHORT).show()

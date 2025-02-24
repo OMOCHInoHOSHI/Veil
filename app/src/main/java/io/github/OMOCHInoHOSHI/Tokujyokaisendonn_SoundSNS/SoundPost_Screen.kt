@@ -155,23 +155,30 @@ fun SoundPost_Screen(navController: NavController, soundView: SoundViewModel){
                             }
                         }
                 ) {
-                    // マイクのアイコンを背景にしてコンテナを埋める
+
                     Icon(
-                        imageVector = Icons.Filled.Mic,
-                        contentDescription = "Microphone Icon",
+                        imageVector = if (isPlaying) Icons.Filled.Stop else Icons.Filled.PlayArrow,
+                        contentDescription = if (isPlaying) "再生停止" else "再生開始",
                         modifier = Modifier.fillMaxSize()
                     )
-                    // 再生ボタンを右下に重ねる
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.BottomEnd
-                    ) {
-                        Icon(
-                            imageVector = if (isPlaying) Icons.Filled.Stop else Icons.Filled.PlayArrow,
-                            contentDescription = if (isPlaying) "再生停止" else "再生開始",
-                            modifier = Modifier.size(80.dp)
-                        )
-                    }
+
+//                    // マイクのアイコンを背景にしてコンテナを埋める
+//                    Icon(
+//                        imageVector = Icons.Filled.Mic,
+//                        contentDescription = "Microphone Icon",
+//                        modifier = Modifier.fillMaxSize()
+//                    )
+//                    // 再生ボタンを右下に重ねる
+//                    Box(
+//                        modifier = Modifier.fillMaxSize(),
+//                        contentAlignment = Alignment.BottomEnd
+//                    ) {
+//                        Icon(
+//                            imageVector = if (isPlaying) Icons.Filled.Stop else Icons.Filled.PlayArrow,
+//                            contentDescription = if (isPlaying) "再生停止" else "再生開始",
+//                            modifier = Modifier.size(80.dp)
+//                        )
+//                    }
                 }
                 // マイクアイコンと再生ボタンが重ねて表示されるコンテナーE---------
 
