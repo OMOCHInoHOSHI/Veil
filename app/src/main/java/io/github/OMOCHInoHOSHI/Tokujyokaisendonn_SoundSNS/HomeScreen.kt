@@ -215,31 +215,107 @@ fun Home_Screen(navController: NavController) {
     }
 }
 
-//private val LightColors = lightColorScheme(
-//    primary = Color(0xFF6750A4),
-//    secondary = Color(0xFF625B71),
-//    tertiary = Color(0xFF7D5260),
-//)
-//
-//private val DarkColors = darkColorScheme(
-//    primary = Color(0xFFD0BCFF),
-//    secondary = Color(0xFFCCC2DC),
-//    tertiary = Color(0xFFEFB8C8),
-//)
-//
-//@Composable
-//fun SoundSNSTheme(
-//    darkTheme: Boolean = false,
-//    content: @Composable () -> Unit
-//) {
-//    val colorScheme = if (darkTheme) DarkColors else LightColors
-//
-//    MaterialTheme(
-//        colorScheme = colorScheme,
-//        content = content
-//    )
-//}
+// Hotの表示
+@Composable
+fun Hot_SoundScreen(){
 
+//    items(10) {
+//        Card(
+//            modifier = Modifier.fillMaxWidth(),
+//        ) {
+//            Row(
+//                modifier = Modifier
+//                    .padding(15.dp) // カードの縦の長さ
+//                    .fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween,
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Row(
+//                    horizontalArrangement = Arrangement.spacedBy(15.dp),
+//                    verticalAlignment = Alignment.CenterVertically  //高さの中央
+//                ) {
+//                    // 音声アイコン
+//                    Surface(
+//                        modifier = Modifier
+//                            .size(48.dp)
+//                            .clip(CircleShape),
+//                        color = MaterialTheme.colorScheme.secondaryContainer
+//                    ) {
+//                        Icon(
+//                            Icons.Default.Mic,
+//                            contentDescription = "音声",
+//                            modifier = Modifier.padding(12.dp)
+//                        )
+//                    }
+//
+//                    Column {
+//                        Text(
+//                            "user name",
+//                            fontWeight = FontWeight.ExtraBold,  //テキストの太さ
+//                            fontSize = 24.sp
+//                        )
+//                        Text(
+//                            "# 海",
+//                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+//                            fontSize = 20.sp
+//                        )
+//                    }
+//                }
+//
+//
+//            }
+//            // アクションボタン
+//            Row(
+//                modifier = Modifier
+//                    .padding(0.dp) // カードの縦の長さ
+//                    .fillMaxWidth(),
+//                horizontalArrangement = Arrangement.End,
+////                            verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                IconButton(
+//                    onClick = { /* いいね処理 */ },
+//                    modifier = Modifier.padding(0.dp)
+//                ) {
+//                    Icon(
+//                        imageVector = Icons.Filled.Favorite,
+//                        contentDescription = "いいね",
+//                    )
+//                }
+//                IconButton(
+//                    onClick = { /* ブックマーク処理 */ },
+//                    modifier = Modifier.padding(0.dp)
+//                ) {
+//                    Icon(
+//                        imageVector = Icons.Filled.BookmarkBorder,
+//                        contentDescription = "ブックマーク",
+//                    )
+//                }
+//                IconButton(
+//                    onClick = { /* シェア処理 */ },
+//                    modifier = Modifier.padding(0.dp)
+//                ) {
+//                    Icon(
+//                        imageVector = Icons.Filled.Share,
+//                        contentDescription = "シェア",
+//                    )
+//                }
+//            }
+//        }
+//    }
+
+}
+
+// 新着順の表示
+@Composable
+fun New_SoundScreen(){
+
+}
+
+// フォロー中の表示
+@Composable
+fun Follow_SoundScreen(){
+
+}
 
 @Preview(showBackground = true)
 @Composable
