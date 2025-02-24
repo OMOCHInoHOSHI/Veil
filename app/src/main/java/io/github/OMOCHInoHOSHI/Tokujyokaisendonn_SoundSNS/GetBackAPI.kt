@@ -28,17 +28,17 @@ class getAPIViewModel: ViewModel(){
     }
 
     // useridを取得
-    fun getUserId():String{
+    fun get_UserId():String{
         return user_id
     }
 
     // emailを取得
-    fun getEmail():String{
+    fun get_Email():String{
         return email
     }
 
     // usernameを取得
-    fun getUsername():String{
+    fun get_Username():String{
         return uesrname
     }
 
