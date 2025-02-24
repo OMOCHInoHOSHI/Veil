@@ -282,10 +282,17 @@ suspend fun performSignup(userApi: UserApi, user: String, email: String, passwor
 
             try {
                 val response = userApi.usersMeGet()
+
+                val (createdAt, getemail, getid, getname, updatedAt) = response
+                Log.i("FetchUserInfo", "Email: $getemail, ID: $getid, Name: $getname")
                 Log.i("FetchUserInfo", "User info retrieved: $response")
+
+                getAPIViewModel.setUserInfo(createdAt, getemail, getid, getname, updatedAt)
+
             } catch (e: Exception) {
                 Log.e("FetchUserInfo", "Failed to retrieve user info", e)
             }
+
 
 
         return true

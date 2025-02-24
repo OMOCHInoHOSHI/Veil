@@ -88,20 +88,22 @@ enum class Nav {
 fun DisplayNav(){
 
 
-    val userApi = ApiManager.userApi
-
-    LaunchedEffect(Unit) { // LaunchedEffectを使用
-
-        try {
-            val response = withContext(Dispatchers.IO) { // ネットワーク処理をIOスレッドで実行
-                userApi.usersMeGet()
-            }
-            Log.i("FetchUserInfo", "User info retrieved: $response")
-        } catch (e: Exception) {
-            Log.e("FetchUserInfo", "Failed to retrieve user info", e)
-        }
-
-    }
+//    val userApi = ApiManager.userApi
+//
+//    LaunchedEffect(Unit) { // LaunchedEffectを使用
+//
+//        try {
+//            val response = withContext(Dispatchers.IO) { // ネットワーク処理をIOスレッドで実行
+//                userApi.usersMeGet()
+//            }
+//            val (createdAt, email, id, name, updatedAt) = response
+//            Log.i("FetchUserInfo", "Email: $email, ID: $id, Name: $name")
+//            Log.i("FetchUserInfo", "User info retrieved: $response")
+//        } catch (e: Exception) {
+//            Log.e("FetchUserInfo", "Failed to retrieve user info", e)
+//        }
+//
+//    }
 
     // NavControllerを定義
     val navController = rememberNavController()
