@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.openapitools.client.apis.UserApi
@@ -178,35 +179,25 @@ fun LoginScreen(getAPIViewModel: getAPIViewModel): Boolean {
                     Button(
                         onClick = {
                             // 入力値が空でないことを簡易チェック
-//                            if (user?.isNotBlank() ?:  && email.isNotBlank() && password.isNotBlank()) {
-                            // バックグラウンドスレッドで API コールを実行
-                            CoroutineScope(Dispatchers.IO).launch {
-                                loginState = performSignup(userApi, user!!, email!!, password!!, getAPIViewModel)
+                            if (user != null && email != null && password != null) {
+                                // バックグラウンドスレッドで API コールを実行
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    val result = performSignup(userApi, user!!, email!!, password!!, getAPIViewModel)
 
-                                if (loginState){
-//                                    try {
-//                                        val response = userApi.usersMeGet()
-////                                        setUserInfo(response)
-//                                        Log.i("FetchUserInfo", "User info retrieved: $response")
-//                                    } catch (e: Exception) {
-//                                        Log.e("FetchUserInfo", "Failed to retrieve user info", e)
-////
-//                                    }
+                                    withContext(Dispatchers.Main) {
+                                        loginState = result
+
+                                        // 登録の視覚的コールバック
+                                        val message = if (loginState) "登録成功" else "登録失敗"
+                                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+
+                                    }
+    //                                loginState = false
                                 }
+                            } else {
+                                Toast.makeText(context, "入力が正しくありません", Toast.LENGTH_SHORT).show()
+                            }
 
-//                                loginState = false
-                            }
-//                            } else {
-//                                Log.e("Signup", "入力内容を確認してください。")
-//                            }
-
-                            // 登録の視覚的コールバック
-                            if(loginState){
-                                Toast.makeText(context, "登録成功", Toast.LENGTH_SHORT).show()
-                            }
-                            else{
-                                Toast.makeText(context, "登録失敗", Toast.LENGTH_SHORT).show()
-                            }
 
                         },
                         modifier = Modifier.fillMaxWidth()
